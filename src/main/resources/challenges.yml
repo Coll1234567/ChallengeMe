@@ -1,0 +1,7 @@
+challenges:
+  no-damage:
+    enabled: true
+    material: 'DIAMOND_SWORD'
+    name: '&c&lNo-hit Wonder'
+    description: '&3Any damage you take is fatal. \n\n&7(Excluding damage from sources that don''t deal any actual damage, such as snowballs.)'
+    death: '&4&lChallenge Failed: &cYou took damage.'

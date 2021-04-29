@@ -1,0 +1,9 @@
+name: ChallengeMe
+version: 1.0
+main: me.jishuna.challengeme.ChallengeMe
+authors: [Jishuna]
+api-version: 1.16
+
+commands:
+  challenges:
+    description: 'Open the challenge GUI'
