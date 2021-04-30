@@ -3,5 +3,23 @@ challenges:
     enabled: true
     material: 'DIAMOND_SWORD'
     name: '&c&lNo-hit Wonder'
-    description: '&3Any damage you take is fatal. \n\n&7(Excluding damage from sources that don''t deal any actual damage, such as snowballs.)'
-    death: '&4&lChallenge Failed: &cYou took damage.'
+    description: '&3Any damage you take is fatal. \n \n&7(Excluding damage from sources that don''t deal any actual damage, such as snowballs.)'
+    message: '&4&l[No-hit Wonder]: &cYou took damage.'
+  vegitarian:
+    enabled: true
+    material: 'CARROT'
+    name: '&a&lVegitarian'
+    description: '&3You are unable to eat any meat.'
+    message: '&4&l[Vegitarian]: &cYou are unable to eat meat.'
+  animal-lover:
+    enabled: true
+    material: 'PLAYER_HEAD,621668ef7cb79dd9c22ce3d1f3f4cb6e2559893b6df4a469514e667c16aa4'
+    name: '&d&lAnimal Lover'
+    description: '&3You are unable to hurt animals.'
+    message: '&4&l[Animal Lover]: &cYou are unable to hurt animals.'
+  vampire:
+    enabled: true
+    material: 'PLAYER_HEAD,8d44756e0b4ece8d746296a3d5e297e1415f4ba17647ffe228385383d161a9'
+    name: '&c&lVampire'
+    description: '&3Sunlight causes you to burn.'
+    message: ''

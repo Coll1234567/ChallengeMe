@@ -1,4 +1,4 @@
-package me.jishuna.challengeme.api;
+package me.jishuna.challengeme.api.event;
 
 import java.util.function.Consumer;
 

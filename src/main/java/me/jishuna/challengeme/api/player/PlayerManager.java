@@ -1,4 +1,4 @@
-package me.jishuna.challengeme.api;
+package me.jishuna.challengeme.api.player;
 
 import java.io.File;
 import java.io.FileReader;
@@ -21,22 +21,21 @@ import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
 import me.jishuna.challengeme.ChallengeMe;
+import me.jishuna.challengeme.api.event.EventConsumer;
 
 public class PlayerManager {
 
-	private final ChallengeManager challengeManager;
 	private final ChallengeMe plugin;
 	private final Map<UUID, ChallengePlayer> players = new HashMap<>();
 
 	private final Type listType = new TypeToken<List<String>>() {
 	}.getType();
 
-	public PlayerManager(ChallengeMe plugin, ChallengeManager challengeManager) {
+	public PlayerManager(ChallengeMe plugin) {
 		this.plugin = plugin;
-		this.challengeManager = challengeManager;
 
 		File playerDataDirectory = new File(this.plugin.getDataFolder() + File.separator + "playerdata");
-		
+
 		if (!playerDataDirectory.exists()) {
 			playerDataDirectory.mkdirs();
 		}
@@ -45,12 +44,10 @@ public class PlayerManager {
 	public void registerListeners() {
 		EventConsumer<PlayerJoinEvent> loginWrapper = new EventConsumer<>(PlayerJoinEvent.class,
 				event -> loadPlayerData(event.getPlayer()));
-
 		loginWrapper.register(plugin);
 
 		EventConsumer<PlayerQuitEvent> loggoutWrapper = new EventConsumer<>(PlayerQuitEvent.class,
 				event -> savePlayerData(event.getPlayer()));
-
 		loggoutWrapper.register(plugin);
 	}
 
@@ -67,6 +64,9 @@ public class PlayerManager {
 	}
 
 	private void loadPlayerData(UUID uuid) {
+		if (this.players.containsKey(uuid))
+			return;
+
 		Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () -> {
 			ChallengePlayer challengePlayer = new ChallengePlayer(uuid);
 
@@ -78,7 +78,7 @@ public class PlayerManager {
 					List<String> challenge_keys = gson.fromJson(reader, this.listType);
 
 					for (String key : challenge_keys) {
-						this.challengeManager.getChallenge(key)
+						this.plugin.getChallengeManager().getChallenge(key)
 								.ifPresent(challenge -> challengePlayer.addChallenge(challenge));
 					}
 
@@ -94,15 +94,17 @@ public class PlayerManager {
 	}
 
 	private void savePlayerData(Player player) {
-		savePlayerData(player.getUniqueId());
+		savePlayerData(player.getUniqueId(), false);
 	}
 
-	private void savePlayerData(UUID uuid) {
-		ChallengePlayer challengePlayer = this.players.remove(uuid);
+	private void savePlayerData(UUID uuid, boolean unload) {
+		ChallengePlayer challengePlayer = this.players.get(uuid);
 
 		if (challengePlayer != null) {
 			Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () -> {
 				savePlayer(uuid, challengePlayer);
+				if (unload)
+					this.players.remove(uuid);
 			});
 		}
 	}

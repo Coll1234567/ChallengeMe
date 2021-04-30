@@ -1,10 +1,12 @@
-package me.jishuna.challengeme.api;
+package me.jishuna.challengeme.api.player;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -14,10 +16,13 @@ import org.bukkit.entity.Player;
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 
+import me.jishuna.challengeme.api.challenge.Challenge;
+
 public class ChallengePlayer {
 
 	private final UUID id;
 	private final Set<Challenge> activeChallenges = new HashSet<>();
+	private final Map<String, Long> cooldowns = new HashMap<>();
 
 	public ChallengePlayer(Player player) {
 		this(player.getUniqueId());
@@ -45,6 +50,15 @@ public class ChallengePlayer {
 
 	public boolean hasChallenge(Challenge challenge) {
 		return this.activeChallenges.contains(challenge);
+	}
+
+	public boolean isOnCooldown(Challenge challenge) {
+		Long time = this.cooldowns.get(challenge.getKey());
+		return time != null && time > System.currentTimeMillis();
+	}
+
+	public void setCooldown(Challenge challenge, int time) {
+		this.cooldowns.put(challenge.getKey(), System.currentTimeMillis() + time * 1000);
 	}
 
 	public void savePlayer(File file) {

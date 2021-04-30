@@ -7,10 +7,16 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import me.jishuna.challengeme.api.ChallengeManager;
-import me.jishuna.challengeme.api.PlayerManager;
+import me.jishuna.challengeme.api.challenge.ChallengeManager;
+import me.jishuna.challengeme.api.player.PlayerManager;
+import me.jishuna.challengeme.challenges.AnimalLoverChallenge;
 import me.jishuna.challengeme.challenges.NoDamageChallenge;
+import me.jishuna.challengeme.challenges.VampireChallenge;
+import me.jishuna.challengeme.challenges.VegitarianChallenge;
 import me.jishuna.challengeme.commands.ChallengeCommand;
+import me.jishuna.challengeme.listeners.ChallengeListener;
+import me.jishuna.challengeme.listeners.CustomInventoryManager;
+import me.jishuna.challengeme.runnables.TickingChallengeRunnable;
 import me.jishuna.commonlib.FileUtils;
 import net.md_5.bungee.api.ChatColor;
 
@@ -18,23 +24,33 @@ public class ChallengeMe extends JavaPlugin {
 
 	private ChallengeManager challengeManager;
 	private PlayerManager playerManager;
-	private YamlConfiguration challengeConfig;
 	private CustomInventoryManager inventoryManager;
+
+	private YamlConfiguration challengeConfig;
+	private YamlConfiguration config;
+	private YamlConfiguration messageConfig;
+	
+	private TickingChallengeRunnable challengeRunnable;
 
 	@Override
 	public void onEnable() {
 		loadConfiguration();
 		PluginKeys.initialize(this);
 
-		this.inventoryManager = new CustomInventoryManager();
+		this.inventoryManager = new CustomInventoryManager(this);
 		Bukkit.getPluginManager().registerEvents(this.inventoryManager, this);
 
-		this.challengeManager = new ChallengeManager(this);
+		this.challengeManager = new ChallengeManager();
 
-		this.playerManager = new PlayerManager(this, this.challengeManager);
+		this.playerManager = new PlayerManager(this);
 		this.playerManager.registerListeners();
 
 		Bukkit.getPluginManager().registerEvents(new ChallengeListener(this.playerManager), this);
+		
+		this.challengeRunnable = new TickingChallengeRunnable(this);
+		int delay = this.config.getInt("ticks-per-check", 10);
+		
+		this.challengeRunnable.runTaskTimer(this, delay, delay);
 
 		getCommand("challenges").setExecutor(new ChallengeCommand(this));
 
@@ -43,7 +59,9 @@ public class ChallengeMe extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
-
+		this.playerManager.saveAllPlayers();
+		
+		this.challengeRunnable.cancel();
 	}
 
 	public PlayerManager getPlayerManager() {
@@ -58,8 +76,8 @@ public class ChallengeMe extends JavaPlugin {
 		return challengeManager;
 	}
 
-	public void setChallengeManager(ChallengeManager challengeManager) {
-		this.challengeManager = challengeManager;
+	public YamlConfiguration getConfiguration() {
+		return config;
 	}
 
 	private void registerDefaultChallenges() {
@@ -67,18 +85,27 @@ public class ChallengeMe extends JavaPlugin {
 		YamlConfiguration challengeConfig = this.challengeConfig;
 
 		manager.registerChallenge(new NoDamageChallenge(this, challengeConfig), challengeConfig);
+		manager.registerChallenge(new VegitarianChallenge(this, challengeConfig), challengeConfig);
+		manager.registerChallenge(new AnimalLoverChallenge(this, challengeConfig), challengeConfig);
+		manager.registerChallenge(new VampireChallenge(this, challengeConfig), challengeConfig);
 	}
 
 	private void loadConfiguration() {
 		if (!this.getDataFolder().exists())
 			this.getDataFolder().mkdirs();
 
-		Optional<File> configOptional = FileUtils.copyResource(this, "challenges.yml");
-		configOptional.ifPresent(file -> this.challengeConfig = YamlConfiguration.loadConfiguration(file));
+		Optional<File> challengeOptional = FileUtils.copyResource(this, "challenges.yml");
+		challengeOptional.ifPresent(file -> this.challengeConfig = YamlConfiguration.loadConfiguration(file));
+
+		Optional<File> configOptional = FileUtils.copyResource(this, "config.yml");
+		configOptional.ifPresent(file -> this.config = YamlConfiguration.loadConfiguration(file));
+
+		Optional<File> messageOptional = FileUtils.copyResource(this, "messages.yml");
+		messageOptional.ifPresent(file -> this.messageConfig = YamlConfiguration.loadConfiguration(file));
 	}
 
 	public String getMessage(String key) {
-		return ChatColor.translateAlternateColorCodes('&', this.challengeConfig.getString(key));
+		return ChatColor.translateAlternateColorCodes('&', this.messageConfig.getString(key, ""));
 	}
 
 }

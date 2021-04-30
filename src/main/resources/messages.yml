@@ -1,0 +1,6 @@
+on-cooldown: '&4&l[&c&l!&4&l]: &c%challenge% &7challenge toggling on cooldown.'
+
+enabled: '&a&lEnabled'
+disabled: '&c&lDisabled'
+challenge-enabled: '%challenge% &7challenge &aenabled.'
+challenge-disabled: '%challenge% &7challenge &cdisabled.'

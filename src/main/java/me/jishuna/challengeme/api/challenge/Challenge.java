@@ -1,50 +1,56 @@
-package me.jishuna.challengeme.api;
+package me.jishuna.challengeme.api.challenge;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
+import me.jishuna.challengeme.api.event.EventWrapper;
+import me.jishuna.commonlib.ItemParser;
 import me.jishuna.commonlib.StringUtils;
 import net.md_5.bungee.api.ChatColor;
 
 public abstract class Challenge {
 
 	private final Plugin owningPlugin;
+
 	private final String key;
 	private final String name;
+	private final String message;
 	private final List<String> description;
-	private final Material icon;
+	private final ItemStack icon;
 
 	private final Multimap<Class<? extends Event>, EventWrapper<? extends Event>> handlerMap = ArrayListMultimap
 			.create();
 
-	public Challenge(Plugin owner, String key, YamlConfiguration messageConfig) {
-		String name = ChatColor.translateAlternateColorCodes('&',
-				messageConfig.getString("challenges." + key + ".name", ""));
-		String description = ChatColor.translateAlternateColorCodes('&',
-				messageConfig.getString("challenges." + key + ".description", ""));
-
-		Material material = Material.matchMaterial(messageConfig.getString("challenges." + key + ".material"));
-		this.icon = material != null ? material : Material.DIAMOND;
-
+	public Challenge(Plugin owner, String key, YamlConfiguration challengeConfig) {
 		this.owningPlugin = owner;
 		this.key = key;
-		this.name = name;
+		
+		this.name = ChatColor.translateAlternateColorCodes('&',
+				challengeConfig.getString("challenges." + key + ".name", ""));
+		this.message = ChatColor.translateAlternateColorCodes('&',
+				challengeConfig.getString("challenges." + key + ".message", ""));
 
+		this.icon = ItemParser.parseItem(challengeConfig.getString("challenges." + key + ".material", ""),
+				Material.DIAMOND);
+		
+		String description = ChatColor.translateAlternateColorCodes('&',
+				challengeConfig.getString("challenges." + key + ".description", ""));
+		
 		List<String> desc = new ArrayList<>();
 
-		System.out.println(description);
 		for (String line : description.split("\\\\n")) {
-			System.out.println(line);
 			desc.addAll(StringUtils.splitString(line, 30));
 		}
 		this.description = desc;
@@ -66,11 +72,15 @@ public abstract class Challenge {
 		return description;
 	}
 
-	public Material getIcon() {
+	public String getMessage() {
+		return message;
+	}
+
+	public ItemStack getIcon() {
 		return icon;
 	}
 
-	public <T extends Event> void addEventHandler(Class<T> type, Consumer<T> consumer) {
+	public <T extends Event> void addEventHandler(Class<T> type, BiConsumer<T, Player> consumer) {
 		this.handlerMap.put(type, new EventWrapper<>(type, consumer));
 	}
 
