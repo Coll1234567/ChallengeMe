@@ -26,6 +26,7 @@ public class ChunkEffectChallenge extends Challenge implements TickingChallenge,
 
 	private final List<PotionEffectType> effects;
 	private final Map<UUID, ChunkEffectCache> effectCache = new HashMap<>();
+	private final int maxLevel;
 
 	public ChunkEffectChallenge(Plugin owner, YamlConfiguration challengeConfig) {
 		this(owner, challengeConfig.getConfigurationSection("challenges.chunk-effects"));
@@ -35,6 +36,8 @@ public class ChunkEffectChallenge extends Challenge implements TickingChallenge,
 		super(owner, "chunk-effects", challengeSection);
 
 		this.effects = Arrays.asList(PotionEffectType.values()).stream().collect(Collectors.toList());
+		
+		this.maxLevel = challengeSection.getInt("max-level", 3);
 
 		for (String effect : challengeSection.getStringList("blacklisted-effects")) {
 			PotionEffectType type = PotionEffectType.getByName(effect.toUpperCase());
@@ -53,7 +56,8 @@ public class ChunkEffectChallenge extends Challenge implements TickingChallenge,
 
 		ChunkEffectCache oldCache = this.effectCache.get(player.getUniqueId());
 
-		if (oldCache == null || oldCache.getEffectType() != event.getModifiedType())
+		if (oldCache == null || oldCache.getEffectType() != event.getModifiedType()
+				|| oldCache.getLevel() != event.getOldEffect().getAmplifier())
 			return;
 
 		event.setCancelled(true);
@@ -69,26 +73,28 @@ public class ChunkEffectChallenge extends Challenge implements TickingChallenge,
 			Random random = new Random(hashChunk(chunk));
 
 			PotionEffectType newType = effects.get(random.nextInt(effects.size()));
-			int level = random.nextInt(3);
+			int level = random.nextInt(this.maxLevel);
 
 			ChunkEffectCache newCache = new ChunkEffectCache(chunk, newType, level);
-			player.addPotionEffect(new PotionEffect(newType, Integer.MAX_VALUE, level, true, false));
 			this.effectCache.put(player.getUniqueId(), newCache);
 
 			if (oldCache != null) {
 				PotionEffect activeEffect = player.getPotionEffect(oldCache.getEffectType());
-
 				if (activeEffect != null && activeEffect.getAmplifier() == oldCache.getLevel())
 					player.removePotionEffect(oldCache.getEffectType());
 			}
+			player.addPotionEffect(new PotionEffect(newType, Integer.MAX_VALUE, level, true, false));
 		}
 	}
 
-	private int hashChunk(Chunk chunk) {
-		int i = 1664525 * chunk.getX() + 1013904223;
-		int j = 1664525 * (chunk.getZ() ^ -559038737) + 1013904223;
+	private long hashChunk(Chunk chunk) {
+		long hash = 3;
 
-		return i ^ j;
+		hash = 19 * hash + chunk.getWorld().getSeed();
+		hash = 19 * hash + chunk.getX() ^ (chunk.getX() >>> 32);
+		hash = 19 * hash + chunk.getZ() ^ (chunk.getZ() >>> 32);
+
+		return hash;
 	}
 
 	@Override
@@ -102,7 +108,7 @@ public class ChunkEffectChallenge extends Challenge implements TickingChallenge,
 
 		PotionEffectType type = effects.get(random.nextInt(effects.size()));
 		player.removePotionEffect(type);
-		
+
 		effectCache.remove(player.getUniqueId());
 	}
 }

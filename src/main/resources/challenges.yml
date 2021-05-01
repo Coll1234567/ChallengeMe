@@ -42,7 +42,7 @@ challenges:
     enabled: true
     material: 'BREWING_STAND'
     name: '&2&lChunk Effects'
-    description: '&3Each chunk gives you a random potion effect.'
+    max-level: 3
     blacklisted-effects:
       - 'HARM'
       - 'HEAL'

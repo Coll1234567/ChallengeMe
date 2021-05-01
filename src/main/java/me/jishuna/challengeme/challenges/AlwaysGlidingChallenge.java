@@ -23,11 +23,11 @@ public class AlwaysGlidingChallenge extends Challenge implements TickingChalleng
 
 	@Override
 	public void onTick(Player player) {
-		if (!player.isGliding())
+		if (!player.isGliding() && !player.isFlying())
 			player.setGliding(true);
 
 		Vector velocity = player.getVelocity();
-		if (velocity.length() < 0.3D && !player.getLocation().getBlock().isLiquid())
+		if (!player.isFlying() && velocity.length() < 0.3D && !player.getLocation().getBlock().isLiquid())
 			player.setVelocity(velocity.multiply(1.5D));
 
 	}

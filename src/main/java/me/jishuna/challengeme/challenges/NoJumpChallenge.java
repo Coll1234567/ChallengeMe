@@ -1,6 +1,5 @@
 package me.jishuna.challengeme.challenges;
 
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityPotionEffectEvent;
@@ -24,7 +23,6 @@ public class NoJumpChallenge extends Challenge implements ToggleChallenge {
 		if (event.getAction() == Action.ADDED)
 			return;
 
-		Bukkit.broadcastMessage(event.getOldEffect().getType().toString());
 		if (event.getOldEffect().getType() == PotionEffectType.JUMP) {
 			event.setCancelled(true);
 		}

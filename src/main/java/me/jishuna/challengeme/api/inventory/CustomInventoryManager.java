@@ -79,7 +79,7 @@ public class CustomInventoryManager implements Listener {
 		for (int i = 0; i < Math.min(45, challengeCache.size() - start); i++) {
 			Challenge challenge = challengeCache.get(i);
 
-			ItemBuilder itemBuilder = ItemBuilder.modifyItem(challenge.getIcon()).withName(challenge.getName())
+			ItemBuilder itemBuilder = ItemBuilder.modifyItem(challenge.getIcon().clone()).withName(challenge.getName())
 					.withLore(challenge.getDescription())
 					.withFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_POTION_EFFECTS)
 					.withPersistantData(PluginKeys.CHALLENGE_KEY.getKey(), PersistentDataType.STRING,
@@ -178,9 +178,9 @@ public class CustomInventoryManager implements Listener {
 		challengePlayer.addChallenge(challenge);
 		player.sendMessage(this.plugin.getMessage("challenge-enabled").replace("%challenge%", challenge.getName()));
 
-		item.addUnsafeEnchantment(Enchantment.DURABILITY, 1);
-
 		ItemMeta meta = item.getItemMeta();
+		meta.addEnchant(Enchantment.DURABILITY, 1, true);
+		
 		List<String> lore = meta.hasLore() ? meta.getLore() : new ArrayList<>();
 		int pos = lore.size() - 1;
 
@@ -199,9 +199,9 @@ public class CustomInventoryManager implements Listener {
 		challengePlayer.removeChallenge(challenge);
 		player.sendMessage(this.plugin.getMessage("challenge-disabled").replace("%challenge%", challenge.getName()));
 
-		item.removeEnchantment(Enchantment.DURABILITY);
-
 		ItemMeta meta = item.getItemMeta();
+		meta.removeEnchant(Enchantment.DURABILITY);
+		
 		List<String> lore = meta.hasLore() ? meta.getLore() : new ArrayList<>();
 		int pos = lore.size() - 1;
 
