@@ -1,4 +1,6 @@
-on-cooldown: '&4&l[&c&l!&4&l]: &c%challenge% &7challenge toggling on cooldown.'
+on-cooldown: '&4&l[&c&l!&4&l]: &c%challenge% &7toggling on cooldown for &c%time%.'
+
+active-challenges: '&aYou currently have the following challenges active: %challenges%'
 
 enabled: '&a&lEnabled'
 disabled: '&c&lDisabled'

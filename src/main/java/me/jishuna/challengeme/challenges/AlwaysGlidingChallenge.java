@@ -9,10 +9,10 @@ import org.bukkit.util.Vector;
 import me.jishuna.challengeme.api.challenge.Challenge;
 import me.jishuna.challengeme.api.challenge.TickingChallenge;
 
-public class AlwaysFlyingChallenge extends Challenge implements TickingChallenge {
+public class AlwaysGlidingChallenge extends Challenge implements TickingChallenge {
 
-	public AlwaysFlyingChallenge(Plugin owner, YamlConfiguration messageConfig) {
-		super(owner, "always-flying", messageConfig);
+	public AlwaysGlidingChallenge(Plugin owner, YamlConfiguration messageConfig) {
+		super(owner, "always-gliding", messageConfig);
 
 		addEventHandler(EntityToggleGlideEvent.class, this::onToggleGlide);
 	}

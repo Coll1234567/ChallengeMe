@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -12,8 +13,9 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import me.jishuna.challengeme.ChallengeMe;
 import me.jishuna.challengeme.api.event.ChallengeSetupEvent;
-import me.jishuna.challengeme.challenges.AlwaysFlyingChallenge;
+import me.jishuna.challengeme.challenges.AlwaysGlidingChallenge;
 import me.jishuna.challengeme.challenges.AnimalLoverChallenge;
+import me.jishuna.challengeme.challenges.ChunkEffectChallenge;
 import me.jishuna.challengeme.challenges.DoublePainChallenge;
 import me.jishuna.challengeme.challenges.NoDamageChallenge;
 import me.jishuna.challengeme.challenges.NoJumpChallenge;
@@ -41,13 +43,10 @@ public class ChallengeManager {
 		event.getChallengesToAdd().addAll(this.defaultChallenges);
 		Bukkit.getPluginManager().callEvent(event);
 
-		event.getChallengesToAdd().forEach(challenge -> {
-			if (challenge.isEnabled()) {
-				this.challenges.put(challenge.getKey(), challenge);
-			}
-		});
+		event.getChallengesToAdd().forEach(challenge -> this.challenges.put(challenge.getKey(), challenge));
 
-		this.challengeCache = new ArrayList<Challenge>(this.challenges.values());
+		this.challengeCache = new ArrayList<Challenge>(this.challenges.values().stream()
+				.filter(challenge -> challenge.isEnabled()).collect(Collectors.toList()));
 	}
 
 	private void setupDefaultChallenges() {
@@ -61,7 +60,8 @@ public class ChallengeManager {
 		this.defaultChallenges.add(new VampireChallenge(plugin, challengeConfig));
 		this.defaultChallenges.add(new NoJumpChallenge(plugin, challengeConfig));
 		this.defaultChallenges.add(new DoublePainChallenge(plugin, challengeConfig));
-		this.defaultChallenges.add(new AlwaysFlyingChallenge(plugin, challengeConfig));
+		this.defaultChallenges.add(new AlwaysGlidingChallenge(plugin, challengeConfig));
+		this.defaultChallenges.add(new ChunkEffectChallenge(plugin, challengeConfig));
 
 	}
 

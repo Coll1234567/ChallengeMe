@@ -1,6 +1,9 @@
 package me.jishuna.challengeme.api.inventory;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -152,8 +155,10 @@ public class CustomInventoryManager implements Listener {
 			ChallengePlayer challengePlayer = playerOptional.get();
 			Challenge challenge = challengeOptional.get();
 
-			if (challengePlayer.isOnCooldown(challenge)) {
-				player.sendMessage(this.plugin.getMessage("on-cooldown").replace("%challenge%", challenge.getName()));
+			long cooldown = challengePlayer.getCooldown(challenge);
+			if (cooldown > 0) {
+				player.sendMessage(this.plugin.getMessage("on-cooldown").replace("%challenge%", challenge.getName())
+						.replace("%time%", getTimeLeft(cooldown)));
 				return;
 			}
 
@@ -206,5 +211,11 @@ public class CustomInventoryManager implements Listener {
 
 		meta.setLore(lore);
 		item.setItemMeta(meta);
+	}
+
+	private String getTimeLeft(long time) {
+		DateFormat dateFormat = new SimpleDateFormat("mm:ss");
+
+		return dateFormat.format(new Date(time - System.currentTimeMillis()));
 	}
 }

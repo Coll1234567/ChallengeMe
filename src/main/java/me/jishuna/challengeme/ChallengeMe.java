@@ -50,11 +50,13 @@ public class ChallengeMe extends JavaPlugin {
 		this.challengeRunnable.runTaskTimer(this, delay, delay);
 
 		getCommand("challenges").setExecutor(new ChallengeCommand(this));
+
+		registerPacketListeners();
 	}
 
 	@Override
 	public void onDisable() {
-		this.playerManager.saveAllPlayers();
+		this.playerManager.saveAllPlayers(true);
 
 		this.challengeRunnable.cancel();
 	}
@@ -81,6 +83,9 @@ public class ChallengeMe extends JavaPlugin {
 
 	public YamlConfiguration getConfiguration() {
 		return config;
+	}
+
+	private void registerPacketListeners() {
 	}
 
 	private void loadConfiguration() {

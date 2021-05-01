@@ -47,7 +47,9 @@ public class ChallengePlayer {
 
 		if (add) {
 			if (challenge instanceof ToggleChallenge) {
-				((ToggleChallenge) challenge).onEnable(Bukkit.getPlayer(this.id));
+				Player player = Bukkit.getPlayer(this.id);
+				if (player != null)
+					((ToggleChallenge) challenge).onEnable(player);
 			}
 		}
 	}
@@ -57,7 +59,9 @@ public class ChallengePlayer {
 
 		if (remove) {
 			if (challenge instanceof ToggleChallenge) {
-				((ToggleChallenge) challenge).onDisable(Bukkit.getPlayer(this.id));
+				Player player = Bukkit.getPlayer(this.id);
+				if (player != null)
+					((ToggleChallenge) challenge).onDisable(player);
 			}
 		}
 		return remove;
@@ -67,13 +71,40 @@ public class ChallengePlayer {
 		return this.activeChallenges.contains(challenge);
 	}
 
-	public boolean isOnCooldown(Challenge challenge) {
+	public long getCooldown(Challenge challenge) {
 		Long time = this.cooldowns.get(challenge.getKey());
-		return time != null && time > System.currentTimeMillis();
+		return time == null ? 0 : time;
 	}
 
 	public void setCooldown(Challenge challenge, int time) {
 		this.cooldowns.put(challenge.getKey(), System.currentTimeMillis() + time * 1000);
+	}
+
+	public void removeDisabledChallenges() {
+		Player player = Bukkit.getPlayer(this.id);
+		HashSet<Challenge> toRemove = new HashSet<>();
+
+		if (player != null) {
+			this.activeChallenges.forEach(challenge -> {
+				if (!challenge.isEnabled()) {
+					toRemove.add(challenge);
+				}
+			});
+
+			toRemove.forEach(challenge -> removeChallenge(challenge));
+		}
+	}
+
+	public void disableActiveChallenges() {
+		Player player = Bukkit.getPlayer(this.id);
+
+		if (player != null) {
+			this.activeChallenges.forEach(challenge -> {
+				if (challenge instanceof ToggleChallenge) {
+					((ToggleChallenge) challenge).onDisable(player);
+				}
+			});
+		}
 	}
 
 	public void savePlayer(File file) {
