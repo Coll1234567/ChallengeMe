@@ -74,26 +74,9 @@ public class CustomInventoryManager implements Listener {
 	public CustomInventory getChallengeGUI(ChallengePlayer player, int start) {
 		CustomInventory inventory = new CustomInventory(null, 54, "Challenges");
 		inventory.addClickConsumer(this::handleClick);
+
 		List<Challenge> challengeCache = this.plugin.getChallengeManager().getChallengeCache();
-
-		for (int i = 0; i < Math.min(45, challengeCache.size() - start); i++) {
-			Challenge challenge = challengeCache.get(i);
-
-			ItemBuilder itemBuilder = ItemBuilder.modifyItem(challenge.getIcon().clone()).withName(challenge.getName())
-					.withLore(challenge.getDescription())
-					.withFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_POTION_EFFECTS)
-					.withPersistantData(PluginKeys.CHALLENGE_KEY.getKey(), PersistentDataType.STRING,
-							challenge.getKey());
-
-			if (player.hasChallenge(challenge)) {
-				itemBuilder.withEnchantment(Enchantment.DURABILITY, 1);
-				itemBuilder.addLore("", this.plugin.getMessage("enabled"));
-			} else {
-				itemBuilder.addLore("", this.plugin.getMessage("disabled"));
-			}
-
-			inventory.setItem(i, itemBuilder.build());
-		}
+		addItems(player, inventory, start);
 
 		ItemStack filler = new ItemBuilder(Material.BLACK_STAINED_GLASS_PANE).withName(" ").build();
 
@@ -155,7 +138,7 @@ public class CustomInventoryManager implements Listener {
 			ChallengePlayer challengePlayer = playerOptional.get();
 			Challenge challenge = challengeOptional.get();
 
-			long cooldown = challengePlayer.getCooldown(challenge);
+			long cooldown = this.plugin.getCooldownManager().getCooldown(player, challenge);
 			if (cooldown > 0) {
 				player.sendMessage(this.plugin.getMessage("on-cooldown").replace("%challenge%", challenge.getName())
 						.replace("%time%", getTimeLeft(cooldown)));
@@ -167,7 +150,36 @@ public class CustomInventoryManager implements Listener {
 			} else {
 				enableChallenge(player, challengePlayer, challenge, item);
 			}
-			challengePlayer.setCooldown(challenge, this.plugin.getConfig().getInt("cooldown", 300));
+			this.plugin.getCooldownManager().setCooldown(player, challenge,
+					this.plugin.getConfig().getInt("cooldown", 300));
+		}
+	}
+
+	private void addItems(ChallengePlayer player, CustomInventory inventory, int start) {
+		List<Challenge> challengeCache = this.plugin.getChallengeManager().getChallengeCache();
+		for (int i = 0; i < Math.min(45, challengeCache.size() - start); i++) {
+			Challenge challenge = challengeCache.get(i);
+
+			ItemBuilder itemBuilder = ItemBuilder.modifyItem(challenge.getIcon().clone()).withName(challenge.getName())
+					.withLore(challenge.getDescription())
+					.withFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_POTION_EFFECTS);
+
+			if (challenge.isForced()) {
+				itemBuilder.addLore("", this.plugin.getMessage("forced"));
+				itemBuilder.withEnchantment(Enchantment.DURABILITY, 1);
+			} else {
+				itemBuilder.withPersistantData(PluginKeys.CHALLENGE_KEY.getKey(), PersistentDataType.STRING,
+						challenge.getKey());
+
+				if (player.hasChallenge(challenge)) {
+					itemBuilder.withEnchantment(Enchantment.DURABILITY, 1);
+					itemBuilder.addLore("", this.plugin.getMessage("enabled"));
+				} else {
+					itemBuilder.addLore("", this.plugin.getMessage("disabled"));
+				}
+			}
+
+			inventory.setItem(i, itemBuilder.build());
 		}
 	}
 
@@ -180,7 +192,7 @@ public class CustomInventoryManager implements Listener {
 
 		ItemMeta meta = item.getItemMeta();
 		meta.addEnchant(Enchantment.DURABILITY, 1, true);
-		
+
 		List<String> lore = meta.hasLore() ? meta.getLore() : new ArrayList<>();
 		int pos = lore.size() - 1;
 
@@ -201,7 +213,7 @@ public class CustomInventoryManager implements Listener {
 
 		ItemMeta meta = item.getItemMeta();
 		meta.removeEnchant(Enchantment.DURABILITY);
-		
+
 		List<String> lore = meta.hasLore() ? meta.getLore() : new ArrayList<>();
 		int pos = lore.size() - 1;
 

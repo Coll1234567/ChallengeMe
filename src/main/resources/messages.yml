@@ -4,5 +4,7 @@ active-challenges: '&aYou currently have the following challenges active: %chall
 
 enabled: '&a&lEnabled'
 disabled: '&c&lDisabled'
+forced: '&a&lForce Enabled'
 challenge-enabled: '%challenge% &7challenge &aenabled.'
 challenge-disabled: '%challenge% &7challenge &cdisabled.'
+challenge-force-enabled: '%challenge% &7challenge has been &a&lforce enabled &7by server.'

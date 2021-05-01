@@ -8,6 +8,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import me.jishuna.challengeme.api.challenge.ChallengeManager;
+import me.jishuna.challengeme.api.cooldowns.CooldownManager;
 import me.jishuna.challengeme.api.inventory.CustomInventoryManager;
 import me.jishuna.challengeme.api.player.PlayerManager;
 import me.jishuna.challengeme.commands.ChallengeCommand;
@@ -21,6 +22,7 @@ public class ChallengeMe extends JavaPlugin {
 	private ChallengeManager challengeManager;
 	private PlayerManager playerManager;
 	private CustomInventoryManager inventoryManager;
+	private CooldownManager cooldownManager;
 
 	private YamlConfiguration challengeConfig;
 	private YamlConfiguration config;
@@ -32,6 +34,8 @@ public class ChallengeMe extends JavaPlugin {
 	public void onEnable() {
 		loadConfiguration();
 		PluginKeys.initialize(this);
+
+		this.cooldownManager = new CooldownManager();
 
 		this.inventoryManager = new CustomInventoryManager(this);
 
@@ -71,6 +75,10 @@ public class ChallengeMe extends JavaPlugin {
 
 	public ChallengeManager getChallengeManager() {
 		return challengeManager;
+	}
+
+	public CooldownManager getCooldownManager() {
+		return cooldownManager;
 	}
 
 	public YamlConfiguration getChallengeConfig() {

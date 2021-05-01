@@ -1,6 +1,7 @@
 package me.jishuna.challengeme.api.challenge;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -71,5 +72,9 @@ public class ChallengeManager {
 
 	public List<Challenge> getChallengeCache() {
 		return challengeCache;
+	}
+
+	public Collection<Challenge> getAllChallenges() {
+		return this.challenges.values();
 	}
 }

@@ -22,7 +22,6 @@ import com.google.gson.reflect.TypeToken;
 
 import me.jishuna.challengeme.ChallengeMe;
 import me.jishuna.challengeme.api.challenge.Challenge;
-import me.jishuna.challengeme.api.challenge.ToggleChallenge;
 import me.jishuna.challengeme.api.event.EventConsumer;
 import net.md_5.bungee.api.ChatColor;
 
@@ -80,6 +79,7 @@ public class PlayerManager {
 
 		if (disable) {
 			player.disableActiveChallenges();
+			this.players.remove(id);
 		}
 	}
 
@@ -102,24 +102,17 @@ public class PlayerManager {
 
 			String message = ChatColor.translateAlternateColorCodes('&', this.plugin.getMessage("active-challenges"));
 			String color = org.bukkit.ChatColor.getLastColors(message);
-			player.sendMessage(message.replace("%challenges%",
-					challenges.substring(0, challenges.length() - 2) + color + "."));
+			player.sendMessage(
+					message.replace("%challenges%", challenges.substring(0, challenges.length() - 2) + color + "."));
 
 		}
 	}
 
 	private void loadPlayerData(Player player) {
 		UUID uuid = player.getUniqueId();
-		ChallengePlayer currentPlayer = this.players.get(uuid);
-
-		if (currentPlayer != null) {
-			currentPlayer.removeDisabledChallenges();
-			showLoginMessage(player);
-			return;
-		}
 
 		Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () -> {
-			ChallengePlayer challengePlayer = new ChallengePlayer(uuid);
+			ChallengePlayer challengePlayer = new ChallengePlayer(player, this.plugin);
 
 			File jsonFile = new File(this.plugin.getDataFolder() + File.separator + "playerdata", uuid + ".json");
 
@@ -128,21 +121,15 @@ public class PlayerManager {
 				try (FileReader reader = new FileReader(jsonFile)) {
 					List<String> challenge_keys = gson.fromJson(reader, this.listType);
 
-					Bukkit.getScheduler().runTask(this.plugin, () -> {
-						for (String key : challenge_keys) {
-							Optional<Challenge> challengeOptional = this.plugin.getChallengeManager().getChallenge(key);
-							if (challengeOptional.isPresent()) {
-								Challenge challenge = challengeOptional.get();
+					for (String key : challenge_keys) {
+						Optional<Challenge> challengeOptional = this.plugin.getChallengeManager().getChallenge(key);
+						if (challengeOptional.isPresent()) {
+							Challenge challenge = challengeOptional.get();
 
-								if (!challenge.isEnabled() && challenge instanceof ToggleChallenge) {
-									((ToggleChallenge) challenge).onDisable(player);
-								} else {
-									challengePlayer.addChallenge(challenge);
-								}
-							}
+							if (challenge.isEnabled())
+								challengePlayer.addChallenge(challenge);
 						}
-						showLoginMessage(player);
-					});
+					}
 
 				} catch (JsonSyntaxException | JsonIOException | IOException e) {
 					this.plugin.getLogger()
@@ -152,6 +139,9 @@ public class PlayerManager {
 			}
 
 			this.players.put(uuid, challengePlayer);
+
+			challengePlayer.updateEnabledChallenges();
+			showLoginMessage(player);
 		});
 	}
 
@@ -162,7 +152,7 @@ public class PlayerManager {
 			challengePlayer.disableActiveChallenges();
 
 			Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () -> {
-				savePlayer(uuid, challengePlayer, false);
+				savePlayer(uuid, challengePlayer, true);
 			});
 		}
 	}

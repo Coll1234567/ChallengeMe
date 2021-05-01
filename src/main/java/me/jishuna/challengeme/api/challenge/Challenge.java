@@ -31,6 +31,7 @@ public abstract class Challenge {
 	private final List<String> description;
 	private final ItemStack icon;
 	private final boolean enabled;
+	private final boolean forced;
 
 	private final Multimap<Class<? extends Event>, EventWrapper<? extends Event>> handlerMap = ArrayListMultimap
 			.create();
@@ -44,6 +45,7 @@ public abstract class Challenge {
 		this.key = key;
 
 		this.enabled = challengeSection.getBoolean("enabled", true);
+		this.forced = challengeSection.getBoolean("forced", false);
 
 		this.name = ChatColor.translateAlternateColorCodes('&', challengeSection.getString("name", ""));
 		this.message = ChatColor.translateAlternateColorCodes('&', challengeSection.getString("message", ""));
@@ -86,6 +88,10 @@ public abstract class Challenge {
 
 	public boolean isEnabled() {
 		return enabled;
+	}
+
+	public boolean isForced() {
+		return forced;
 	}
 
 	public <T extends Event> void addEventHandler(Class<T> type, BiConsumer<T, Player> consumer) {
