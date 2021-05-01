@@ -11,12 +11,14 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 
 import me.jishuna.challengeme.api.challenge.Challenge;
+import me.jishuna.challengeme.api.challenge.ToggleChallenge;
 
 public class ChallengePlayer {
 
@@ -41,11 +43,24 @@ public class ChallengePlayer {
 	}
 
 	public void addChallenge(Challenge challenge) {
-		this.activeChallenges.add(challenge);
+		boolean add = this.activeChallenges.add(challenge);
+
+		if (add) {
+			if (challenge instanceof ToggleChallenge) {
+				((ToggleChallenge) challenge).onEnable(Bukkit.getPlayer(this.id));
+			}
+		}
 	}
 
 	public boolean removeChallenge(Challenge challenge) {
-		return this.activeChallenges.remove(challenge);
+		boolean remove = this.activeChallenges.remove(challenge);
+
+		if (remove) {
+			if (challenge instanceof ToggleChallenge) {
+				((ToggleChallenge) challenge).onDisable(Bukkit.getPlayer(this.id));
+			}
+		}
+		return remove;
 	}
 
 	public boolean hasChallenge(Challenge challenge) {

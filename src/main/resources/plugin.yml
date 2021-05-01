@@ -1,5 +1,5 @@
 name: ChallengeMe
-version: 1.0
+version: @version@
 main: me.jishuna.challengeme.ChallengeMe
 authors: [Jishuna]
 api-version: 1.16

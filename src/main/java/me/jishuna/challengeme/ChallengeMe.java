@@ -8,14 +8,10 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import me.jishuna.challengeme.api.challenge.ChallengeManager;
+import me.jishuna.challengeme.api.inventory.CustomInventoryManager;
 import me.jishuna.challengeme.api.player.PlayerManager;
-import me.jishuna.challengeme.challenges.AnimalLoverChallenge;
-import me.jishuna.challengeme.challenges.NoDamageChallenge;
-import me.jishuna.challengeme.challenges.VampireChallenge;
-import me.jishuna.challengeme.challenges.VegitarianChallenge;
 import me.jishuna.challengeme.commands.ChallengeCommand;
 import me.jishuna.challengeme.listeners.ChallengeListener;
-import me.jishuna.challengeme.listeners.CustomInventoryManager;
 import me.jishuna.challengeme.runnables.TickingChallengeRunnable;
 import me.jishuna.commonlib.FileUtils;
 import net.md_5.bungee.api.ChatColor;
@@ -29,7 +25,7 @@ public class ChallengeMe extends JavaPlugin {
 	private YamlConfiguration challengeConfig;
 	private YamlConfiguration config;
 	private YamlConfiguration messageConfig;
-	
+
 	private TickingChallengeRunnable challengeRunnable;
 
 	@Override
@@ -38,29 +34,28 @@ public class ChallengeMe extends JavaPlugin {
 		PluginKeys.initialize(this);
 
 		this.inventoryManager = new CustomInventoryManager(this);
-		Bukkit.getPluginManager().registerEvents(this.inventoryManager, this);
 
-		this.challengeManager = new ChallengeManager();
+		this.challengeManager = new ChallengeManager(this);
+		this.challengeManager.reloadChallenges();
 
 		this.playerManager = new PlayerManager(this);
 		this.playerManager.registerListeners();
 
+		Bukkit.getPluginManager().registerEvents(this.inventoryManager, this);
 		Bukkit.getPluginManager().registerEvents(new ChallengeListener(this.playerManager), this);
-		
+
 		this.challengeRunnable = new TickingChallengeRunnable(this);
 		int delay = this.config.getInt("ticks-per-check", 10);
-		
+
 		this.challengeRunnable.runTaskTimer(this, delay, delay);
 
 		getCommand("challenges").setExecutor(new ChallengeCommand(this));
-
-		registerDefaultChallenges();
 	}
 
 	@Override
 	public void onDisable() {
 		this.playerManager.saveAllPlayers();
-		
+
 		this.challengeRunnable.cancel();
 	}
 
@@ -76,18 +71,16 @@ public class ChallengeMe extends JavaPlugin {
 		return challengeManager;
 	}
 
-	public YamlConfiguration getConfiguration() {
-		return config;
+	public YamlConfiguration getChallengeConfig() {
+		return challengeConfig;
 	}
 
-	private void registerDefaultChallenges() {
-		ChallengeManager manager = this.challengeManager;
-		YamlConfiguration challengeConfig = this.challengeConfig;
+	public void setChallengeConfig(YamlConfiguration challengeConfig) {
+		this.challengeConfig = challengeConfig;
+	}
 
-		manager.registerChallenge(new NoDamageChallenge(this, challengeConfig), challengeConfig);
-		manager.registerChallenge(new VegitarianChallenge(this, challengeConfig), challengeConfig);
-		manager.registerChallenge(new AnimalLoverChallenge(this, challengeConfig), challengeConfig);
-		manager.registerChallenge(new VampireChallenge(this, challengeConfig), challengeConfig);
+	public YamlConfiguration getConfiguration() {
+		return config;
 	}
 
 	private void loadConfiguration() {

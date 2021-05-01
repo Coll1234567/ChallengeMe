@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.function.BiConsumer;
 
 import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -29,25 +30,28 @@ public abstract class Challenge {
 	private final String message;
 	private final List<String> description;
 	private final ItemStack icon;
+	private final boolean enabled;
 
 	private final Multimap<Class<? extends Event>, EventWrapper<? extends Event>> handlerMap = ArrayListMultimap
 			.create();
 
 	public Challenge(Plugin owner, String key, YamlConfiguration challengeConfig) {
+		this(owner, key, challengeConfig.getConfigurationSection("challenges." + key));
+	}
+
+	public Challenge(Plugin owner, String key, ConfigurationSection challengeSection) {
 		this.owningPlugin = owner;
 		this.key = key;
-		
-		this.name = ChatColor.translateAlternateColorCodes('&',
-				challengeConfig.getString("challenges." + key + ".name", ""));
-		this.message = ChatColor.translateAlternateColorCodes('&',
-				challengeConfig.getString("challenges." + key + ".message", ""));
 
-		this.icon = ItemParser.parseItem(challengeConfig.getString("challenges." + key + ".material", ""),
-				Material.DIAMOND);
-		
-		String description = ChatColor.translateAlternateColorCodes('&',
-				challengeConfig.getString("challenges." + key + ".description", ""));
-		
+		this.enabled = challengeSection.getBoolean("enabled", true);
+
+		this.name = ChatColor.translateAlternateColorCodes('&', challengeSection.getString("name", ""));
+		this.message = ChatColor.translateAlternateColorCodes('&', challengeSection.getString("message", ""));
+
+		this.icon = ItemParser.parseItem(challengeSection.getString("material", ""), Material.DIAMOND);
+
+		String description = ChatColor.translateAlternateColorCodes('&', challengeSection.getString("description", ""));
+
 		List<String> desc = new ArrayList<>();
 
 		for (String line : description.split("\\\\n")) {
@@ -78,6 +82,10 @@ public abstract class Challenge {
 
 	public ItemStack getIcon() {
 		return icon;
+	}
+
+	public boolean isEnabled() {
+		return enabled;
 	}
 
 	public <T extends Event> void addEventHandler(Class<T> type, BiConsumer<T, Player> consumer) {

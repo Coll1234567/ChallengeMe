@@ -10,6 +10,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityToggleGlideEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 
@@ -30,6 +31,7 @@ public class ChallengeListener implements Listener {
 	public void onDamageEvent(EntityDamageEvent event) {
 		if (event.getEntityType() != EntityType.PLAYER)
 			return;
+
 		Player player = (Player) event.getEntity();
 		Optional<ChallengePlayer> playerOptional = playerManager.getPlayer(player.getUniqueId());
 
@@ -91,6 +93,22 @@ public class ChallengeListener implements Listener {
 			for (Challenge challenge : playerOptional.get().getActiveChallenges()) {
 				challenge.getEventHandlers(PlayerItemConsumeEvent.class)
 						.forEach(consumer -> consumer.consume(event, event.getPlayer()));
+			}
+		}
+	}
+
+	@EventHandler
+	public void onToggleGlide(EntityToggleGlideEvent event) {
+		if (event.getEntityType() != EntityType.PLAYER)
+			return;
+
+		Player player = (Player) event.getEntity();
+		Optional<ChallengePlayer> playerOptional = playerManager.getPlayer(player.getUniqueId());
+
+		if (playerOptional.isPresent()) {
+			for (Challenge challenge : playerOptional.get().getActiveChallenges()) {
+				challenge.getEventHandlers(EntityToggleGlideEvent.class)
+						.forEach(consumer -> consumer.consume(event, player));
 			}
 		}
 	}

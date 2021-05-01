@@ -1,4 +1,4 @@
-package me.jishuna.challengeme.listeners;
+package me.jishuna.challengeme.api.inventory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
