@@ -28,7 +28,7 @@ public abstract class Challenge {
 	private final String key;
 	private final String name;
 	private final String message;
-	private final List<String> description;
+	private List<String> description;
 	private final ItemStack icon;
 	private final boolean enabled;
 	private final boolean forced;
@@ -53,6 +53,10 @@ public abstract class Challenge {
 		this.icon = ItemParser.parseItem(challengeSection.getString("material", ""), Material.DIAMOND);
 
 		String description = ChatColor.translateAlternateColorCodes('&', challengeSection.getString("description", ""));
+
+		for (String configKey : challengeSection.getKeys(false)) {
+			description = description.replace("%" + configKey + "%", challengeSection.getString(configKey));
+		}
 
 		List<String> desc = new ArrayList<>();
 

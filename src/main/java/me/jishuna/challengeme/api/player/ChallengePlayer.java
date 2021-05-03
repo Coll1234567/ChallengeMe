@@ -24,6 +24,7 @@ public class ChallengePlayer {
 	private final UUID id;
 	private final Set<Challenge> activeChallenges = new HashSet<>();
 	private final ChallengeMe plugin;
+	private boolean isLoaded = false;
 
 	public ChallengePlayer(Player player, ChallengeMe plugin) {
 		this(player.getUniqueId(), plugin);
@@ -36,6 +37,14 @@ public class ChallengePlayer {
 
 	public UUID getId() {
 		return id;
+	}
+
+	public boolean isLoaded() {
+		return isLoaded;
+	}
+
+	public void setLoaded(boolean isLoaded) {
+		this.isLoaded = isLoaded;
 	}
 
 	public Set<Challenge> getActiveChallenges() {

@@ -18,8 +18,10 @@ import me.jishuna.challengeme.challenges.AlwaysGlidingChallenge;
 import me.jishuna.challengeme.challenges.AnimalLoverChallenge;
 import me.jishuna.challengeme.challenges.ChunkEffectChallenge;
 import me.jishuna.challengeme.challenges.DoublePainChallenge;
+import me.jishuna.challengeme.challenges.EffectMasterChallenge;
 import me.jishuna.challengeme.challenges.NoDamageChallenge;
 import me.jishuna.challengeme.challenges.NoJumpChallenge;
+import me.jishuna.challengeme.challenges.NoStoppingChallenge;
 import me.jishuna.challengeme.challenges.VampireChallenge;
 import me.jishuna.challengeme.challenges.VegitarianChallenge;
 
@@ -63,7 +65,8 @@ public class ChallengeManager {
 		this.defaultChallenges.add(new DoublePainChallenge(plugin, challengeConfig));
 		this.defaultChallenges.add(new AlwaysGlidingChallenge(plugin, challengeConfig));
 		this.defaultChallenges.add(new ChunkEffectChallenge(plugin, challengeConfig));
-
+		this.defaultChallenges.add(new NoStoppingChallenge(plugin, challengeConfig));
+		this.defaultChallenges.add(new EffectMasterChallenge(plugin, challengeConfig));
 	}
 
 	public Optional<Challenge> getChallenge(String key) {

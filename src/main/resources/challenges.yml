@@ -9,7 +9,7 @@ challenges:
   double-pain:
     enabled: true
     forced: false
-    material: 'POTION,255,0,0'
+    material: 'IRON_SWORD'
     name: '&c&lDouble Pain'
     description: '&3Any damage you take is doubled.'
     message: ''
@@ -27,6 +27,13 @@ challenges:
     name: '&d&lAnimal Lover'
     description: '&3You are unable to hurt animals.'
     message: '&4&l[Animal Lover]: &cYou are unable to hurt animals.'
+  floor-is-lava:
+    enabled: true
+    forced: false
+    material: 'LAVA_BUCKET'
+    name: '&6&lThe Floor is Lava'
+    description: '&3Touching naturally generated ground is fatal.'
+    message: '&4&l[The Floor is Lava]: &cYou touched the ground.'
   vampire:
     enabled: true
     forced: false
@@ -50,8 +57,27 @@ challenges:
     forced: false
     material: 'BREWING_STAND'
     name: '&2&lChunk Effects'
+    description: '&3Each chunk will give you a random potion effect.'
     max-level: 3
     blacklisted-effects:
       - 'HARM'
       - 'HEAL'
       - 'CONFUSION'
+  effect-master:
+    enabled: true
+    forced: false
+    material: 'POTION,217,192,67'
+    name: '&6&lEffect Master'
+    description: '&3You will recieve a random potion effect every 60 seconds.'
+    max-level: 3
+    blacklisted-effects:
+      - 'HARM'
+      - 'HEAL'
+      - 'CONFUSION'
+  no-stopping:
+    enabled: true
+    forced: false
+    material: 'ICE'
+    name: '&c&lNo Stopping'
+    description: '&3You will start to burn if you stand still for longer than %seconds% seconds.'
+    seconds: 3

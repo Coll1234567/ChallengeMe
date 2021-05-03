@@ -24,7 +24,11 @@ public class TickingChallengeRunnable extends BukkitRunnable {
 			Optional<ChallengePlayer> challengePlayerOptional = plugin.getPlayerManager().getPlayer(player);
 
 			if (challengePlayerOptional.isPresent()) {
-				challengePlayerOptional.get().getActiveChallenges().forEach(challenge -> {
+				ChallengePlayer challengePlayer = challengePlayerOptional.get();
+				if (!challengePlayer.isLoaded())
+					continue;
+				
+				challengePlayer.getActiveChallenges().forEach(challenge -> {
 					if (challenge instanceof TickingChallenge) {
 						((TickingChallenge) challenge).onTick(player);
 					}

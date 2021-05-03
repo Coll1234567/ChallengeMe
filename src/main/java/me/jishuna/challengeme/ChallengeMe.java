@@ -18,6 +18,8 @@ import me.jishuna.commonlib.FileUtils;
 import net.md_5.bungee.api.ChatColor;
 
 public class ChallengeMe extends JavaPlugin {
+	
+	private final int DELAY = 10;
 
 	private ChallengeManager challengeManager;
 	private PlayerManager playerManager;
@@ -49,9 +51,8 @@ public class ChallengeMe extends JavaPlugin {
 		Bukkit.getPluginManager().registerEvents(new ChallengeListener(this.playerManager), this);
 
 		this.challengeRunnable = new TickingChallengeRunnable(this);
-		int delay = this.config.getInt("ticks-per-check", 10);
 
-		this.challengeRunnable.runTaskTimer(this, delay, delay);
+		this.challengeRunnable.runTaskTimer(this, DELAY, DELAY);
 
 		getCommand("challenges").setExecutor(new ChallengeCommand(this));
 

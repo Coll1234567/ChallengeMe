@@ -19,7 +19,7 @@ public class CooldownManager {
 	public long getCooldown(UUID uuid, Challenge challenge) {
 		Map<String, Long> cooldownMap = this.cooldowns.computeIfAbsent(uuid, key -> new HashMap<>());
 		Long time = cooldownMap.get(challenge.getKey());
-		return time == null ? 0 : time;
+		return time == null ? 0 : time - System.currentTimeMillis();
 	}
 
 	public void setCooldown(Player player, Challenge challenge, int time) {

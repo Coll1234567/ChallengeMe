@@ -139,6 +139,7 @@ public class PlayerManager {
 			}
 
 			this.players.put(uuid, challengePlayer);
+			challengePlayer.setLoaded(true);
 
 			challengePlayer.updateEnabledChallenges();
 			showLoginMessage(player);

@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.HumanEntity;
@@ -139,6 +140,7 @@ public class CustomInventoryManager implements Listener {
 			Challenge challenge = challengeOptional.get();
 
 			long cooldown = this.plugin.getCooldownManager().getCooldown(player, challenge);
+			
 			if (cooldown > 0) {
 				player.sendMessage(this.plugin.getMessage("on-cooldown").replace("%challenge%", challenge.getName())
 						.replace("%time%", getTimeLeft(cooldown)));
@@ -228,6 +230,6 @@ public class CustomInventoryManager implements Listener {
 	private String getTimeLeft(long time) {
 		DateFormat dateFormat = new SimpleDateFormat("mm:ss");
 
-		return dateFormat.format(new Date(time - System.currentTimeMillis()));
+		return dateFormat.format(new Date(time));
 	}
 }
