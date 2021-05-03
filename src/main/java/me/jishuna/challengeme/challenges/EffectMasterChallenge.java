@@ -21,7 +21,7 @@ import me.jishuna.challengeme.api.challenge.TickingChallenge;
 public class EffectMasterChallenge extends Challenge implements TickingChallenge {
 
 	private final List<PotionEffectType> effects;
-	private final Map<UUID, Integer> effectCache = new HashMap<>();
+	private final Map<UUID, Long> effectCache = new HashMap<>();
 	private final int maxLevel;
 	private final Random random = new Random();
 
@@ -49,15 +49,13 @@ public class EffectMasterChallenge extends Challenge implements TickingChallenge
 	@Override
 	public void onTick(Player player) {
 		UUID id = player.getUniqueId();
-		Integer time = this.effectCache.get(id);
+		Long time = this.effectCache.get(id);
 
-		if (time == null || time >= 120) {
+		if (time == null || time <= System.currentTimeMillis()) {
 			player.addPotionEffect(new PotionEffect(this.effects.get(random.nextInt(this.effects.size())), 60 * 20,
 					random.nextInt(this.maxLevel), true, false));
 
-			this.effectCache.put(id, 0);
-		} else {
-			this.effectCache.put(id, time + 1);
+			this.effectCache.put(id, System.currentTimeMillis() + 60 * 1000);
 		}
 	}
 }

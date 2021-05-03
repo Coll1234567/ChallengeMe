@@ -16,7 +16,7 @@ import me.jishuna.challengeme.api.challenge.TickingChallenge;
 public class NoStoppingChallenge extends Challenge implements TickingChallenge {
 
 	private final Map<UUID, NoStoppingChallengeData> challengeData = new HashMap<>();
-	private final int checksNeeded;
+	private final int msNeeded;
 
 	public NoStoppingChallenge(Plugin owner, YamlConfiguration challengeConfig) {
 		this(owner, challengeConfig.getConfigurationSection("challenges.no-stopping"));
@@ -25,7 +25,7 @@ public class NoStoppingChallenge extends Challenge implements TickingChallenge {
 	private NoStoppingChallenge(Plugin owner, ConfigurationSection challengeSection) {
 		super(owner, "challenges.no-stopping", challengeSection);
 
-		this.checksNeeded = challengeSection.getInt("seconds", 3) * 2;
+		this.msNeeded = challengeSection.getInt("seconds", 3) * 1000;
 	}
 
 	@Override
@@ -34,27 +34,17 @@ public class NoStoppingChallenge extends Challenge implements TickingChallenge {
 		NoStoppingChallengeData challengeData = this.challengeData.get(id);
 		Location location = player.getLocation();
 
-		int checks;
 		if (challengeData == null) {
-			checks = 0;
 			challengeData = new NoStoppingChallengeData(player.getLocation());
 			this.challengeData.put(id, challengeData);
-		} else {
-			checks = challengeData.getChecks();
-		}
-		
-		if (challengeData.compareLocations(location)) {
-			if (checks < this.checksNeeded) {
-			checks++;
-			challengeData.setChecks(checks);
-			}
-		} else {
-			challengeData.setLastLocation(location);
-			challengeData.setChecks(0);
-			return;
 		}
 
-		if (checks >= checksNeeded)
+		if (!challengeData.compareLocations(location)) {
+			challengeData.setLastLocation(location);
+			challengeData.setTimestamp(System.currentTimeMillis() + msNeeded);
+		}
+
+		if (challengeData.getTimestamp() <= System.currentTimeMillis())
 			player.setFireTicks(20);
 	}
 }

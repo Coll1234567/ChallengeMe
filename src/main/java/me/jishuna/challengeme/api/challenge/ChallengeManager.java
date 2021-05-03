@@ -19,6 +19,7 @@ import me.jishuna.challengeme.challenges.AnimalLoverChallenge;
 import me.jishuna.challengeme.challenges.ChunkEffectChallenge;
 import me.jishuna.challengeme.challenges.DoublePainChallenge;
 import me.jishuna.challengeme.challenges.EffectMasterChallenge;
+import me.jishuna.challengeme.challenges.InvisibleMobsChallenge;
 import me.jishuna.challengeme.challenges.NoDamageChallenge;
 import me.jishuna.challengeme.challenges.NoJumpChallenge;
 import me.jishuna.challengeme.challenges.NoStoppingChallenge;
@@ -67,6 +68,7 @@ public class ChallengeManager {
 		this.defaultChallenges.add(new ChunkEffectChallenge(plugin, challengeConfig));
 		this.defaultChallenges.add(new NoStoppingChallenge(plugin, challengeConfig));
 		this.defaultChallenges.add(new EffectMasterChallenge(plugin, challengeConfig));
+		this.defaultChallenges.add(new InvisibleMobsChallenge(plugin, challengeConfig));
 	}
 
 	public Optional<Challenge> getChallenge(String key) {

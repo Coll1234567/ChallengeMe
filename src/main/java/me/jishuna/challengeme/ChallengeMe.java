@@ -7,12 +7,17 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.ProtocolManager;
+import com.comphenix.protocol.events.ListenerPriority;
+
 import me.jishuna.challengeme.api.challenge.ChallengeManager;
 import me.jishuna.challengeme.api.cooldowns.CooldownManager;
 import me.jishuna.challengeme.api.inventory.CustomInventoryManager;
 import me.jishuna.challengeme.api.player.PlayerManager;
 import me.jishuna.challengeme.commands.ChallengeCommand;
 import me.jishuna.challengeme.listeners.ChallengeListener;
+import me.jishuna.challengeme.packets.PacketAdapaterLivingSpawn;
 import me.jishuna.challengeme.runnables.TickingChallengeRunnable;
 import me.jishuna.commonlib.FileUtils;
 import net.md_5.bungee.api.ChatColor;
@@ -95,6 +100,9 @@ public class ChallengeMe extends JavaPlugin {
 	}
 
 	private void registerPacketListeners() {
+		ProtocolManager manager = ProtocolLibrary.getProtocolManager();
+		
+		manager.addPacketListener(new PacketAdapaterLivingSpawn(this, ListenerPriority.NORMAL));
 	}
 
 	private void loadConfiguration() {

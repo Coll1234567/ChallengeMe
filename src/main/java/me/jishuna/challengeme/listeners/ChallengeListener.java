@@ -44,6 +44,19 @@ public class ChallengeListener implements Listener {
 		}
 	}
 
+//	@EventHandler
+//	public void onMove(PlayerMoveEvent event) {
+//
+//		Player player = event.getPlayer();
+//		Optional<ChallengePlayer> playerOptional = playerManager.getPlayer(player.getUniqueId());
+//
+//		if (playerOptional.isPresent()) {
+//			for (Challenge challenge : playerOptional.get().getActiveChallenges()) {
+//				challenge.getEventHandlers(PlayerMoveEvent.class).forEach(consumer -> consumer.consume(event, player));
+//			}
+//		}
+//	}
+
 	@EventHandler
 	public void onAttackEvent(EntityDamageByEntityEvent event) {
 		Optional<ChallengePlayer> playerOptional = Optional.empty();

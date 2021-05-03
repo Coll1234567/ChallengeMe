@@ -13,10 +13,12 @@ import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
+import com.comphenix.protocol.PacketType;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
 import me.jishuna.challengeme.api.event.EventWrapper;
+import me.jishuna.challengeme.api.packets.PacketWrapper;
 import me.jishuna.commonlib.ItemParser;
 import me.jishuna.commonlib.StringUtils;
 import net.md_5.bungee.api.ChatColor;
@@ -35,6 +37,7 @@ public abstract class Challenge {
 
 	private final Multimap<Class<? extends Event>, EventWrapper<? extends Event>> handlerMap = ArrayListMultimap
 			.create();
+	private final Multimap<PacketType, PacketWrapper> packetMap = ArrayListMultimap.create();
 
 	public Challenge(Plugin owner, String key, YamlConfiguration challengeConfig) {
 		this(owner, key, challengeConfig.getConfigurationSection("challenges." + key));
@@ -104,6 +107,14 @@ public abstract class Challenge {
 
 	public <T extends Event> Collection<EventWrapper<? extends Event>> getEventHandlers(Class<T> type) {
 		return this.handlerMap.get(type);
+	}
+
+	public void addPacketHandler(PacketWrapper wrapper) {
+		this.packetMap.put(wrapper.getType(), wrapper);
+	}
+
+	public Collection<PacketWrapper> getPacketHandlers(PacketType type) {
+		return this.packetMap.get(type);
 	}
 
 }

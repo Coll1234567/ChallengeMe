@@ -46,6 +46,12 @@ challenges:
     material: 'POTION,34,255,76'
     name: '&f&lNo Jumping'
     description: '&3You take no fall damage, but you are unable to jump.'
+  invisible-mobs:
+    enabled: true
+    forced: false
+    material: 'POTION,127,131,146'
+    name: '&7&lInvisible Mobs'
+    description: '&3all mobs are invisible.'
   always-gliding:
     enabled: true
     forced: false
