@@ -4,11 +4,12 @@ import org.bukkit.Location;
 import org.bukkit.util.Vector;
 
 public class NoStoppingChallengeData {
-	private long timestamp = 0;
+	private long timestamp;
 	private Vector lastLocation;
 
-	public NoStoppingChallengeData(Location location) {
+	public NoStoppingChallengeData(Location location, long timestamp) {
 		this.lastLocation = location.toVector();
+		this.timestamp = timestamp;
 	}
 
 	public long getTimestamp() {

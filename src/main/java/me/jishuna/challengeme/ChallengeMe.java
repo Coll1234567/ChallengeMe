@@ -24,7 +24,7 @@ import net.md_5.bungee.api.ChatColor;
 
 public class ChallengeMe extends JavaPlugin {
 	
-	private final int DELAY = 10;
+	private final int DELAY = 5;
 
 	private ChallengeManager challengeManager;
 	private PlayerManager playerManager;

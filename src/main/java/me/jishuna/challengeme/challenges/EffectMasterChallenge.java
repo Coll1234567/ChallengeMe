@@ -49,13 +49,13 @@ public class EffectMasterChallenge extends Challenge implements TickingChallenge
 	@Override
 	public void onTick(Player player) {
 		UUID id = player.getUniqueId();
-		Long time = this.effectCache.get(id);
+		Long time = this.effectCache.computeIfAbsent(id, key -> System.currentTimeMillis() + 59 * 1000);
 
-		if (time == null || time <= System.currentTimeMillis()) {
+		if (time <= System.currentTimeMillis()) {
 			player.addPotionEffect(new PotionEffect(this.effects.get(random.nextInt(this.effects.size())), 60 * 20,
 					random.nextInt(this.maxLevel), true, false));
 
-			this.effectCache.put(id, System.currentTimeMillis() + 60 * 1000);
+			this.effectCache.put(id, System.currentTimeMillis() + 59 * 1000);
 		}
 	}
 }

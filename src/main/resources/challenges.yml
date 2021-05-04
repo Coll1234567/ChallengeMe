@@ -46,6 +46,18 @@ challenges:
     material: 'POTION,34,255,76'
     name: '&f&lNo Jumping'
     description: '&3You take no fall damage, but you are unable to jump.'
+  enderman:
+    enabled: true
+    forced: false
+    material: 'PLAYER_HEAD,96c0b36d53fff69a49c7d6f3932f2b0fe948e032226d5e8045ec58408a36e951'
+    name: '&5&lEnderman'
+    description: '&3Touching water hurts you and taking damage will teleport you to a random spot nearby.'
+  aquatic:
+    enabled: true
+    forced: false
+    material: 'PLAYER_HEAD,17152876bc3a96dd2a2299245edb3beef647c8a56ac8853a687c3e7b5d8bb'
+    name: '&9&lAquatic'
+    description: '&3You can breath and see underwater but you lose air and suffocate while on land.'
   invisible-mobs:
     enabled: true
     forced: false

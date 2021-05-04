@@ -8,6 +8,7 @@ import org.bukkit.entity.Projectile;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityAirChangeEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityPotionEffectEvent;
@@ -138,6 +139,22 @@ public class ChallengeListener implements Listener {
 		if (playerOptional.isPresent()) {
 			for (Challenge challenge : playerOptional.get().getActiveChallenges()) {
 				challenge.getEventHandlers(EntityPotionEffectEvent.class)
+						.forEach(consumer -> consumer.consume(event, player));
+			}
+		}
+	}
+
+	@EventHandler
+	public void onPotionEffect(EntityAirChangeEvent event) {
+		if (event.getEntityType() != EntityType.PLAYER)
+			return;
+
+		Player player = (Player) event.getEntity();
+		Optional<ChallengePlayer> playerOptional = playerManager.getPlayer(player.getUniqueId());
+
+		if (playerOptional.isPresent()) {
+			for (Challenge challenge : playerOptional.get().getActiveChallenges()) {
+				challenge.getEventHandlers(EntityAirChangeEvent.class)
 						.forEach(consumer -> consumer.consume(event, player));
 			}
 		}

@@ -35,7 +35,7 @@ public class NoStoppingChallenge extends Challenge implements TickingChallenge {
 		Location location = player.getLocation();
 
 		if (challengeData == null) {
-			challengeData = new NoStoppingChallengeData(player.getLocation());
+			challengeData = new NoStoppingChallengeData(player.getLocation(), System.currentTimeMillis() + msNeeded);
 			this.challengeData.put(id, challengeData);
 		}
 
