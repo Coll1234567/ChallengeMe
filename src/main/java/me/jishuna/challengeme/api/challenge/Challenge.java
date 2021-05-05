@@ -30,6 +30,7 @@ public abstract class Challenge {
 	private final String key;
 	private final String name;
 	private final String message;
+	private String category;
 	private List<String> description;
 	private final ItemStack icon;
 	private final boolean enabled;
@@ -40,12 +41,14 @@ public abstract class Challenge {
 	private final Multimap<PacketType, PacketWrapper> packetMap = ArrayListMultimap.create();
 
 	public Challenge(Plugin owner, String key, YamlConfiguration challengeConfig) {
-		this(owner, key, challengeConfig.getConfigurationSection("challenges." + key));
+		this(owner, key, challengeConfig.getConfigurationSection(key));
 	}
 
 	public Challenge(Plugin owner, String key, ConfigurationSection challengeSection) {
 		this.owningPlugin = owner;
 		this.key = key;
+
+		this.category = challengeSection.getString("category", "");
 
 		this.enabled = challengeSection.getBoolean("enabled", true);
 		this.forced = challengeSection.getBoolean("forced", false);
@@ -87,6 +90,14 @@ public abstract class Challenge {
 
 	public String getMessage() {
 		return message;
+	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
 	}
 
 	public ItemStack getIcon() {

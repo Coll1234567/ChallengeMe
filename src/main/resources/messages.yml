@@ -8,3 +8,6 @@ forced: '&a&lForce Enabled'
 challenge-enabled: '%challenge% &7challenge &aenabled.'
 challenge-disabled: '%challenge% &7challenge &cdisabled.'
 challenge-force-enabled: '%challenge% &7challenge has been &a&lforce enabled &7by server.'
+
+challenge-categories: 'Challenge Categories'
+challenges: '%name% &0Challenges'

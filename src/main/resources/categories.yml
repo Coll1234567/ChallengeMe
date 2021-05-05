@@ -1,0 +1,12 @@
+easy:
+  name: '&a&lEasy'
+  description: '&3Easy challenges.'
+  material: 'LIME_CONCRETE_POWDER'
+medium:
+  name: '&6&lMedium'
+  description: '&3Medium challenges.'
+  material: 'ORANGE_CONCRETE_POWDER'
+hard:
+  name: '&c&lHard'
+  description: '&3Hard challenges.'
+  material: 'RED_CONCRETE_POWDER'

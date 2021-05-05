@@ -29,7 +29,7 @@ public class ChunkEffectChallenge extends Challenge implements TickingChallenge,
 	private final int maxLevel;
 
 	public ChunkEffectChallenge(Plugin owner, YamlConfiguration challengeConfig) {
-		this(owner, challengeConfig.getConfigurationSection("challenges.chunk-effects"));
+		this(owner, challengeConfig.getConfigurationSection("chunk-effects"));
 	}
 
 	private ChunkEffectChallenge(Plugin owner, ConfigurationSection challengeSection) {

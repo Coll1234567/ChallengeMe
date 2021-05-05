@@ -4,7 +4,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.plugin.Plugin;
 
 public enum PluginKeys {
-	TARGET_INDEX("target_index"), CHALLENGE_KEY("challenge_key");
+	TARGET_INDEX("target_index"), CHALLENGE_KEY("challenge_key"), CATEGORY_KEY("categoery_key");
 
 	private final String name;
 	private NamespacedKey key;

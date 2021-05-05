@@ -28,8 +28,7 @@ public class ChallengeCommand implements CommandExecutor {
 		Optional<ChallengePlayer> playerOptional = this.plugin.getPlayerManager().getPlayer(player.getUniqueId());
 
 		if (playerOptional.isPresent()) {
-			this.plugin.getInventoryManager().openGui(player,
-					this.plugin.getInventoryManager().getChallengeGUI(playerOptional.get(), 0));
+			this.plugin.getInventoryManager().openGui(player, this.plugin.getInventoryManager().getCategoryGUI());
 		}
 		return true;
 	}

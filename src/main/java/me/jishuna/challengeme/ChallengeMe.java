@@ -23,7 +23,7 @@ import me.jishuna.commonlib.FileUtils;
 import net.md_5.bungee.api.ChatColor;
 
 public class ChallengeMe extends JavaPlugin {
-	
+
 	private final int DELAY = 5;
 
 	private ChallengeManager challengeManager;
@@ -31,6 +31,7 @@ public class ChallengeMe extends JavaPlugin {
 	private CustomInventoryManager inventoryManager;
 	private CooldownManager cooldownManager;
 
+	private YamlConfiguration cateogryConfig;
 	private YamlConfiguration challengeConfig;
 	private YamlConfiguration config;
 	private YamlConfiguration messageConfig;
@@ -44,10 +45,12 @@ public class ChallengeMe extends JavaPlugin {
 
 		this.cooldownManager = new CooldownManager();
 
-		this.inventoryManager = new CustomInventoryManager(this);
-
 		this.challengeManager = new ChallengeManager(this);
+		this.challengeManager.reloadCategories();
 		this.challengeManager.reloadChallenges();
+		
+		this.inventoryManager = new CustomInventoryManager(this);
+		this.inventoryManager.cacheCategoryGUI();
 
 		this.playerManager = new PlayerManager(this);
 		this.playerManager.registerListeners();
@@ -91,8 +94,8 @@ public class ChallengeMe extends JavaPlugin {
 		return challengeConfig;
 	}
 
-	public void setChallengeConfig(YamlConfiguration challengeConfig) {
-		this.challengeConfig = challengeConfig;
+	public YamlConfiguration getCateogryConfig() {
+		return cateogryConfig;
 	}
 
 	public YamlConfiguration getConfiguration() {
@@ -101,7 +104,7 @@ public class ChallengeMe extends JavaPlugin {
 
 	private void registerPacketListeners() {
 		ProtocolManager manager = ProtocolLibrary.getProtocolManager();
-		
+
 		manager.addPacketListener(new PacketAdapaterLivingSpawn(this, ListenerPriority.NORMAL));
 	}
 
@@ -111,6 +114,9 @@ public class ChallengeMe extends JavaPlugin {
 
 		Optional<File> challengeOptional = FileUtils.copyResource(this, "challenges.yml");
 		challengeOptional.ifPresent(file -> this.challengeConfig = YamlConfiguration.loadConfiguration(file));
+
+		Optional<File> categoryOptional = FileUtils.copyResource(this, "categories.yml");
+		categoryOptional.ifPresent(file -> this.cateogryConfig = YamlConfiguration.loadConfiguration(file));
 
 		Optional<File> configOptional = FileUtils.copyResource(this, "config.yml");
 		configOptional.ifPresent(file -> this.config = YamlConfiguration.loadConfiguration(file));

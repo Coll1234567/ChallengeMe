@@ -26,7 +26,7 @@ public class EffectMasterChallenge extends Challenge implements TickingChallenge
 	private final Random random = new Random();
 
 	public EffectMasterChallenge(Plugin owner, YamlConfiguration challengeConfig) {
-		this(owner, challengeConfig.getConfigurationSection("challenges.effect-master"));
+		this(owner, challengeConfig.getConfigurationSection("effect-master"));
 	}
 
 	private EffectMasterChallenge(Plugin owner, ConfigurationSection challengeSection) {

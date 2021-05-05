@@ -26,15 +26,19 @@ import org.bukkit.persistence.PersistentDataType;
 
 import me.jishuna.challengeme.ChallengeMe;
 import me.jishuna.challengeme.PluginKeys;
+import me.jishuna.challengeme.api.challenge.Category;
 import me.jishuna.challengeme.api.challenge.Challenge;
 import me.jishuna.challengeme.api.player.ChallengePlayer;
 import me.jishuna.commonlib.CustomInventory;
 import me.jishuna.commonlib.ItemBuilder;
+import net.md_5.bungee.api.ChatColor;
 
 public class CustomInventoryManager implements Listener {
 
 	private final HashMap<InventoryView, CustomInventory> inventoryMap = new HashMap<>();
 	private final ChallengeMe plugin;
+
+	private CustomInventory categoryGUI;
 
 	public CustomInventoryManager(ChallengeMe plugin) {
 		super();
@@ -71,51 +75,104 @@ public class CustomInventoryManager implements Listener {
 		}
 	}
 
-	public CustomInventory getChallengeGUI(ChallengePlayer player, int start) {
-		CustomInventory inventory = new CustomInventory(null, 54, "Challenges");
-		inventory.addClickConsumer(this::handleClick);
+	public CustomInventory getCategoryGUI() {
+		return categoryGUI;
+	}
 
-		List<Challenge> challengeCache = this.plugin.getChallengeManager().getChallengeCache();
-		addItems(player, inventory, start);
+	public void cacheCategoryGUI() {
+		CustomInventory inventory = new CustomInventory(null, 54, this.plugin.getMessage("challenge-categories"));
+		inventory.addClickConsumer(this::handleCategoryClick);
+
+		for (Category category : this.plugin.getChallengeManager().getCategories()) {
+
+			ItemBuilder itemBuilder = ItemBuilder.modifyItem(category.getIcon().clone()).withName(category.getName())
+					.withLore(category.getDescription())
+					.withFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_POTION_EFFECTS)
+					.withPersistantData(PluginKeys.CATEGORY_KEY.getKey(), PersistentDataType.STRING, category.getKey());
+
+			inventory.addItem(itemBuilder.build());
+		}
 
 		ItemStack filler = new ItemBuilder(Material.BLACK_STAINED_GLASS_PANE).withName(" ").build();
 
-		for (int i = 46; i < 53; i++) {
+		for (int i = 46; i < 54; i++) {
 			inventory.setItem(i, filler);
 		}
 
-		if (start > 0) {
-			inventory.addButton(45,
-					new ItemBuilder(Material.ARROW).withName("Test").withPersistantData(
-							PluginKeys.TARGET_INDEX.getKey(), PersistentDataType.INTEGER, start - 45).build(),
-					this::gotoPage);
-		} else {
-			inventory.setItem(45, filler);
+		ItemStack close = new ItemBuilder(Material.BARRIER)
+				.withName(ChatColor.RED.toString() + ChatColor.BOLD + "Close").build();
+		inventory.addButton(45, close, event -> event.getWhoClicked().closeInventory());
+
+		this.categoryGUI = inventory;
+	}
+
+	public CustomInventory getChallengeGUI(ChallengePlayer player, Category category) {
+		CustomInventory inventory = new CustomInventory(null, 54,
+				this.plugin.getMessage("challenges").replace("%name%", category.getName()));
+		inventory.addClickConsumer(this::handleChallengeClick);
+
+		for (Challenge challenge : this.plugin.getChallengeManager().getChallenges(category)) {
+
+			ItemBuilder itemBuilder = ItemBuilder.modifyItem(challenge.getIcon().clone()).withName(challenge.getName())
+					.withLore(challenge.getDescription())
+					.withFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_POTION_EFFECTS);
+
+			if (challenge.isForced()) {
+				itemBuilder.addLore("", this.plugin.getMessage("forced"));
+				itemBuilder.withEnchantment(Enchantment.DURABILITY, 1);
+			} else {
+				itemBuilder.withPersistantData(PluginKeys.CHALLENGE_KEY.getKey(), PersistentDataType.STRING,
+						challenge.getKey());
+
+				if (player.hasChallenge(challenge)) {
+					itemBuilder.withEnchantment(Enchantment.DURABILITY, 1);
+					itemBuilder.addLore("", this.plugin.getMessage("enabled"));
+				} else {
+					itemBuilder.addLore("", this.plugin.getMessage("disabled"));
+				}
+			}
+
+			inventory.addItem(itemBuilder.build());
 		}
 
-		if (start + 45 < challengeCache.size()) {
-			inventory.addButton(45,
-					new ItemBuilder(Material.ARROW).withName("Test").withPersistantData(
-							PluginKeys.TARGET_INDEX.getKey(), PersistentDataType.INTEGER, start - 45).build(),
-					this::gotoPage);
-		} else {
-			inventory.setItem(53, filler);
+		ItemStack filler = new ItemBuilder(Material.BLACK_STAINED_GLASS_PANE).withName(" ").build();
+
+		for (int i = 46; i < 54; i++) {
+			inventory.setItem(i, filler);
 		}
+
+		ItemStack back = new ItemBuilder(Material.ARROW).withName(ChatColor.RED.toString() + ChatColor.BOLD + "Back")
+				.build();
+		inventory.addButton(45, back, event -> openGui(event.getWhoClicked(), getCategoryGUI()));
+
 		return inventory;
 	}
 
-	private void gotoPage(InventoryClickEvent event) {
-		PersistentDataContainer container = event.getCurrentItem().getItemMeta().getPersistentDataContainer();
-		Optional<ChallengePlayer> playerOptional = this.plugin.getPlayerManager()
-				.getPlayer(event.getWhoClicked().getUniqueId());
+	private void handleCategoryClick(InventoryClickEvent event) {
+		event.setCancelled(true);
 
-		if (playerOptional.isPresent()) {
-			this.plugin.getInventoryManager().openGui(event.getWhoClicked(), getChallengeGUI(playerOptional.get(),
-					container.get(PluginKeys.TARGET_INDEX.getKey(), PersistentDataType.INTEGER)));
+		if (event.getCurrentItem() == null || !event.getCurrentItem().hasItemMeta())
+			return;
+
+		PersistentDataContainer container = event.getCurrentItem().getItemMeta().getPersistentDataContainer();
+
+		if (!container.has(PluginKeys.CATEGORY_KEY.getKey(), PersistentDataType.STRING))
+			return;
+
+		Player player = (Player) event.getWhoClicked();
+
+		Optional<Category> categoryOptional = this.plugin.getChallengeManager()
+				.getCategory(container.get(PluginKeys.CATEGORY_KEY.getKey(), PersistentDataType.STRING));
+
+		Optional<ChallengePlayer> playerOptional = this.plugin.getPlayerManager().getPlayer(player.getUniqueId());
+
+		if (categoryOptional.isPresent() && playerOptional.isPresent()) {
+			CustomInventory challengeInventory = getChallengeGUI(playerOptional.get(), categoryOptional.get());
+			openGui(player, challengeInventory);
 		}
 	}
 
-	private void handleClick(InventoryClickEvent event) {
+	private void handleChallengeClick(InventoryClickEvent event) {
 		event.setCancelled(true);
 
 		if (event.getCurrentItem() == null || !event.getCurrentItem().hasItemMeta())
@@ -139,7 +196,7 @@ public class CustomInventoryManager implements Listener {
 			Challenge challenge = challengeOptional.get();
 
 			long cooldown = this.plugin.getCooldownManager().getCooldown(player, challenge);
-			
+
 			if (cooldown > 0) {
 				player.sendMessage(this.plugin.getMessage("on-cooldown").replace("%challenge%", challenge.getName())
 						.replace("%time%", getTimeLeft(cooldown)));
@@ -153,34 +210,6 @@ public class CustomInventoryManager implements Listener {
 			}
 			this.plugin.getCooldownManager().setCooldown(player, challenge,
 					this.plugin.getConfig().getInt("cooldown", 300));
-		}
-	}
-
-	private void addItems(ChallengePlayer player, CustomInventory inventory, int start) {
-		List<Challenge> challengeCache = this.plugin.getChallengeManager().getChallengeCache();
-		for (int i = 0; i < Math.min(45, challengeCache.size() - start); i++) {
-			Challenge challenge = challengeCache.get(i);
-
-			ItemBuilder itemBuilder = ItemBuilder.modifyItem(challenge.getIcon().clone()).withName(challenge.getName())
-					.withLore(challenge.getDescription())
-					.withFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_POTION_EFFECTS);
-
-			if (challenge.isForced()) {
-				itemBuilder.addLore("", this.plugin.getMessage("forced"));
-				itemBuilder.withEnchantment(Enchantment.DURABILITY, 1);
-			} else {
-				itemBuilder.withPersistantData(PluginKeys.CHALLENGE_KEY.getKey(), PersistentDataType.STRING,
-						challenge.getKey());
-
-				if (player.hasChallenge(challenge)) {
-					itemBuilder.withEnchantment(Enchantment.DURABILITY, 1);
-					itemBuilder.addLore("", this.plugin.getMessage("enabled"));
-				} else {
-					itemBuilder.addLore("", this.plugin.getMessage("disabled"));
-				}
-			}
-
-			inventory.setItem(i, itemBuilder.build());
 		}
 	}
 

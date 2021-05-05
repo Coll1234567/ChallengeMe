@@ -19,11 +19,11 @@ public class NoStoppingChallenge extends Challenge implements TickingChallenge {
 	private final int msNeeded;
 
 	public NoStoppingChallenge(Plugin owner, YamlConfiguration challengeConfig) {
-		this(owner, challengeConfig.getConfigurationSection("challenges.no-stopping"));
+		this(owner, challengeConfig.getConfigurationSection("no-stopping"));
 	}
 
 	private NoStoppingChallenge(Plugin owner, ConfigurationSection challengeSection) {
-		super(owner, "challenges.no-stopping", challengeSection);
+		super(owner, "no-stopping", challengeSection);
 
 		this.msNeeded = challengeSection.getInt("seconds", 3) * 1000;
 	}
