@@ -1,12 +1,12 @@
 package me.jishuna.challengeme.challenges;
 
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.plugin.Plugin;
 
 import me.jishuna.challengeme.api.challenge.Challenge;
+import me.jishuna.challengeme.api.player.ChallengePlayer;
 import me.jishuna.commonlib.MaterialSets;
 
 public class VegitarianChallenge extends Challenge {
@@ -18,13 +18,13 @@ public class VegitarianChallenge extends Challenge {
 		addEventHandler(PlayerItemConsumeEvent.class, this::onConsume);
 	}
 
-	private void onInteract(PlayerInteractEvent event, Player player) {
+	private void onInteract(PlayerInteractEvent event, ChallengePlayer challengePlayer) {
 		if (MaterialSets.MEAT.contains(event.getItem().getType())) {
-			player.sendMessage(this.getMessage());
+			event.getPlayer().sendMessage(this.getMessage());
 		}
 	}
 
-	private void onConsume(PlayerItemConsumeEvent event, Player player) {
+	private void onConsume(PlayerItemConsumeEvent event, ChallengePlayer challengePlayer) {
 		if (MaterialSets.MEAT.contains(event.getItem().getType())) {
 			event.setCancelled(true);
 		}

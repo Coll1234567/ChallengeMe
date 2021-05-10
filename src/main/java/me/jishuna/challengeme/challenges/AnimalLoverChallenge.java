@@ -8,6 +8,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.plugin.Plugin;
 
 import me.jishuna.challengeme.api.challenge.Challenge;
+import me.jishuna.challengeme.api.player.ChallengePlayer;
 
 public class AnimalLoverChallenge extends Challenge {
 
@@ -17,10 +18,15 @@ public class AnimalLoverChallenge extends Challenge {
 		addEventHandler(EntityDamageByEntityEvent.class, this::onAttack);
 	}
 
-	private void onAttack(EntityDamageByEntityEvent event, Player player) {
+	private void onAttack(EntityDamageByEntityEvent event, ChallengePlayer challengePlayer) {
 		if (event.getEntity() instanceof Animals || event.getEntity() instanceof Fish) {
 			event.setCancelled(true);
-			player.sendMessage(this.getMessage());
+
+			Player player = challengePlayer.getPlayer();
+
+			if (player != null) {
+				player.sendMessage(this.getMessage());
+			}
 		}
 	}
 }

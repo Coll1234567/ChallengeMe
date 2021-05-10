@@ -8,7 +8,6 @@ import java.util.function.BiConsumer;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -19,6 +18,7 @@ import com.google.common.collect.Multimap;
 
 import me.jishuna.challengeme.api.event.EventWrapper;
 import me.jishuna.challengeme.api.packets.PacketWrapper;
+import me.jishuna.challengeme.api.player.ChallengePlayer;
 import me.jishuna.commonlib.ItemParser;
 import me.jishuna.commonlib.StringUtils;
 import net.md_5.bungee.api.ChatColor;
@@ -112,7 +112,7 @@ public abstract class Challenge {
 		return forced;
 	}
 
-	public <T extends Event> void addEventHandler(Class<T> type, BiConsumer<T, Player> consumer) {
+	public <T extends Event> void addEventHandler(Class<T> type, BiConsumer<T, ChallengePlayer> consumer) {
 		this.handlerMap.put(type, new EventWrapper<>(type, consumer));
 	}
 

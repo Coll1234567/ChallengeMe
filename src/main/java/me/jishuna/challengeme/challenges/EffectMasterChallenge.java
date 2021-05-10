@@ -17,6 +17,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import me.jishuna.challengeme.api.challenge.Challenge;
 import me.jishuna.challengeme.api.challenge.TickingChallenge;
+import me.jishuna.challengeme.api.player.ChallengePlayer;
 
 public class EffectMasterChallenge extends Challenge implements TickingChallenge {
 
@@ -47,7 +48,7 @@ public class EffectMasterChallenge extends Challenge implements TickingChallenge
 	}
 
 	@Override
-	public void onTick(Player player) {
+	public void onTick(ChallengePlayer challengePlayer, Player player) {
 		UUID id = player.getUniqueId();
 		Long time = this.effectCache.computeIfAbsent(id, key -> System.currentTimeMillis() + 59 * 1000);
 

@@ -195,7 +195,7 @@ public class CustomInventoryManager implements Listener {
 			ChallengePlayer challengePlayer = playerOptional.get();
 			Challenge challenge = challengeOptional.get();
 
-			long cooldown = this.plugin.getCooldownManager().getCooldown(player, challenge);
+			long cooldown = challengePlayer.getCooldown(challenge);
 
 			if (cooldown > 0) {
 				player.sendMessage(this.plugin.getMessage("on-cooldown").replace("%challenge%", challenge.getName())
@@ -208,8 +208,7 @@ public class CustomInventoryManager implements Listener {
 			} else {
 				enableChallenge(player, challengePlayer, challenge, item);
 			}
-			this.plugin.getCooldownManager().setCooldown(player, challenge,
-					this.plugin.getConfig().getInt("cooldown", 300));
+			challengePlayer.setCooldown(challenge, this.plugin.getConfig().getInt("cooldown", 300));
 		}
 	}
 

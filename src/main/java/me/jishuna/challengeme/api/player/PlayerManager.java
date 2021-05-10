@@ -3,9 +3,7 @@ package me.jishuna.challengeme.api.player;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -16,13 +14,15 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
-import com.google.gson.reflect.TypeToken;
 
 import me.jishuna.challengeme.ChallengeMe;
 import me.jishuna.challengeme.api.challenge.Challenge;
+import me.jishuna.challengeme.api.challenge.ToggleChallenge;
 import me.jishuna.challengeme.api.event.EventConsumer;
+import me.jishuna.challengeme.gson.PlayerDataDeserializer;
 import net.md_5.bungee.api.ChatColor;
 
 public class PlayerManager {
@@ -30,8 +30,7 @@ public class PlayerManager {
 	private final ChallengeMe plugin;
 	private final Map<UUID, ChallengePlayer> players = new HashMap<>();
 
-	private final Type listType = new TypeToken<List<String>>() {
-	}.getType();
+	private final PlayerDataDeserializer playerDataDeserializer;
 
 	public PlayerManager(ChallengeMe plugin) {
 		this.plugin = plugin;
@@ -41,6 +40,8 @@ public class PlayerManager {
 		if (!playerDataDirectory.exists()) {
 			playerDataDirectory.mkdirs();
 		}
+
+		this.playerDataDeserializer = new PlayerDataDeserializer(plugin);
 	}
 
 	public void registerListeners() {
@@ -117,25 +118,29 @@ public class PlayerManager {
 			File jsonFile = new File(this.plugin.getDataFolder() + File.separator + "playerdata", uuid + ".json");
 
 			if (jsonFile.exists()) {
-				Gson gson = new Gson();
+				Gson gson = new GsonBuilder().registerTypeAdapter(PersistantPlayerData.class, playerDataDeserializer)
+						.create();
 				try (FileReader reader = new FileReader(jsonFile)) {
-					List<String> challenge_keys = gson.fromJson(reader, this.listType);
+					PersistantPlayerData playerData = gson.fromJson(reader, PersistantPlayerData.class);
 
-					for (String key : challenge_keys) {
-						Optional<Challenge> challengeOptional = this.plugin.getChallengeManager().getChallenge(key);
-						if (challengeOptional.isPresent()) {
-							Challenge challenge = challengeOptional.get();
+					playerData.getActiveChallenges().forEach(challenge -> {
 
-							if (challenge.isEnabled())
-								challengePlayer.addChallenge(challenge);
-						}
-					}
+						Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () -> {
+							if (challenge instanceof ToggleChallenge) {
+								((ToggleChallenge) challenge).onEnable(challengePlayer, player);
+							}
+						});
+					});
+
+					challengePlayer.setPlayerData(playerData);
 
 				} catch (JsonSyntaxException | JsonIOException | IOException e) {
 					this.plugin.getLogger()
 							.severe("Encountered " + e.getClass().getSimpleName() + " while loading player data.");
 					e.printStackTrace();
 				}
+			} else {
+				challengePlayer.setPlayerData(new PersistantPlayerData());
 			}
 
 			this.players.put(uuid, challengePlayer);
@@ -144,6 +149,7 @@ public class PlayerManager {
 			challengePlayer.updateEnabledChallenges();
 			showLoginMessage(player);
 		});
+
 	}
 
 	private void savePlayerData(UUID uuid) {

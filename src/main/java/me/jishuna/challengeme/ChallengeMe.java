@@ -12,7 +12,6 @@ import com.comphenix.protocol.ProtocolManager;
 import com.comphenix.protocol.events.ListenerPriority;
 
 import me.jishuna.challengeme.api.challenge.ChallengeManager;
-import me.jishuna.challengeme.api.cooldowns.CooldownManager;
 import me.jishuna.challengeme.api.inventory.CustomInventoryManager;
 import me.jishuna.challengeme.api.player.PlayerManager;
 import me.jishuna.challengeme.commands.ChallengeCommand;
@@ -29,7 +28,6 @@ public class ChallengeMe extends JavaPlugin {
 	private ChallengeManager challengeManager;
 	private PlayerManager playerManager;
 	private CustomInventoryManager inventoryManager;
-	private CooldownManager cooldownManager;
 
 	private YamlConfiguration cateogryConfig;
 	private YamlConfiguration challengeConfig;
@@ -42,8 +40,6 @@ public class ChallengeMe extends JavaPlugin {
 	public void onEnable() {
 		loadConfiguration();
 		PluginKeys.initialize(this);
-
-		this.cooldownManager = new CooldownManager();
 
 		this.challengeManager = new ChallengeManager(this);
 		this.challengeManager.reloadCategories();
@@ -84,10 +80,6 @@ public class ChallengeMe extends JavaPlugin {
 
 	public ChallengeManager getChallengeManager() {
 		return challengeManager;
-	}
-
-	public CooldownManager getCooldownManager() {
-		return cooldownManager;
 	}
 
 	public YamlConfiguration getChallengeConfig() {

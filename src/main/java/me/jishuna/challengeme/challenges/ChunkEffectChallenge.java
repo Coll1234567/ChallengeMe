@@ -21,6 +21,7 @@ import org.bukkit.potion.PotionEffectType;
 import me.jishuna.challengeme.api.challenge.Challenge;
 import me.jishuna.challengeme.api.challenge.TickingChallenge;
 import me.jishuna.challengeme.api.challenge.ToggleChallenge;
+import me.jishuna.challengeme.api.player.ChallengePlayer;
 
 public class ChunkEffectChallenge extends Challenge implements TickingChallenge, ToggleChallenge {
 
@@ -50,11 +51,11 @@ public class ChunkEffectChallenge extends Challenge implements TickingChallenge,
 		addEventHandler(EntityPotionEffectEvent.class, this::onEffect);
 	}
 
-	private void onEffect(EntityPotionEffectEvent event, Player player) {
+	private void onEffect(EntityPotionEffectEvent event, ChallengePlayer challengePlayer) {
 		if (event.getAction() == Action.ADDED)
 			return;
 
-		ChunkEffectCache oldCache = this.effectCache.get(player.getUniqueId());
+		ChunkEffectCache oldCache = this.effectCache.get(event.getEntity().getUniqueId());
 
 		if (oldCache == null || oldCache.getEffectType() != event.getModifiedType()
 				|| oldCache.getLevel() != event.getOldEffect().getAmplifier())
@@ -64,7 +65,7 @@ public class ChunkEffectChallenge extends Challenge implements TickingChallenge,
 	}
 
 	@Override
-	public void onTick(Player player) {
+	public void onTick(ChallengePlayer challengePlayer, Player player) {
 		Chunk chunk = player.getLocation().getChunk();
 
 		ChunkEffectCache oldCache = this.effectCache.get(player.getUniqueId());
@@ -98,11 +99,11 @@ public class ChunkEffectChallenge extends Challenge implements TickingChallenge,
 	}
 
 	@Override
-	public void onEnable(Player player) {
+	public void onEnable(ChallengePlayer challengePlayer, Player player) {
 	}
 
 	@Override
-	public void onDisable(Player player) {
+	public void onDisable(ChallengePlayer challengePlayer, Player player) {
 		Chunk chunk = player.getLocation().getChunk();
 		Random random = new Random(hashChunk(chunk));
 

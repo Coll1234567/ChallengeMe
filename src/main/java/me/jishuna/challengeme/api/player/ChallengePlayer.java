@@ -3,28 +3,29 @@ package me.jishuna.challengeme.api.player;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
 
 import me.jishuna.challengeme.ChallengeMe;
 import me.jishuna.challengeme.api.challenge.Challenge;
 import me.jishuna.challengeme.api.challenge.ToggleChallenge;
+import me.jishuna.challengeme.gson.PlayerDataSeralizer;
 
 public class ChallengePlayer {
 
 	private final UUID id;
-	private final Set<Challenge> activeChallenges = new HashSet<>();
+	private PersistantPlayerData playerData;
 	private final ChallengeMe plugin;
 	private boolean isLoaded = false;
+
+	private final PlayerDataSeralizer playerDataSeralizer = new PlayerDataSeralizer();
 
 	public ChallengePlayer(Player player, ChallengeMe plugin) {
 		this(player.getUniqueId(), plugin);
@@ -48,37 +49,61 @@ public class ChallengePlayer {
 	}
 
 	public Set<Challenge> getActiveChallenges() {
-		return activeChallenges;
+		return this.playerData.getActiveChallenges();
+	}
+
+	public long getCooldown(Challenge challenge) {
+		return this.playerData.getCooldown(challenge);
+	}
+
+	public void setCooldown(Challenge challenge, int time) {
+		this.playerData.setCooldown(challenge, time);
+	}
+
+	public <T> T getChallengeData(Challenge challenge, Class<T> type) {
+		return this.playerData.getChallengeData(challenge, type);
+	}
+
+	public void setChallengeData(Challenge challenge, Object data) {
+		this.playerData.setChallengeData(challenge, data);
+	}
+
+	public void setPlayerData(PersistantPlayerData data) {
+		this.playerData = data;
+	}
+
+	public Player getPlayer() {
+		return Bukkit.getPlayer(this.id);
 	}
 
 	public void addChallenge(Challenge challenge) {
-		boolean add = this.activeChallenges.add(challenge);
+		boolean add = this.playerData.getActiveChallenges().add(challenge);
 
 		if (add && challenge instanceof ToggleChallenge) {
 			Bukkit.getScheduler().runTask(this.plugin, () -> {
 				Player player = Bukkit.getPlayer(this.id);
 				if (player != null)
-					((ToggleChallenge) challenge).onEnable(player);
+					((ToggleChallenge) challenge).onEnable(this, player);
 			});
 
 		}
 	}
 
 	public boolean removeChallenge(Challenge challenge) {
-		boolean remove = this.activeChallenges.remove(challenge);
+		boolean remove = this.playerData.getActiveChallenges().remove(challenge);
 
 		if (remove && challenge instanceof ToggleChallenge) {
 			Bukkit.getScheduler().runTask(this.plugin, () -> {
 				Player player = Bukkit.getPlayer(this.id);
 				if (player != null)
-					((ToggleChallenge) challenge).onDisable(player);
+					((ToggleChallenge) challenge).onDisable(this, player);
 			});
 		}
 		return remove;
 	}
 
 	public boolean hasChallenge(Challenge challenge) {
-		return this.activeChallenges.contains(challenge);
+		return this.playerData.getActiveChallenges().contains(challenge);
 	}
 
 	public void updateEnabledChallenges() {
@@ -102,21 +127,18 @@ public class ChallengePlayer {
 		Player player = Bukkit.getPlayer(this.id);
 
 		if (player != null) {
-			this.activeChallenges.forEach(challenge -> {
+			this.playerData.getActiveChallenges().forEach(challenge -> {
 				if (challenge instanceof ToggleChallenge) {
-					((ToggleChallenge) challenge).onDisable(player);
+					((ToggleChallenge) challenge).onDisable(this, player);
 				}
 			});
 		}
 	}
 
 	public void savePlayer(File file) {
-
-		Gson gson = new Gson();
+		Gson gson = new GsonBuilder().registerTypeAdapter(PersistantPlayerData.class, playerDataSeralizer).create();
 		try (FileWriter writer = new FileWriter(file)) {
-			List<String> challenge_keys = this.activeChallenges.stream().map(Challenge::getKey)
-					.collect(Collectors.toList());
-			gson.toJson(challenge_keys, writer);
+			gson.toJson(this.playerData, writer);
 		} catch (JsonIOException | IOException e) {
 			// this.plugin.getLogger().severe("Encountered " + e.getClass().getSimpleName()
 			// + " while saving player data for UUID " + this.id);

@@ -8,6 +8,7 @@ import org.bukkit.util.Vector;
 
 import me.jishuna.challengeme.api.challenge.Challenge;
 import me.jishuna.challengeme.api.challenge.TickingChallenge;
+import me.jishuna.challengeme.api.player.ChallengePlayer;
 
 public class AlwaysGlidingChallenge extends Challenge implements TickingChallenge {
 
@@ -17,12 +18,12 @@ public class AlwaysGlidingChallenge extends Challenge implements TickingChalleng
 		addEventHandler(EntityToggleGlideEvent.class, this::onToggleGlide);
 	}
 
-	private void onToggleGlide(EntityToggleGlideEvent event, Player player) {
+	private void onToggleGlide(EntityToggleGlideEvent event, ChallengePlayer player) {
 		event.setCancelled(true);
 	}
 
 	@Override
-	public void onTick(Player player) {
+	public void onTick(ChallengePlayer challengePlayer, Player player) {
 		if (!player.isGliding() && !player.isFlying())
 			player.setGliding(true);
 

@@ -12,6 +12,7 @@ import org.bukkit.plugin.Plugin;
 
 import me.jishuna.challengeme.api.challenge.Challenge;
 import me.jishuna.challengeme.api.challenge.TickingChallenge;
+import me.jishuna.challengeme.api.player.ChallengePlayer;
 
 public class EndermanChallenge extends Challenge implements TickingChallenge {
 	private final Random random = new Random();
@@ -22,12 +23,12 @@ public class EndermanChallenge extends Challenge implements TickingChallenge {
 		addEventHandler(EntityDamageEvent.class, this::onDamage);
 	}
 
-	private void onDamage(EntityDamageEvent event, Player player) {
-		teleport(player);
+	private void onDamage(EntityDamageEvent event, ChallengePlayer challengePlayer) {
+		teleport((Player) event.getEntity());
 	}
 
 	@Override
-	public void onTick(Player player) {
+	public void onTick(ChallengePlayer challengePlayer, Player player) {
 		if (player.isInWater()) {
 			player.damage(1d);
 		}

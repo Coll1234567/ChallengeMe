@@ -7,6 +7,7 @@ import org.bukkit.plugin.Plugin;
 
 import me.jishuna.challengeme.api.challenge.Challenge;
 import me.jishuna.challengeme.api.challenge.TickingChallenge;
+import me.jishuna.challengeme.api.player.ChallengePlayer;
 
 public class VampireChallenge extends Challenge implements TickingChallenge {
 
@@ -15,7 +16,7 @@ public class VampireChallenge extends Challenge implements TickingChallenge {
 	}
 
 	@Override
-	public void onTick(Player player) {
+	public void onTick(ChallengePlayer challengePlayer, Player player) {
 		Location location = player.getLocation();
 		if (location.getWorld().getTime() < 13000
 				&& location.getWorld().getHighestBlockYAt(location) < location.getY()) {

@@ -12,6 +12,7 @@ import org.bukkit.plugin.Plugin;
 
 import me.jishuna.challengeme.api.challenge.Challenge;
 import me.jishuna.challengeme.api.challenge.TickingChallenge;
+import me.jishuna.challengeme.api.player.ChallengePlayer;
 
 public class NoStoppingChallenge extends Challenge implements TickingChallenge {
 
@@ -29,7 +30,7 @@ public class NoStoppingChallenge extends Challenge implements TickingChallenge {
 	}
 
 	@Override
-	public void onTick(Player player) {
+	public void onTick(ChallengePlayer challengePlayer, Player player) {
 		UUID id = player.getUniqueId();
 		NoStoppingChallengeData challengeData = this.challengeData.get(id);
 		Location location = player.getLocation();

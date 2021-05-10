@@ -13,6 +13,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityPotionEffectEvent;
 import org.bukkit.event.entity.EntityToggleGlideEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 
@@ -34,13 +35,13 @@ public class ChallengeListener implements Listener {
 		if (event.getEntityType() != EntityType.PLAYER)
 			return;
 
-		Player player = (Player) event.getEntity();
-		Optional<ChallengePlayer> playerOptional = playerManager.getPlayer(player.getUniqueId());
+		Optional<ChallengePlayer> playerOptional = playerManager.getPlayer(event.getEntity().getUniqueId());
 
 		if (playerOptional.isPresent()) {
-			for (Challenge challenge : playerOptional.get().getActiveChallenges()) {
+			ChallengePlayer challengePlayer = playerOptional.get();
+			for (Challenge challenge : challengePlayer.getActiveChallenges()) {
 				challenge.getEventHandlers(EntityDamageEvent.class)
-						.forEach(consumer -> consumer.consume(event, player));
+						.forEach(consumer -> consumer.consume(event, challengePlayer));
 			}
 		}
 	}
@@ -61,22 +62,22 @@ public class ChallengeListener implements Listener {
 	@EventHandler
 	public void onAttackEvent(EntityDamageByEntityEvent event) {
 		Optional<ChallengePlayer> playerOptional = Optional.empty();
-		Player player = null;
 
 		if (event.getDamager().getType() == EntityType.PLAYER) {
-			player = (Player) event.getDamager();
-			playerOptional = playerManager.getPlayer(player.getUniqueId());
+
+			playerOptional = playerManager.getPlayer(event.getDamager().getUniqueId());
 		} else if (event.getDamager() instanceof Projectile
 				&& ((Projectile) event.getDamager()).getShooter() instanceof Player) {
-			player = (Player) ((Projectile) event.getDamager()).getShooter();
+			Player player = (Player) ((Projectile) event.getDamager()).getShooter();
 			playerOptional = playerManager.getPlayer(player.getUniqueId());
 		}
 
 		if (playerOptional.isPresent()) {
-			for (Challenge challenge : playerOptional.get().getActiveChallenges()) {
+			ChallengePlayer challengePlayer = playerOptional.get();
+			for (Challenge challenge : challengePlayer.getActiveChallenges()) {
 				for (EventWrapper<? extends Event> consumer : challenge
 						.getEventHandlers(EntityDamageByEntityEvent.class)) {
-					consumer.consume(event, player);
+					consumer.consume(event, challengePlayer);
 				}
 			}
 		}
@@ -90,9 +91,23 @@ public class ChallengeListener implements Listener {
 		Optional<ChallengePlayer> playerOptional = playerManager.getPlayer(event.getPlayer().getUniqueId());
 
 		if (playerOptional.isPresent()) {
-			for (Challenge challenge : playerOptional.get().getActiveChallenges()) {
+			ChallengePlayer challengePlayer = playerOptional.get();
+			for (Challenge challenge : challengePlayer.getActiveChallenges()) {
 				challenge.getEventHandlers(PlayerInteractEvent.class)
-						.forEach(consumer -> consumer.consume(event, event.getPlayer()));
+						.forEach(consumer -> consumer.consume(event, challengePlayer));
+			}
+		}
+	}
+
+	@EventHandler
+	public void onDeath(PlayerDeathEvent event) {
+		Optional<ChallengePlayer> playerOptional = playerManager.getPlayer(event.getEntity().getUniqueId());
+
+		if (playerOptional.isPresent()) {
+			ChallengePlayer challengePlayer = playerOptional.get();
+			for (Challenge challenge : challengePlayer.getActiveChallenges()) {
+				challenge.getEventHandlers(PlayerDeathEvent.class)
+						.forEach(consumer -> consumer.consume(event, challengePlayer));
 			}
 		}
 	}
@@ -105,9 +120,10 @@ public class ChallengeListener implements Listener {
 		Optional<ChallengePlayer> playerOptional = playerManager.getPlayer(event.getPlayer().getUniqueId());
 
 		if (playerOptional.isPresent()) {
-			for (Challenge challenge : playerOptional.get().getActiveChallenges()) {
+			ChallengePlayer challengePlayer = playerOptional.get();
+			for (Challenge challenge : challengePlayer.getActiveChallenges()) {
 				challenge.getEventHandlers(PlayerItemConsumeEvent.class)
-						.forEach(consumer -> consumer.consume(event, event.getPlayer()));
+						.forEach(consumer -> consumer.consume(event, challengePlayer));
 			}
 		}
 	}
@@ -117,13 +133,13 @@ public class ChallengeListener implements Listener {
 		if (event.getEntityType() != EntityType.PLAYER)
 			return;
 
-		Player player = (Player) event.getEntity();
-		Optional<ChallengePlayer> playerOptional = playerManager.getPlayer(player.getUniqueId());
+		Optional<ChallengePlayer> playerOptional = playerManager.getPlayer(event.getEntity().getUniqueId());
 
 		if (playerOptional.isPresent()) {
-			for (Challenge challenge : playerOptional.get().getActiveChallenges()) {
+			ChallengePlayer challengePlayer = playerOptional.get();
+			for (Challenge challenge : challengePlayer.getActiveChallenges()) {
 				challenge.getEventHandlers(EntityToggleGlideEvent.class)
-						.forEach(consumer -> consumer.consume(event, player));
+						.forEach(consumer -> consumer.consume(event, challengePlayer));
 			}
 		}
 	}
@@ -133,13 +149,13 @@ public class ChallengeListener implements Listener {
 		if (event.getEntityType() != EntityType.PLAYER)
 			return;
 
-		Player player = (Player) event.getEntity();
-		Optional<ChallengePlayer> playerOptional = playerManager.getPlayer(player.getUniqueId());
+		Optional<ChallengePlayer> playerOptional = playerManager.getPlayer(event.getEntity().getUniqueId());
 
 		if (playerOptional.isPresent()) {
-			for (Challenge challenge : playerOptional.get().getActiveChallenges()) {
+			ChallengePlayer challengePlayer = playerOptional.get();
+			for (Challenge challenge : challengePlayer.getActiveChallenges()) {
 				challenge.getEventHandlers(EntityPotionEffectEvent.class)
-						.forEach(consumer -> consumer.consume(event, player));
+						.forEach(consumer -> consumer.consume(event, challengePlayer));
 			}
 		}
 	}
@@ -149,13 +165,13 @@ public class ChallengeListener implements Listener {
 		if (event.getEntityType() != EntityType.PLAYER)
 			return;
 
-		Player player = (Player) event.getEntity();
-		Optional<ChallengePlayer> playerOptional = playerManager.getPlayer(player.getUniqueId());
+		Optional<ChallengePlayer> playerOptional = playerManager.getPlayer(event.getEntity().getUniqueId());
 
 		if (playerOptional.isPresent()) {
-			for (Challenge challenge : playerOptional.get().getActiveChallenges()) {
+			ChallengePlayer challengePlayer = playerOptional.get();
+			for (Challenge challenge : challengePlayer.getActiveChallenges()) {
 				challenge.getEventHandlers(EntityAirChangeEvent.class)
-						.forEach(consumer -> consumer.consume(event, player));
+						.forEach(consumer -> consumer.consume(event, challengePlayer));
 			}
 		}
 	}

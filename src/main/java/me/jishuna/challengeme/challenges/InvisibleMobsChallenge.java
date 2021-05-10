@@ -19,6 +19,7 @@ import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 import me.jishuna.challengeme.api.challenge.Challenge;
 import me.jishuna.challengeme.api.challenge.ToggleChallenge;
 import me.jishuna.challengeme.api.packets.PacketWrapper;
+import me.jishuna.challengeme.api.player.ChallengePlayer;
 
 public class InvisibleMobsChallenge extends Challenge implements ToggleChallenge {
 	private final ProtocolManager manager = ProtocolLibrary.getProtocolManager();
@@ -51,7 +52,7 @@ public class InvisibleMobsChallenge extends Challenge implements ToggleChallenge
 	}
 
 	@Override
-	public void onEnable(Player player) {
+	public void onEnable(ChallengePlayer challengePlayer, Player player) {
 		player.getWorld().getNearbyEntities(player.getLocation(), 100, 100, 100).forEach(entity -> {
 			if (entity instanceof LivingEntity && entity.getType() != EntityType.PLAYER) {
 				PacketContainer entityMeta = constructPacket(entity.getEntityId(), false);
@@ -67,7 +68,7 @@ public class InvisibleMobsChallenge extends Challenge implements ToggleChallenge
 	}
 
 	@Override
-	public void onDisable(Player player) {
+	public void onDisable(ChallengePlayer challengePlayer, Player player) {
 		player.getWorld().getNearbyEntities(player.getLocation(), 100, 100, 100).forEach(entity -> {
 			if (entity instanceof LivingEntity && entity.getType() != EntityType.PLAYER) {
 				PacketContainer entityMeta = constructPacket(entity.getEntityId(), true);

@@ -10,6 +10,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import me.jishuna.challengeme.api.challenge.Challenge;
 import me.jishuna.challengeme.api.challenge.ToggleChallenge;
+import me.jishuna.challengeme.api.player.ChallengePlayer;
 
 public class NoJumpChallenge extends Challenge implements ToggleChallenge {
 
@@ -19,7 +20,7 @@ public class NoJumpChallenge extends Challenge implements ToggleChallenge {
 		addEventHandler(EntityPotionEffectEvent.class, this::onEffect);
 	}
 
-	private void onEffect(EntityPotionEffectEvent event, Player player) {
+	private void onEffect(EntityPotionEffectEvent event, ChallengePlayer challengePlayer) {
 		if (event.getAction() == Action.ADDED)
 			return;
 
@@ -29,13 +30,13 @@ public class NoJumpChallenge extends Challenge implements ToggleChallenge {
 	}
 
 	@Override
-	public void onEnable(Player player) {
+	public void onEnable(ChallengePlayer challengePlayer, Player player) {
 		player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, Integer.MAX_VALUE, 128, true, false));
 
 	}
 
 	@Override
-	public void onDisable(Player player) {
+	public void onDisable(ChallengePlayer challengePlayer, Player player) {
 		player.removePotionEffect(PotionEffectType.JUMP);
 
 	}

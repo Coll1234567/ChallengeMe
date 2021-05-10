@@ -43,6 +43,13 @@ no-jump:
   name: '&f&lNo Jumping'
   description: '&3You take no fall damage, but you are unable to jump.'
   material: 'POTION,34,255,76'
+speed:
+  enabled: true
+  forced: false
+  category: 'medium'
+  name: '&b&lSpeed'
+  description: '&3Your speed will slowly increase over time, it will reset upon death.'
+  material: 'POTION,124,175,198'
 enderman:
   enabled: true
   forced: false

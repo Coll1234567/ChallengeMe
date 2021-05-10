@@ -18,6 +18,7 @@ import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 
 import me.jishuna.challengeme.api.challenge.Challenge;
 import me.jishuna.challengeme.api.challenge.ToggleChallenge;
+import me.jishuna.challengeme.api.player.ChallengePlayer;
 import net.minecraft.server.v1_16_R3.DamageSource;
 
 public class AquaticChallenge extends Challenge implements ToggleChallenge {
@@ -29,7 +30,9 @@ public class AquaticChallenge extends Challenge implements ToggleChallenge {
 		addEventHandler(EntityAirChangeEvent.class, this::onAirChange);
 	}
 
-	private void onAirChange(EntityAirChangeEvent event, Player player) {
+	private void onAirChange(EntityAirChangeEvent event, ChallengePlayer challengePlayer) {
+		Player player = (Player) event.getEntity();
+		
 		int oldAir = player.getRemainingAir();
 		int newAir = event.getAmount();
 
@@ -73,14 +76,14 @@ public class AquaticChallenge extends Challenge implements ToggleChallenge {
 	}
 
 	@Override
-	public void onEnable(Player player) {
+	public void onEnable(ChallengePlayer challengePlayer, Player player) {
 		if (player.getRemainingAir() >= player.getMaximumAir()) {
 			player.setRemainingAir(player.getMaximumAir() - 1);
 		}
 	}
 
 	@Override
-	public void onDisable(Player player) {
+	public void onDisable(ChallengePlayer challengePlayer, Player player) {
 	}
 
 }

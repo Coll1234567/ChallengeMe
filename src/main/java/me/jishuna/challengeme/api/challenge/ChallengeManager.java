@@ -25,6 +25,7 @@ import me.jishuna.challengeme.challenges.InvisibleMobsChallenge;
 import me.jishuna.challengeme.challenges.NoDamageChallenge;
 import me.jishuna.challengeme.challenges.NoJumpChallenge;
 import me.jishuna.challengeme.challenges.NoStoppingChallenge;
+import me.jishuna.challengeme.challenges.SpeedChallenge;
 import me.jishuna.challengeme.challenges.VampireChallenge;
 import me.jishuna.challengeme.challenges.VegitarianChallenge;
 import net.md_5.bungee.api.ChatColor;
@@ -93,6 +94,7 @@ public class ChallengeManager {
 		defaultChallenges.add(new InvisibleMobsChallenge(plugin, challengeConfig));
 		defaultChallenges.add(new EndermanChallenge(plugin, challengeConfig));
 		defaultChallenges.add(new AquaticChallenge(plugin, challengeConfig));
+		defaultChallenges.add(new SpeedChallenge(plugin, challengeConfig));
 
 		return defaultChallenges;
 	}

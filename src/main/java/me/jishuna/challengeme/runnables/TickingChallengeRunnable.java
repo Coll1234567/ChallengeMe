@@ -30,7 +30,7 @@ public class TickingChallengeRunnable extends BukkitRunnable {
 				
 				challengePlayer.getActiveChallenges().forEach(challenge -> {
 					if (challenge instanceof TickingChallenge) {
-						((TickingChallenge) challenge).onTick(player);
+						((TickingChallenge) challenge).onTick(challengePlayer, player);
 					}
 				});
 			}

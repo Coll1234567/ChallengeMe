@@ -2,8 +2,10 @@ package me.jishuna.challengeme.api.challenge;
 
 import org.bukkit.entity.Player;
 
-public interface ToggleChallenge {
-	public void onEnable(Player player);
+import me.jishuna.challengeme.api.player.ChallengePlayer;
 
-	public void onDisable(Player player);
+public interface ToggleChallenge {
+	public void onEnable(ChallengePlayer challengePlayer, Player player);
+
+	public void onDisable(ChallengePlayer challengePlayer, Player player);
 }
