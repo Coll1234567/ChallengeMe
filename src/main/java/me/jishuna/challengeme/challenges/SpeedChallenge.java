@@ -16,9 +16,12 @@ import me.jishuna.challengeme.api.player.ChallengePlayer;
 
 public class SpeedChallenge extends Challenge implements ToggleChallenge, TickingChallenge {
 	private static final String MODIFIER_NAME = "challengeme_speedboost";
+	private double change;
 
 	public SpeedChallenge(Plugin owner, YamlConfiguration messageConfig) {
 		super(owner, "speed", messageConfig);
+
+		this.change = messageConfig.getDouble("change-per-cycle", 0.00001);
 
 		addEventHandler(PlayerDeathEvent.class, this::onDeath);
 	}
@@ -64,7 +67,7 @@ public class SpeedChallenge extends Challenge implements ToggleChallenge, Tickin
 
 		attribute.removeModifier(speedModifier);
 		attribute.addModifier(
-				new AttributeModifier(MODIFIER_NAME, speedModifier.getAmount() + 0.0001, Operation.ADD_NUMBER));
+				new AttributeModifier(MODIFIER_NAME, speedModifier.getAmount() + this.change, Operation.ADD_NUMBER));
 	}
 
 	@Override

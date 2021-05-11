@@ -80,12 +80,15 @@ public class PlayerManager {
 
 		if (disable) {
 			player.disableActiveChallenges();
-			this.players.remove(id);
 		}
 	}
 
 	public void saveAllPlayers(boolean disable) {
 		this.players.entrySet().forEach(entry -> savePlayer(entry.getKey(), entry.getValue(), disable));
+
+		if (disable) {
+			this.players.clear();
+		}
 	}
 
 	private void showLoginMessage(Player player) {

@@ -50,6 +50,7 @@ speed:
   name: '&b&lSpeed'
   description: '&3Your speed will slowly increase over time, it will reset upon death.'
   material: 'POTION,124,175,198'
+  change-per-cycle: 0.00001
 enderman:
   enabled: true
   forced: false
