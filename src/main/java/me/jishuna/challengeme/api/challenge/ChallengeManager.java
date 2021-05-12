@@ -17,6 +17,8 @@ import me.jishuna.challengeme.api.event.ChallengeSetupEvent;
 import me.jishuna.challengeme.challenges.AlwaysGlidingChallenge;
 import me.jishuna.challengeme.challenges.AnimalLoverChallenge;
 import me.jishuna.challengeme.challenges.AquaticChallenge;
+import me.jishuna.challengeme.challenges.BlockEffectChallenge;
+import me.jishuna.challengeme.challenges.BouncyChallenge;
 import me.jishuna.challengeme.challenges.ChunkEffectChallenge;
 import me.jishuna.challengeme.challenges.DoublePainChallenge;
 import me.jishuna.challengeme.challenges.EffectMasterChallenge;
@@ -95,6 +97,8 @@ public class ChallengeManager {
 		defaultChallenges.add(new EndermanChallenge(plugin, challengeConfig));
 		defaultChallenges.add(new AquaticChallenge(plugin, challengeConfig));
 		defaultChallenges.add(new SpeedChallenge(plugin, challengeConfig));
+		defaultChallenges.add(new BlockEffectChallenge(plugin, challengeConfig));
+		defaultChallenges.add(new BouncyChallenge(plugin, challengeConfig));
 
 		return defaultChallenges;
 	}

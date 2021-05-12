@@ -29,6 +29,13 @@ animal-lover:
   description: '&3You are unable to hurt animals.'
   material: 'PLAYER_HEAD,621668ef7cb79dd9c22ce3d1f3f4cb6e2559893b6df4a469514e667c16aa4'
   message: '&4&l[Animal Lover]: &cYou are unable to hurt animals.'
+bouncy:
+  enabled: true
+  forced: false
+  category: 'easy'
+  name: '&f&lBouncy'
+  description: '&3You will constantly bounce upwards.'
+  material: 'SLIME_BLOCK'
 vampire:
   enabled: true
   forced: false
@@ -87,6 +94,20 @@ chunk-effects:
   description: '&3Each chunk will give you a random potion effect.'
   material: 'BREWING_STAND'
   max-level: 3
+  blacklisted-effects:
+    - 'HARM'
+    - 'HEAL'
+    - 'CONFUSION'
+block-effects:
+  enabled: true
+  forced: false
+  category: 'medium'
+  name: '&6&lBlock Effects'
+  description: '&3You will recieve a random potion effect %chance%% of the time when breaking a block.'
+  material: 'DIAMOND_PICKAXE'
+  max-level: 3
+  duration: 100
+  chance: 10
   blacklisted-effects:
     - 'HARM'
     - 'HEAL'

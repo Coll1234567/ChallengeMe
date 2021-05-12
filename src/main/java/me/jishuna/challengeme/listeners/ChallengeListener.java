@@ -8,11 +8,13 @@ import org.bukkit.entity.Projectile;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityAirChangeEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityPotionEffectEvent;
 import org.bukkit.event.entity.EntityToggleGlideEvent;
+import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
@@ -21,6 +23,7 @@ import me.jishuna.challengeme.api.challenge.Challenge;
 import me.jishuna.challengeme.api.event.EventWrapper;
 import me.jishuna.challengeme.api.player.ChallengePlayer;
 import me.jishuna.challengeme.api.player.PlayerManager;
+import me.jishuna.commonlib.LocationUtils;
 
 public class ChallengeListener implements Listener {
 
@@ -107,6 +110,36 @@ public class ChallengeListener implements Listener {
 			ChallengePlayer challengePlayer = playerOptional.get();
 			for (Challenge challenge : challengePlayer.getActiveChallenges()) {
 				challenge.getEventHandlers(PlayerDeathEvent.class)
+						.forEach(consumer -> consumer.consume(event, challengePlayer));
+			}
+		}
+	}
+
+	@EventHandler
+	public void onBlockBreak(BlockBreakEvent event) {
+		Optional<ChallengePlayer> playerOptional = playerManager.getPlayer(event.getPlayer().getUniqueId());
+
+		if (playerOptional.isPresent()) {
+			ChallengePlayer challengePlayer = playerOptional.get();
+			for (Challenge challenge : challengePlayer.getActiveChallenges()) {
+				challenge.getEventHandlers(BlockBreakEvent.class)
+						.forEach(consumer -> consumer.consume(event, challengePlayer));
+			}
+		}
+	}
+
+	@EventHandler
+	public void onExplosionPrime(ExplosionPrimeEvent event) {
+		Player player = LocationUtils.getNearestPlayer(event.getEntity());
+		if (player == null)
+			return;
+		
+		Optional<ChallengePlayer> playerOptional = playerManager.getPlayer(player.getUniqueId());
+
+		if (playerOptional.isPresent()) {
+			ChallengePlayer challengePlayer = playerOptional.get();
+			for (Challenge challenge : challengePlayer.getActiveChallenges()) {
+				challenge.getEventHandlers(ExplosionPrimeEvent.class)
 						.forEach(consumer -> consumer.consume(event, challengePlayer));
 			}
 		}

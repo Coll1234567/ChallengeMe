@@ -197,7 +197,7 @@ public class CustomInventoryManager implements Listener {
 
 			long cooldown = challengePlayer.getCooldown(challenge);
 
-			if (cooldown > 0) {
+			if (cooldown > 0 && !player.hasPermission("challengeme.nocooldown")) {
 				player.sendMessage(this.plugin.getMessage("on-cooldown").replace("%challenge%", challenge.getName())
 						.replace("%time%", getTimeLeft(cooldown)));
 				return;
