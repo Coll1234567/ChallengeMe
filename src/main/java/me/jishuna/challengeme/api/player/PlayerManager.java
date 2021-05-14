@@ -128,7 +128,7 @@ public class PlayerManager {
 
 					playerData.getActiveChallenges().forEach(challenge -> {
 
-						Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () -> {
+						Bukkit.getScheduler().runTask(this.plugin, () -> {
 							if (challenge instanceof ToggleChallenge) {
 								((ToggleChallenge) challenge).onEnable(challengePlayer, player);
 							}

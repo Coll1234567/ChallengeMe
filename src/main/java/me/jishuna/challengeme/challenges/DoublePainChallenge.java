@@ -9,8 +9,8 @@ import me.jishuna.challengeme.api.player.ChallengePlayer;
 
 public class DoublePainChallenge extends Challenge {
 
-	public DoublePainChallenge(Plugin owner, YamlConfiguration messageConfig) {
-		super(owner, "double-pain", messageConfig);
+	public DoublePainChallenge(Plugin owner, YamlConfiguration challengeConfig) {
+		super(owner, "double-pain", challengeConfig);
 
 		addEventHandler(EntityDamageEvent.class, this::onDamage);
 	}

@@ -1,109 +1,35 @@
-no-damage:
-  enabled: true
-  forced: false
-  category: 'hard'
-  name: '&c&lNo-hit Wonder'
-  description: '&3Any damage you take is fatal. \n \n&7(Excluding damage from sources that don''t deal any actual damage, such as snowballs.)'
-  material: 'DIAMOND_SWORD'
-  message: '&4&l[No-hit Wonder]: &cYou took damage.'
-double-pain:
-  enabled: true
-  forced: false
-  category: 'medium'
-  name: '&c&lDouble Pain'
-  description: '&3Any damage you take is doubled.'
-  material: 'IRON_SWORD'
-vegitarian:
-  enabled: true
-  forced: false
-  category: 'easy'
-  name: '&a&lVegitarian'
-  description: '&3You are unable to eat any meat.'
-  material: 'CARROT'
-  message: '&4&l[Vegitarian]: &cYou are unable to eat meat.'
-animal-lover:
-  enabled: true
-  forced: false
-  category: 'medium'
-  name: '&d&lAnimal Lover'
-  description: '&3You are unable to hurt animals.'
-  material: 'PLAYER_HEAD,621668ef7cb79dd9c22ce3d1f3f4cb6e2559893b6df4a469514e667c16aa4'
-  message: '&4&l[Animal Lover]: &cYou are unable to hurt animals.'
-bouncy:
-  enabled: true
-  forced: false
-  category: 'easy'
-  name: '&f&lBouncy'
-  description: '&3You will constantly bounce upwards.'
-  material: 'SLIME_BLOCK'
-vampire:
-  enabled: true
-  forced: false
-  category: 'medium'
-  name: '&c&lVampire'
-  description: '&3Sunlight causes you to burn.'
-  material: 'PLAYER_HEAD,8d44756e0b4ece8d746296a3d5e297e1415f4ba17647ffe228385383d161a9'
-no-jump:
-  enabled: true
-  forced: false
-  category: 'medium'
-  name: '&f&lNo Jumping'
-  description: '&3You take no fall damage, but you are unable to jump.'
-  material: 'POTION,34,255,76'
-speed:
-  enabled: true
-  forced: false
-  category: 'medium'
-  name: '&b&lSpeed'
-  description: '&3Your speed will slowly increase over time, it will reset upon death.'
-  material: 'POTION,124,175,198'
-  change-per-cycle: 0.00001
-enderman:
-  enabled: true
-  forced: false
-  category: 'medium'
-  name: '&5&lEnderman'
-  description: '&3Touching water hurts you and taking damage will teleport you to a random spot nearby.'
-  material: 'PLAYER_HEAD,96c0b36d53fff69a49c7d6f3932f2b0fe948e032226d5e8045ec58408a36e951'
-aquatic:
-  enabled: true
-  forced: false
-  category: 'medium'
-  name: '&9&lAquatic'
-  description: '&3You can breath and see underwater but you lose air and suffocate while on land.'
-  material: 'PLAYER_HEAD,17152876bc3a96dd2a2299245edb3beef647c8a56ac8853a687c3e7b5d8bb'
-invisible-mobs:
-  enabled: true
-  forced: false
-  category: 'hard'
-  name: '&7&lInvisible Mobs'
-  description: '&3all mobs are invisible.'
-  material: 'POTION,127,131,146'
 always-gliding:
   enabled: true
   forced: false
-  category: 'easy'
+  category: 'movement'
   name: '&b&lSky High'
   description: '&3You will always be gliding.'
+  difficulty: '&bDifficulty: &a&lEasy'
   material: 'ELYTRA'
-chunk-effects:
+animal-lover:
   enabled: true
   forced: false
-  category: 'easy'
-  name: '&2&lChunk Effects'
-  description: '&3Each chunk will give you a random potion effect.'
-  material: 'BREWING_STAND'
-  max-level: 3
-  blacklisted-effects:
-    - 'HARM'
-    - 'HEAL'
-    - 'CONFUSION'
+  category: 'mobs'
+  name: '&d&lAnimal Lover'
+  description: '&3You are unable to directly hurt animals.'
+  difficulty: '&bDifficulty: &a&lEasy'
+  material: 'PLAYER_HEAD,621668ef7cb79dd9c22ce3d1f3f4cb6e2559893b6df4a469514e667c16aa4'
+  message: '&4&l[Animal Lover]: &cYou are unable to hurt animals.'
+aquatic:
+  enabled: true
+  forced: false
+  category: 'world'
+  name: '&9&lAquatic'
+  description: '&3You can breath and see underwater but you lose air and suffocate while on land.'
+  difficulty: '&bDifficulty: &6&lMedium'
+  material: 'PLAYER_HEAD,17152876bc3a96dd2a2299245edb3beef647c8a56ac8853a687c3e7b5d8bb'
 block-effects:
   enabled: true
   forced: false
-  category: 'medium'
+  category: 'effects'
   name: '&6&lBlock Effects'
   description: '&3You will recieve a random potion effect %chance%% of the time when breaking a block.'
+  difficulty: '&bDifficulty: &6&lMedium'
   material: 'DIAMOND_PICKAXE'
   max-level: 3
   duration: 100
@@ -112,23 +38,131 @@ block-effects:
     - 'HARM'
     - 'HEAL'
     - 'CONFUSION'
-effect-master:
+bouncy:
   enabled: true
   forced: false
-  category: 'medium'
-  name: '&6&lEffect Master'
+  category: 'movement'
+  name: '&f&lBouncy'
+  description: '&3You will constantly bounce upwards.'
+  difficulty: '&bDifficulty: &a&lEasy'
+  material: 'SLIME_BLOCK'
+chunk-effects:
+  enabled: true
+  forced: false
+  category: 'effects'
+  name: '&2&lChunk Effects'
+  description: '&3Each chunk will give you a random potion effect.'
+  difficulty: '&bDifficulty: &a&lEasy'
+  material: 'BREWING_STAND'
+  max-level: 3
+  blacklisted-effects:
+    - 'HARM'
+    - 'HEAL'
+    - 'CONFUSION'
+double-pain:
+  enabled: true
+  forced: false
+  category: 'combat'
+  name: '&c&lDouble Pain'
+  description: '&3Any damage you take is doubled.'
+  difficulty: '&bDifficulty: &6&lMedium'
+  material: 'IRON_SWORD'
+enderman:
+  enabled: true
+  forced: false
+  category: 'mobs'
+  name: '&5&lEnderman'
+  description: '&3Touching water hurts you and taking damage will teleport you to a random spot nearby.'
+  difficulty: '&bDifficulty: &6&lMedium'
+  material: 'PLAYER_HEAD,96c0b36d53fff69a49c7d6f3932f2b0fe948e032226d5e8045ec58408a36e951'
+invisible-mobs:
+  enabled: true
+  forced: false
+  category: 'mobs'
+  name: '&7&lInvisible Mobs'
+  description: '&3all mobs are invisible.'
+  difficulty: '&bDifficulty: &c&lHard'
+  material: 'POTION,127,131,146'
+no-damage:
+  enabled: true
+  forced: false
+  category: 'combat'
+  name: '&c&lNo-hit Wonder'
+  description: '&3Any damage you take is fatal. \n \n&7(Excluding damage from sources that don''t deal any actual damage, such as snowballs.)'
+  difficulty: '&bDifficulty: &c&lHard'
+  material: 'DIAMOND_SWORD'
+  message: '&4&l[No-hit Wonder]: &cYou took damage.'
+no-darkness:
+  enabled: true
+  forced: false
+  category: 'world'
+  name: '&8&lAffraid of the Dark'
+  description: '&3You will take damage if you stand in complete darkness.'
+  difficulty: '&bDifficulty: &a&lEasy'
+  material: 'GLOWSTONE'
+  message: '&6Light: %light%'
+  show-message: true
+no-jump:
+  enabled: true
+  forced: false
+  category: 'movement'
+  name: '&f&lNo Jumping'
+  description: '&3You take no fall damage, but you are unable to jump.'
+  difficulty: '&bDifficulty: &6&lMedium'
+  material: 'POTION,34,255,76'
+no-stopping:
+  enabled: true
+  forced: false
+  category: 'movement'
+  name: '&c&lNo Stopping'
+  description: '&3You will start to burn if you stand still for longer than %seconds% seconds.'
+  difficulty: '&bDifficulty: &c&lHard'
+  material: 'ICE'
+  seconds: 3
+random-effects:
+  enabled: true
+  forced: false
+  category: 'effects'
+  name: '&6&lRandom Effects'
   description: '&3You will recieve a random potion effect every 60 seconds.'
+  difficulty: '&bDifficulty: &6&lMedium'
   material: 'POTION,217,192,67'
   max-level: 3
   blacklisted-effects:
     - 'HARM'
     - 'HEAL'
     - 'CONFUSION'
-no-stopping:
+reverse-gravity:
   enabled: true
   forced: false
-  category: 'hard'
-  name: '&c&lNo Stopping'
-  description: '&3You will start to burn if you stand still for longer than %seconds% seconds.'
-  material: 'ICE'
-  seconds: 3
+  category: 'movement'
+  name: '&f&lReverse Gravity'
+  description: '&3You will float upwards rather than fall downwards./n You will take void damage above Y 256.'
+  difficulty: '&bDifficulty: &c&lHard'
+  material: 'POTION,206,255,255'
+speed:
+  enabled: true
+  forced: false
+  category: 'movement'
+  name: '&b&lSpeed'
+  description: '&3Your speed will slowly increase over time, it will reset upon death.'
+  difficulty: '&bDifficulty: &6&lMedium'
+  material: 'POTION,124,175,198'
+  change-per-cycle: 0.00001
+vampire:
+  enabled: true
+  forced: false
+  category: 'world'
+  name: '&c&lVampire'
+  description: '&3Being outside in sunlight causes you to burn.'
+  difficulty: '&bDifficulty: &6&lMedium'
+  material: 'PLAYER_HEAD,8d44756e0b4ece8d746296a3d5e297e1415f4ba17647ffe228385383d161a9'
+vegitarian:
+  enabled: true
+  forced: false
+  category: 'misc'
+  name: '&a&lVegitarian'
+  description: '&3You are unable to eat any meat.'
+  difficulty: '&bDifficulty: &6&lMedium'
+  material: 'CARROT'
+  message: '&4&l[Vegitarian]: &cYou are unable to eat meat.'

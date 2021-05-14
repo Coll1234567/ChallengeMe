@@ -12,8 +12,8 @@ import me.jishuna.challengeme.api.player.ChallengePlayer;
 
 public class AlwaysGlidingChallenge extends Challenge implements TickingChallenge {
 
-	public AlwaysGlidingChallenge(Plugin owner, YamlConfiguration messageConfig) {
-		super(owner, "always-gliding", messageConfig);
+	public AlwaysGlidingChallenge(Plugin owner, YamlConfiguration challengeConfig) {
+		super(owner, "always-gliding", challengeConfig);
 
 		addEventHandler(EntityToggleGlideEvent.class, this::onToggleGlide);
 	}

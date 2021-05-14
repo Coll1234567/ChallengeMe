@@ -11,3 +11,5 @@ challenge-force-enabled: '%challenge% &7challenge has been &a&lforce enabled &7b
 
 challenge-categories: 'Challenge Categories'
 challenges: '%name% &0Challenges'
+
+light-level: '&6Light: %light%'

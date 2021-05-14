@@ -11,8 +11,8 @@ import me.jishuna.commonlib.MaterialSets;
 
 public class VegitarianChallenge extends Challenge {
 
-	public VegitarianChallenge(Plugin owner, YamlConfiguration messageConfig) {
-		super(owner, "vegitarian", messageConfig);
+	public VegitarianChallenge(Plugin owner, YamlConfiguration challengeConfig) {
+		super(owner, "vegitarian", challengeConfig);
 		
 		addEventHandler(PlayerInteractEvent.class, this::onInteract);
 		addEventHandler(PlayerItemConsumeEvent.class, this::onConsume);

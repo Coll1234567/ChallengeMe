@@ -24,8 +24,8 @@ import net.minecraft.server.v1_16_R3.DamageSource;
 public class AquaticChallenge extends Challenge implements ToggleChallenge {
 	private final ProtocolManager manager = ProtocolLibrary.getProtocolManager();
 
-	public AquaticChallenge(Plugin owner, YamlConfiguration messageConfig) {
-		super(owner, "aquatic", messageConfig);
+	public AquaticChallenge(Plugin owner, YamlConfiguration challengeConfig) {
+		super(owner, "aquatic", challengeConfig);
 
 		addEventHandler(EntityAirChangeEvent.class, this::onAirChange);
 	}

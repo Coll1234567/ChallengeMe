@@ -25,8 +25,8 @@ public class InvisibleMobsChallenge extends Challenge implements ToggleChallenge
 	private final ProtocolManager manager = ProtocolLibrary.getProtocolManager();
 	private final int EFFECT_COLOR = 8356754;
 
-	public InvisibleMobsChallenge(Plugin owner, YamlConfiguration messageConfig) {
-		super(owner, "invisible-mobs", messageConfig);
+	public InvisibleMobsChallenge(Plugin owner, YamlConfiguration challengeConfig) {
+		super(owner, "invisible-mobs", challengeConfig);
 
 		PacketWrapper wrapper = new PacketWrapper(PacketType.Play.Server.SPAWN_ENTITY_LIVING);
 		wrapper.setSendHandler(this::onEntitySpawn);

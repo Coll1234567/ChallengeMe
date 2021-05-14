@@ -15,7 +15,9 @@ import me.jishuna.challengeme.api.challenge.ChallengeManager;
 import me.jishuna.challengeme.api.inventory.CustomInventoryManager;
 import me.jishuna.challengeme.api.player.PlayerManager;
 import me.jishuna.challengeme.commands.ChallengeCommand;
-import me.jishuna.challengeme.listeners.ChallengeListener;
+import me.jishuna.challengeme.listeners.BlockListeners;
+import me.jishuna.challengeme.listeners.CombatListeners;
+import me.jishuna.challengeme.listeners.PlayerListeners;
 import me.jishuna.challengeme.packets.PacketAdapaterLivingSpawn;
 import me.jishuna.challengeme.runnables.TickingChallengeRunnable;
 import me.jishuna.commonlib.FileUtils;
@@ -44,7 +46,7 @@ public class ChallengeMe extends JavaPlugin {
 		this.challengeManager = new ChallengeManager(this);
 		this.challengeManager.reloadCategories();
 		this.challengeManager.reloadChallenges();
-		
+
 		this.inventoryManager = new CustomInventoryManager(this);
 		this.inventoryManager.cacheCategoryGUI();
 
@@ -52,7 +54,10 @@ public class ChallengeMe extends JavaPlugin {
 		this.playerManager.registerListeners();
 
 		Bukkit.getPluginManager().registerEvents(this.inventoryManager, this);
-		Bukkit.getPluginManager().registerEvents(new ChallengeListener(this.playerManager), this);
+
+		Bukkit.getPluginManager().registerEvents(new PlayerListeners(this.playerManager), this);
+		Bukkit.getPluginManager().registerEvents(new BlockListeners(this.playerManager), this);
+		Bukkit.getPluginManager().registerEvents(new CombatListeners(this.playerManager), this);
 
 		this.challengeRunnable = new TickingChallengeRunnable(this);
 

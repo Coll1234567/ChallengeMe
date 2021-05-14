@@ -30,6 +30,7 @@ public abstract class Challenge {
 	private final String key;
 	private final String name;
 	private final String message;
+	private final String difficulty;
 	private String category;
 	private List<String> description;
 	private final ItemStack icon;
@@ -55,6 +56,7 @@ public abstract class Challenge {
 
 		this.name = ChatColor.translateAlternateColorCodes('&', challengeSection.getString("name", ""));
 		this.message = ChatColor.translateAlternateColorCodes('&', challengeSection.getString("message", ""));
+		this.difficulty = ChatColor.translateAlternateColorCodes('&', challengeSection.getString("difficulty", ""));
 
 		this.icon = ItemParser.parseItem(challengeSection.getString("material", ""), Material.DIAMOND);
 
@@ -90,6 +92,10 @@ public abstract class Challenge {
 
 	public String getMessage() {
 		return message;
+	}
+
+	public String getDifficulty() {
+		return difficulty;
 	}
 
 	public String getCategory() {

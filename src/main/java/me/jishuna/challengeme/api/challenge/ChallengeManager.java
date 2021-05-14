@@ -21,12 +21,14 @@ import me.jishuna.challengeme.challenges.BlockEffectChallenge;
 import me.jishuna.challengeme.challenges.BouncyChallenge;
 import me.jishuna.challengeme.challenges.ChunkEffectChallenge;
 import me.jishuna.challengeme.challenges.DoublePainChallenge;
-import me.jishuna.challengeme.challenges.EffectMasterChallenge;
 import me.jishuna.challengeme.challenges.EndermanChallenge;
 import me.jishuna.challengeme.challenges.InvisibleMobsChallenge;
 import me.jishuna.challengeme.challenges.NoDamageChallenge;
+import me.jishuna.challengeme.challenges.NoDarknessChallenge;
 import me.jishuna.challengeme.challenges.NoJumpChallenge;
 import me.jishuna.challengeme.challenges.NoStoppingChallenge;
+import me.jishuna.challengeme.challenges.RandomEffectsChallenge;
+import me.jishuna.challengeme.challenges.ReverseGravityChallenge;
 import me.jishuna.challengeme.challenges.SpeedChallenge;
 import me.jishuna.challengeme.challenges.VampireChallenge;
 import me.jishuna.challengeme.challenges.VegitarianChallenge;
@@ -92,13 +94,15 @@ public class ChallengeManager {
 		defaultChallenges.add(new AlwaysGlidingChallenge(plugin, challengeConfig));
 		defaultChallenges.add(new ChunkEffectChallenge(plugin, challengeConfig));
 		defaultChallenges.add(new NoStoppingChallenge(plugin, challengeConfig));
-		defaultChallenges.add(new EffectMasterChallenge(plugin, challengeConfig));
+		defaultChallenges.add(new RandomEffectsChallenge(plugin, challengeConfig));
 		defaultChallenges.add(new InvisibleMobsChallenge(plugin, challengeConfig));
 		defaultChallenges.add(new EndermanChallenge(plugin, challengeConfig));
 		defaultChallenges.add(new AquaticChallenge(plugin, challengeConfig));
 		defaultChallenges.add(new SpeedChallenge(plugin, challengeConfig));
 		defaultChallenges.add(new BlockEffectChallenge(plugin, challengeConfig));
 		defaultChallenges.add(new BouncyChallenge(plugin, challengeConfig));
+		defaultChallenges.add(new ReverseGravityChallenge(plugin, challengeConfig));
+		defaultChallenges.add(new NoDarknessChallenge(plugin, challengeConfig));
 
 		return defaultChallenges;
 	}

@@ -10,8 +10,8 @@ import me.jishuna.challengeme.api.player.ChallengePlayer;
 
 public class NoDamageChallenge extends Challenge {
 
-	public NoDamageChallenge(Plugin owner, YamlConfiguration messageConfig) {
-		super(owner, "no-damage", messageConfig);
+	public NoDamageChallenge(Plugin owner, YamlConfiguration challengeConfig) {
+		super(owner, "no-damage", challengeConfig);
 
 		addEventHandler(EntityDamageEvent.class, this::onDamage);
 	}
@@ -19,7 +19,9 @@ public class NoDamageChallenge extends Challenge {
 	private void onDamage(EntityDamageEvent event, ChallengePlayer challengePlayer) {
 		Player player = (Player) event.getEntity();
 		if (event.getDamage() > 0.0d) {
-			event.setDamage(Integer.MAX_VALUE);
+			//TODO Can we improve this while still keeping the correct death message?
+			event.setDamage(10d);
+			player.setHealth(0.001);
 			player.sendMessage(this.getMessage());
 		}
 	}

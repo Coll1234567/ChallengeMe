@@ -1,12 +1,24 @@
-easy:
-  name: '&a&lEasy'
-  description: '&3Easy challenges.'
-  material: 'LIME_CONCRETE_POWDER'
-medium:
-  name: '&6&lMedium'
-  description: '&3Medium challenges.'
-  material: 'ORANGE_CONCRETE_POWDER'
-hard:
-  name: '&c&lHard'
-  description: '&3Hard challenges.'
-  material: 'RED_CONCRETE_POWDER'
+combat:
+  name: '&6&lCombat'
+  description: '&3Challenges related to combat.'
+  material: 'NETHERITE_SWORD'
+misc:
+  name: '&6&lMiscellaneous'
+  description: '&3Miscellaneous challenges.'
+  material: 'TOTEM_OF_UNDYING'
+mobs:
+  name: '&6&lMobs'
+  description: '&3Challenges related to mobs.'
+  material: 'ZOMBIE_HEAD'
+movement:
+  name: '&6&lMovement'
+  description: '&3Challenges related to player movement.'
+  material: 'FEATHER'
+effects:
+  name: '&6&lPotion Effects'
+  description: '&3Challenges related to potion effects.'
+  material: 'POTION,205,92,171'
+world:
+  name: '&6&lWorld'
+  description: '&3Challenges related to the minecraft world.'
+  material: 'GRASS_BLOCK'

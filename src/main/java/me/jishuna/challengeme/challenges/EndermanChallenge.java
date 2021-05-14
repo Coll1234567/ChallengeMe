@@ -17,8 +17,8 @@ import me.jishuna.challengeme.api.player.ChallengePlayer;
 public class EndermanChallenge extends Challenge implements TickingChallenge {
 	private final Random random = new Random();
 
-	public EndermanChallenge(Plugin owner, YamlConfiguration messageConfig) {
-		super(owner, "enderman", messageConfig);
+	public EndermanChallenge(Plugin owner, YamlConfiguration challengeConfig) {
+		super(owner, "enderman", challengeConfig);
 
 		addEventHandler(EntityDamageEvent.class, this::onDamage);
 	}

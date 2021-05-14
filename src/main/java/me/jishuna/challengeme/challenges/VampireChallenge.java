@@ -11,8 +11,8 @@ import me.jishuna.challengeme.api.player.ChallengePlayer;
 
 public class VampireChallenge extends Challenge implements TickingChallenge {
 
-	public VampireChallenge(Plugin owner, YamlConfiguration messageConfig) {
-		super(owner, "vampire", messageConfig);
+	public VampireChallenge(Plugin owner, YamlConfiguration challengeConfig) {
+		super(owner, "vampire", challengeConfig);
 	}
 
 	@Override

@@ -37,6 +37,8 @@ public class CustomInventoryManager implements Listener {
 
 	private final HashMap<InventoryView, CustomInventory> inventoryMap = new HashMap<>();
 	private final ChallengeMe plugin;
+	DateFormat dateFormat = new SimpleDateFormat("mm:ss");
+	DateFormat dateFormatHours = new SimpleDateFormat("HH:mm:ss");
 
 	private CustomInventory categoryGUI;
 
@@ -114,7 +116,7 @@ public class CustomInventoryManager implements Listener {
 		for (Challenge challenge : this.plugin.getChallengeManager().getChallenges(category)) {
 
 			ItemBuilder itemBuilder = ItemBuilder.modifyItem(challenge.getIcon().clone()).withName(challenge.getName())
-					.withLore(challenge.getDescription())
+					.withLore(challenge.getDescription()).addLore("", challenge.getDifficulty())
 					.withFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_POTION_EFFECTS);
 
 			if (challenge.isForced()) {
@@ -255,8 +257,11 @@ public class CustomInventoryManager implements Listener {
 	}
 
 	private String getTimeLeft(long time) {
-		DateFormat dateFormat = new SimpleDateFormat("mm:ss");
 
-		return dateFormat.format(new Date(time));
+		if (time < 60 * 60 + 1000) {
+			return dateFormat.format(new Date(time));
+		} else {
+			return dateFormatHours.format(new Date(time));
+		}
 	}
 }

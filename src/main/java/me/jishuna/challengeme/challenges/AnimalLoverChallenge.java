@@ -12,8 +12,8 @@ import me.jishuna.challengeme.api.player.ChallengePlayer;
 
 public class AnimalLoverChallenge extends Challenge {
 
-	public AnimalLoverChallenge(Plugin owner, YamlConfiguration messageConfig) {
-		super(owner, "animal-lover", messageConfig);
+	public AnimalLoverChallenge(Plugin owner, YamlConfiguration challengeConfig) {
+		super(owner, "animal-lover", challengeConfig);
 
 		addEventHandler(EntityDamageByEntityEvent.class, this::onAttack);
 	}

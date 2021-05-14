@@ -11,10 +11,11 @@ import me.jishuna.challengeme.api.player.ChallengePlayer;
 
 public class BouncyChallenge extends Challenge implements TickingChallenge {
 
-	public BouncyChallenge(Plugin owner, YamlConfiguration messageConfig) {
-		super(owner, "bouncy", messageConfig);
+	public BouncyChallenge(Plugin owner, YamlConfiguration challengeConfig) {
+		super(owner, "bouncy", challengeConfig);
 	}
 
+	//TODO come up with new method of checking if the player is on ground
 	@SuppressWarnings("deprecation")
 	@Override
 	public void onTick(ChallengePlayer challengePlayer, Player player) {

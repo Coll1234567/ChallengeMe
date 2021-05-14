@@ -19,19 +19,19 @@ import me.jishuna.challengeme.api.challenge.Challenge;
 import me.jishuna.challengeme.api.challenge.TickingChallenge;
 import me.jishuna.challengeme.api.player.ChallengePlayer;
 
-public class EffectMasterChallenge extends Challenge implements TickingChallenge {
+public class RandomEffectsChallenge extends Challenge implements TickingChallenge {
 
 	private final List<PotionEffectType> effects;
 	private final Map<UUID, Long> effectCache = new HashMap<>();
 	private final int maxLevel;
 	private final Random random = new Random();
 
-	public EffectMasterChallenge(Plugin owner, YamlConfiguration challengeConfig) {
-		this(owner, challengeConfig.getConfigurationSection("effect-master"));
+	public RandomEffectsChallenge(Plugin owner, YamlConfiguration challengeConfig) {
+		this(owner, challengeConfig.getConfigurationSection("random-effects"));
 	}
 
-	private EffectMasterChallenge(Plugin owner, ConfigurationSection challengeSection) {
-		super(owner, "effect-master", challengeSection);
+	private RandomEffectsChallenge(Plugin owner, ConfigurationSection challengeSection) {
+		super(owner, "random-effects", challengeSection);
 
 		this.effects = Arrays.asList(PotionEffectType.values()).stream().collect(Collectors.toList());
 
