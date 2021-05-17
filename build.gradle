@@ -23,7 +23,7 @@ dependencies {
 
 shadowJar {
     setArchiveName('ChallengeMe-' + this.version + '.jar')                                              
-    relocate 'me.jishuna.jishunacommonlib', 'me.jishuna.bloodmoon.libs.jishunacommonlib'                                             
+    relocate 'me.jishuna.commonlib', 'me.jishuna.bloodmoon.libs.jishunacommonlib'                                             
 }
 
 import org.apache.tools.ant.filters.ReplaceTokens

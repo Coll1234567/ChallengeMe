@@ -14,7 +14,7 @@ import me.jishuna.challengeme.api.challenge.Challenge;
 import me.jishuna.challengeme.api.player.ChallengePlayer;
 import me.jishuna.challengeme.api.player.PlayerManager;
 
-public class PacketAdapaterLivingSpawn extends PacketAdapter {
+public class PacketAdapterLivingSpawn extends PacketAdapter {
 
 	private final PlayerManager playerManager;
 
@@ -31,7 +31,7 @@ public class PacketAdapaterLivingSpawn extends PacketAdapter {
 		}
 	}
 
-	public PacketAdapaterLivingSpawn(ChallengeMe plugin, ListenerPriority listenerPriority) {
+	public PacketAdapterLivingSpawn(ChallengeMe plugin, ListenerPriority listenerPriority) {
 		super(plugin, listenerPriority, PacketType.Play.Server.SPAWN_ENTITY_LIVING);
 		this.playerManager = plugin.getPlayerManager();
 	}

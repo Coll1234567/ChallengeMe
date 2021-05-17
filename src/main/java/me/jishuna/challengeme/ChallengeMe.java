@@ -18,7 +18,7 @@ import me.jishuna.challengeme.commands.ChallengeCommand;
 import me.jishuna.challengeme.listeners.BlockListeners;
 import me.jishuna.challengeme.listeners.CombatListeners;
 import me.jishuna.challengeme.listeners.PlayerListeners;
-import me.jishuna.challengeme.packets.PacketAdapaterLivingSpawn;
+import me.jishuna.challengeme.packets.PacketAdapterLivingSpawn;
 import me.jishuna.challengeme.runnables.TickingChallengeRunnable;
 import me.jishuna.commonlib.FileUtils;
 import net.md_5.bungee.api.ChatColor;
@@ -102,7 +102,7 @@ public class ChallengeMe extends JavaPlugin {
 	private void registerPacketListeners() {
 		ProtocolManager manager = ProtocolLibrary.getProtocolManager();
 
-		manager.addPacketListener(new PacketAdapaterLivingSpawn(this, ListenerPriority.NORMAL));
+		manager.addPacketListener(new PacketAdapterLivingSpawn(this, ListenerPriority.NORMAL));
 	}
 
 	private void loadConfiguration() {

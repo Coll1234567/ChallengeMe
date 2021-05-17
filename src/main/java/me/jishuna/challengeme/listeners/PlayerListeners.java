@@ -7,6 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityAirChangeEvent;
 import org.bukkit.event.entity.EntityPotionEffectEvent;
+import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.EntityToggleGlideEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -24,7 +25,7 @@ public class PlayerListeners implements Listener {
 	public PlayerListeners(PlayerManager playerManager) {
 		this.playerManager = playerManager;
 	}
-	
+
 	@EventHandler
 	public void onInteract(PlayerInteractEvent event) {
 		if (event.getItem() == null || event.getItem().getType().isAir())
@@ -78,6 +79,22 @@ public class PlayerListeners implements Listener {
 			ChallengePlayer challengePlayer = playerOptional.get();
 			for (Challenge challenge : challengePlayer.getActiveChallenges()) {
 				challenge.getEventHandlers(PlayerItemConsumeEvent.class)
+						.forEach(consumer -> consumer.consume(event, challengePlayer));
+			}
+		}
+	}
+
+	@EventHandler
+	public void onRegainHealth(EntityRegainHealthEvent event) {
+		if (event.getEntityType() != EntityType.PLAYER)
+			return;
+
+		Optional<ChallengePlayer> playerOptional = playerManager.getPlayer(event.getEntity().getUniqueId());
+
+		if (playerOptional.isPresent()) {
+			ChallengePlayer challengePlayer = playerOptional.get();
+			for (Challenge challenge : challengePlayer.getActiveChallenges()) {
+				challenge.getEventHandlers(EntityRegainHealthEvent.class)
 						.forEach(consumer -> consumer.consume(event, challengePlayer));
 			}
 		}

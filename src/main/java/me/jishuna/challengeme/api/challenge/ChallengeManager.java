@@ -26,6 +26,7 @@ import me.jishuna.challengeme.challenges.InvisibleMobsChallenge;
 import me.jishuna.challengeme.challenges.NoDamageChallenge;
 import me.jishuna.challengeme.challenges.NoDarknessChallenge;
 import me.jishuna.challengeme.challenges.NoJumpChallenge;
+import me.jishuna.challengeme.challenges.NoRegenChallenge;
 import me.jishuna.challengeme.challenges.NoStoppingChallenge;
 import me.jishuna.challengeme.challenges.RandomEffectsChallenge;
 import me.jishuna.challengeme.challenges.ReverseGravityChallenge;
@@ -103,6 +104,7 @@ public class ChallengeManager {
 		defaultChallenges.add(new BouncyChallenge(plugin, challengeConfig));
 		defaultChallenges.add(new ReverseGravityChallenge(plugin, challengeConfig));
 		defaultChallenges.add(new NoDarknessChallenge(plugin, challengeConfig));
+		defaultChallenges.add(new NoRegenChallenge(plugin, challengeConfig));
 
 		return defaultChallenges;
 	}
