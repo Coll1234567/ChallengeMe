@@ -1,6 +1,5 @@
 package me.jishuna.challengeme.challenges;
 
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityToggleGlideEvent;
 import org.bukkit.plugin.Plugin;
@@ -11,9 +10,10 @@ import me.jishuna.challengeme.api.challenge.TickingChallenge;
 import me.jishuna.challengeme.api.player.ChallengePlayer;
 
 public class AlwaysGlidingChallenge extends Challenge implements TickingChallenge {
+	private static final String KEY = "always-gliding";
 
-	public AlwaysGlidingChallenge(Plugin owner, YamlConfiguration challengeConfig) {
-		super(owner, "always-gliding", challengeConfig);
+	public AlwaysGlidingChallenge(Plugin owner) {
+		super(owner, KEY, loadConfig(owner, KEY));
 
 		addEventHandler(EntityToggleGlideEvent.class, this::onToggleGlide);
 	}

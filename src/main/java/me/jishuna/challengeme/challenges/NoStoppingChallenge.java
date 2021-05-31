@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.bukkit.Location;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -17,16 +16,17 @@ import me.jishuna.challengeme.api.player.ChallengePlayer;
 public class NoStoppingChallenge extends Challenge implements TickingChallenge {
 
 	private final Map<UUID, NoStoppingChallengeData> challengeData = new HashMap<>();
-	private final int msNeeded;
+	private int msNeeded;
+	private static final String KEY = "no_stopping";
 
-	public NoStoppingChallenge(Plugin owner, YamlConfiguration challengeConfig) {
-		this(owner, challengeConfig.getConfigurationSection("no-stopping"));
+	public NoStoppingChallenge(Plugin owner) {
+		super(owner, KEY, loadConfig(owner, KEY));
 	}
+	@Override
+	protected void loadData(YamlConfiguration upgradeConfig) {
+		super.loadData(upgradeConfig);
 
-	private NoStoppingChallenge(Plugin owner, ConfigurationSection challengeSection) {
-		super(owner, "no-stopping", challengeSection);
-
-		this.msNeeded = challengeSection.getInt("seconds", 3) * 1000;
+		this.msNeeded = upgradeConfig.getInt("seconds", 3) * 1000;
 	}
 
 	@Override

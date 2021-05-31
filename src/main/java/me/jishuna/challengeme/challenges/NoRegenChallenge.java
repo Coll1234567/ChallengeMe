@@ -1,6 +1,5 @@
 package me.jishuna.challengeme.challenges;
 
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent.RegainReason;
@@ -11,9 +10,10 @@ import me.jishuna.challengeme.api.challenge.ToggleChallenge;
 import me.jishuna.challengeme.api.player.ChallengePlayer;
 
 public class NoRegenChallenge extends Challenge implements ToggleChallenge {
+	private static final String KEY = "no_regen";
 
-	public NoRegenChallenge(Plugin owner, YamlConfiguration challengeConfig) {
-		super(owner, "no-regen", challengeConfig);
+	public NoRegenChallenge(Plugin owner) {
+		super(owner, KEY, loadConfig(owner, KEY));
 
 		addEventHandler(EntityRegainHealthEvent.class, this::onRegen);
 	}

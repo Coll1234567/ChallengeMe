@@ -1,7 +1,6 @@
 package me.jishuna.challengeme.challenges;
 
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityPotionEffectEvent;
 import org.bukkit.event.entity.EntityPotionEffectEvent.Action;
@@ -14,10 +13,11 @@ import me.jishuna.challengeme.api.challenge.Challenge;
 import me.jishuna.challengeme.api.challenge.ToggleChallenge;
 import me.jishuna.challengeme.api.player.ChallengePlayer;
 
-public class NoJumpChallenge extends Challenge implements ToggleChallenge {
+public class NoJumpingChallenge extends Challenge implements ToggleChallenge {
+	private static final String KEY = "no_jumping";
 
-	public NoJumpChallenge(Plugin owner, YamlConfiguration challengeConfig) {
-		super(owner, "no-jump", challengeConfig);
+	public NoJumpingChallenge(Plugin owner) {
+		super(owner, KEY, loadConfig(owner, KEY));
 
 		addEventHandler(EntityPotionEffectEvent.class, this::onEffect);
 		addEventHandler(PlayerRespawnEvent.class, this::onRespawn);

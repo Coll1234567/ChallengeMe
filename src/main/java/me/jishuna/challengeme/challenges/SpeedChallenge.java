@@ -6,7 +6,6 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.attribute.AttributeModifier.Operation;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -20,17 +19,19 @@ import me.jishuna.challengeme.api.player.ChallengePlayer;
 public class SpeedChallenge extends Challenge implements ToggleChallenge, TickingChallenge {
 	private static final String MODIFIER_NAME = "challengeme_speedboost";
 	private double change;
+	private static final String KEY = "speed";
 
-	public SpeedChallenge(Plugin owner, YamlConfiguration challengeConfig) {
-		this(owner, challengeConfig.getConfigurationSection("speed"));
+	public SpeedChallenge(Plugin owner) {
+		super(owner, KEY, loadConfig(owner, KEY));
+		
+		addEventHandler(PlayerDeathEvent.class, this::onDeath);
 	}
 
-	private SpeedChallenge(Plugin owner, ConfigurationSection challengeSection) {
-		super(owner, "speed", challengeSection);
-
-		this.change = challengeSection.getDouble("change-per-cycle", 0.00001);
-
-		addEventHandler(PlayerDeathEvent.class, this::onDeath);
+	@Override
+	protected void loadData(YamlConfiguration upgradeConfig) {
+		super.loadData(upgradeConfig);
+		
+		this.change = upgradeConfig.getDouble("change-per-cycle", 0.00001);
 	}
 
 	private void onDeath(PlayerDeathEvent event, ChallengePlayer challengePlayer) {

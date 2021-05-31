@@ -2,7 +2,6 @@ package me.jishuna.challengeme.challenges;
 
 import java.lang.reflect.InvocationTargetException;
 
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityAirChangeEvent;
@@ -24,15 +23,17 @@ import net.minecraft.server.v1_16_R3.DamageSource;
 public class AquaticChallenge extends Challenge implements ToggleChallenge {
 	private final ProtocolManager manager = ProtocolLibrary.getProtocolManager();
 
-	public AquaticChallenge(Plugin owner, YamlConfiguration challengeConfig) {
-		super(owner, "aquatic", challengeConfig);
+	private static final String KEY = "aquatic";
+
+	public AquaticChallenge(Plugin owner) {
+		super(owner, KEY, loadConfig(owner, KEY));
 
 		addEventHandler(EntityAirChangeEvent.class, this::onAirChange);
 	}
 
 	private void onAirChange(EntityAirChangeEvent event, ChallengePlayer challengePlayer) {
 		Player player = (Player) event.getEntity();
-		
+
 		int oldAir = player.getRemainingAir();
 		int newAir = event.getAmount();
 

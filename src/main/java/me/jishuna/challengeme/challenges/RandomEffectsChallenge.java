@@ -8,7 +8,6 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -21,30 +20,31 @@ import me.jishuna.challengeme.api.player.ChallengePlayer;
 
 public class RandomEffectsChallenge extends Challenge implements TickingChallenge {
 
-	private final List<PotionEffectType> effects;
+	private List<PotionEffectType> effects;
 	private final Map<UUID, Long> effectCache = new HashMap<>();
-	private final int maxLevel;
+	private int maxLevel;
 	private final Random random = new Random();
+	private static final String KEY = "random_effects";
 
-	public RandomEffectsChallenge(Plugin owner, YamlConfiguration challengeConfig) {
-		this(owner, challengeConfig.getConfigurationSection("random-effects"));
+	public RandomEffectsChallenge(Plugin owner) {
+		super(owner, KEY, loadConfig(owner, KEY));
 	}
 
-	private RandomEffectsChallenge(Plugin owner, ConfigurationSection challengeSection) {
-		super(owner, "random-effects", challengeSection);
-
+	@Override
+	protected void loadData(YamlConfiguration upgradeConfig) {
+		super.loadData(upgradeConfig);
+		
 		this.effects = Arrays.asList(PotionEffectType.values()).stream().collect(Collectors.toList());
 
-		this.maxLevel = challengeSection.getInt("max-level", 3);
+		this.maxLevel = upgradeConfig.getInt("max-level", 3);
 
-		for (String effect : challengeSection.getStringList("blacklisted-effects")) {
+		for (String effect : upgradeConfig.getStringList("blacklisted-effects")) {
 			PotionEffectType type = PotionEffectType.getByName(effect.toUpperCase());
 
 			if (type != null) {
 				this.effects.remove(type);
 			}
 		}
-
 	}
 
 	@Override

@@ -5,7 +5,6 @@ import java.util.Random;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.plugin.Plugin;
@@ -16,9 +15,10 @@ import me.jishuna.challengeme.api.player.ChallengePlayer;
 
 public class EndermanChallenge extends Challenge implements TickingChallenge {
 	private final Random random = new Random();
+	private static final String KEY = "enderman";
 
-	public EndermanChallenge(Plugin owner, YamlConfiguration challengeConfig) {
-		super(owner, "enderman", challengeConfig);
+	public EndermanChallenge(Plugin owner) {
+		super(owner, KEY, loadConfig(owner, KEY));
 
 		addEventHandler(EntityDamageEvent.class, this::onDamage);
 	}

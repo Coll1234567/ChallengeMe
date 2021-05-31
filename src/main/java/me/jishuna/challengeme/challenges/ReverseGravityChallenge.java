@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityPotionEffectEvent;
@@ -23,9 +22,10 @@ import net.minecraft.server.v1_16_R3.DamageSource;
 
 public class ReverseGravityChallenge extends Challenge implements ToggleChallenge, TickingChallenge {
 	private final Map<UUID, Integer> challengeData = new HashMap<>();
+	private static final String KEY = "reverse_gravity";
 
-	public ReverseGravityChallenge(Plugin owner, YamlConfiguration challengeConfig) {
-		super(owner, "reverse-gravity", challengeConfig);
+	public ReverseGravityChallenge(Plugin owner) {
+		super(owner, KEY, loadConfig(owner, KEY));
 
 		addEventHandler(EntityPotionEffectEvent.class, this::onEffect);
 		addEventHandler(PlayerRespawnEvent.class, this::onRespawn);

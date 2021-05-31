@@ -25,7 +25,7 @@ import me.jishuna.challengeme.challenges.EndermanChallenge;
 import me.jishuna.challengeme.challenges.InvisibleMobsChallenge;
 import me.jishuna.challengeme.challenges.NoDamageChallenge;
 import me.jishuna.challengeme.challenges.NoDarknessChallenge;
-import me.jishuna.challengeme.challenges.NoJumpChallenge;
+import me.jishuna.challengeme.challenges.NoJumpingChallenge;
 import me.jishuna.challengeme.challenges.NoRegenChallenge;
 import me.jishuna.challengeme.challenges.NoStoppingChallenge;
 import me.jishuna.challengeme.challenges.RandomEffectsChallenge;
@@ -84,27 +84,25 @@ public class ChallengeManager {
 	private List<Challenge> getDefaultChallenges() {
 		List<Challenge> defaultChallenges = new ArrayList<>();
 
-		YamlConfiguration challengeConfig = this.plugin.getChallengeConfig();
-
-		defaultChallenges.add(new NoDamageChallenge(plugin, challengeConfig));
-		defaultChallenges.add(new VegitarianChallenge(plugin, challengeConfig));
-		defaultChallenges.add(new AnimalLoverChallenge(plugin, challengeConfig));
-		defaultChallenges.add(new VampireChallenge(plugin, challengeConfig));
-		defaultChallenges.add(new NoJumpChallenge(plugin, challengeConfig));
-		defaultChallenges.add(new DoublePainChallenge(plugin, challengeConfig));
-		defaultChallenges.add(new AlwaysGlidingChallenge(plugin, challengeConfig));
-		defaultChallenges.add(new ChunkEffectChallenge(plugin, challengeConfig));
-		defaultChallenges.add(new NoStoppingChallenge(plugin, challengeConfig));
-		defaultChallenges.add(new RandomEffectsChallenge(plugin, challengeConfig));
-		defaultChallenges.add(new InvisibleMobsChallenge(plugin, challengeConfig));
-		defaultChallenges.add(new EndermanChallenge(plugin, challengeConfig));
-		defaultChallenges.add(new AquaticChallenge(plugin, challengeConfig));
-		defaultChallenges.add(new SpeedChallenge(plugin, challengeConfig));
-		defaultChallenges.add(new BlockEffectChallenge(plugin, challengeConfig));
-		defaultChallenges.add(new BouncyChallenge(plugin, challengeConfig));
-		defaultChallenges.add(new ReverseGravityChallenge(plugin, challengeConfig));
-		defaultChallenges.add(new NoDarknessChallenge(plugin, challengeConfig));
-		defaultChallenges.add(new NoRegenChallenge(plugin, challengeConfig));
+		defaultChallenges.add(new NoDamageChallenge(plugin));
+		defaultChallenges.add(new VegitarianChallenge(plugin));
+		defaultChallenges.add(new AnimalLoverChallenge(plugin));
+		defaultChallenges.add(new VampireChallenge(plugin));
+		defaultChallenges.add(new NoJumpingChallenge(plugin));
+		defaultChallenges.add(new DoublePainChallenge(plugin));
+		defaultChallenges.add(new AlwaysGlidingChallenge(plugin));
+		defaultChallenges.add(new ChunkEffectChallenge(plugin));
+		defaultChallenges.add(new NoStoppingChallenge(plugin));
+		defaultChallenges.add(new RandomEffectsChallenge(plugin));
+		defaultChallenges.add(new InvisibleMobsChallenge(plugin));
+		defaultChallenges.add(new EndermanChallenge(plugin));
+		defaultChallenges.add(new AquaticChallenge(plugin));
+		defaultChallenges.add(new SpeedChallenge(plugin));
+		defaultChallenges.add(new BlockEffectChallenge(plugin));
+		defaultChallenges.add(new BouncyChallenge(plugin));
+		defaultChallenges.add(new ReverseGravityChallenge(plugin));
+		defaultChallenges.add(new NoDarknessChallenge(plugin));
+		defaultChallenges.add(new NoRegenChallenge(plugin));
 
 		return defaultChallenges;
 	}

@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -19,16 +18,18 @@ import net.md_5.bungee.api.chat.TextComponent;
 public class NoDarknessChallenge extends Challenge implements TickingChallenge {
 
 	private final Map<UUID, Integer> challengeData = new HashMap<>();
-	private final boolean showMessage;
+	private boolean showMessage;
+	private static final String KEY = "no_darkness";
 
-	public NoDarknessChallenge(Plugin owner, YamlConfiguration challengeConfig) {
-		this(owner, challengeConfig.getConfigurationSection("no-darkness"));
+	public NoDarknessChallenge(Plugin owner) {
+		super(owner, KEY, loadConfig(owner, KEY));
 	}
 
-	private NoDarknessChallenge(Plugin owner, ConfigurationSection challengeSection) {
-		super(owner, "no-darkness", challengeSection);
-
-		this.showMessage = challengeSection.getBoolean("show-message");
+	@Override
+	protected void loadData(YamlConfiguration upgradeConfig) {
+		super.loadData(upgradeConfig);
+		
+		this.showMessage = upgradeConfig.getBoolean("show-message");
 	}
 
 	@Override

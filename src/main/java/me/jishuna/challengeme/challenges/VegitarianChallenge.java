@@ -1,6 +1,5 @@
 package me.jishuna.challengeme.challenges;
 
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.plugin.Plugin;
@@ -10,9 +9,10 @@ import me.jishuna.challengeme.api.player.ChallengePlayer;
 import me.jishuna.commonlib.MaterialSets;
 
 public class VegitarianChallenge extends Challenge {
+	private static final String KEY = "vegitarian";
 
-	public VegitarianChallenge(Plugin owner, YamlConfiguration challengeConfig) {
-		super(owner, "vegitarian", challengeConfig);
+	public VegitarianChallenge(Plugin owner) {
+		super(owner, KEY, loadConfig(owner, KEY));
 		
 		addEventHandler(PlayerInteractEvent.class, this::onInteract);
 		addEventHandler(PlayerItemConsumeEvent.class, this::onConsume);

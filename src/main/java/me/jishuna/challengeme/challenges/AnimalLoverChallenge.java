@@ -1,6 +1,5 @@
 package me.jishuna.challengeme.challenges;
 
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Animals;
 import org.bukkit.entity.Fish;
 import org.bukkit.entity.Player;
@@ -11,9 +10,10 @@ import me.jishuna.challengeme.api.challenge.Challenge;
 import me.jishuna.challengeme.api.player.ChallengePlayer;
 
 public class AnimalLoverChallenge extends Challenge {
+	private static final String KEY = "animal-lover";
 
-	public AnimalLoverChallenge(Plugin owner, YamlConfiguration challengeConfig) {
-		super(owner, "animal-lover", challengeConfig);
+	public AnimalLoverChallenge(Plugin owner) {
+		super(owner, KEY, loadConfig(owner, KEY));
 
 		addEventHandler(EntityDamageByEntityEvent.class, this::onAttack);
 	}

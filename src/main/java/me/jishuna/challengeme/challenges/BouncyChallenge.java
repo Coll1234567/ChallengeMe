@@ -1,6 +1,5 @@
 package me.jishuna.challengeme.challenges;
 
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
@@ -10,9 +9,10 @@ import me.jishuna.challengeme.api.challenge.TickingChallenge;
 import me.jishuna.challengeme.api.player.ChallengePlayer;
 
 public class BouncyChallenge extends Challenge implements TickingChallenge {
+	private static final String KEY = "bouncy";
 
-	public BouncyChallenge(Plugin owner, YamlConfiguration challengeConfig) {
-		super(owner, "bouncy", challengeConfig);
+	public BouncyChallenge(Plugin owner) {
+		super(owner, KEY, loadConfig(owner, KEY));
 	}
 
 	//TODO come up with new method of checking if the player is on ground

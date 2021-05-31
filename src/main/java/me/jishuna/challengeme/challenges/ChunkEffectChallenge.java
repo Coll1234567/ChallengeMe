@@ -9,7 +9,6 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.bukkit.Chunk;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityPotionEffectEvent;
@@ -25,30 +24,33 @@ import me.jishuna.challengeme.api.player.ChallengePlayer;
 
 public class ChunkEffectChallenge extends Challenge implements TickingChallenge, ToggleChallenge {
 
-	private final List<PotionEffectType> effects;
+	private List<PotionEffectType> effects;
 	private final Map<UUID, ChunkEffectCache> effectCache = new HashMap<>();
-	private final int maxLevel;
+	private int maxLevel;
 
-	public ChunkEffectChallenge(Plugin owner, YamlConfiguration challengeConfig) {
-		this(owner, challengeConfig.getConfigurationSection("chunk-effects"));
+	private static final String KEY = "chunk_effects";
+
+	public ChunkEffectChallenge(Plugin owner) {
+		super(owner, KEY, loadConfig(owner, KEY));
+
+		addEventHandler(EntityPotionEffectEvent.class, this::onEffect);
 	}
 
-	private ChunkEffectChallenge(Plugin owner, ConfigurationSection challengeSection) {
-		super(owner, "chunk-effects", challengeSection);
+	@Override
+	protected void loadData(YamlConfiguration upgradeConfig) {
+		super.loadData(upgradeConfig);
 
 		this.effects = Arrays.asList(PotionEffectType.values()).stream().collect(Collectors.toList());
-		
-		this.maxLevel = challengeSection.getInt("max-level", 3);
 
-		for (String effect : challengeSection.getStringList("blacklisted-effects")) {
+		this.maxLevel = upgradeConfig.getInt("max-level", 3);
+
+		for (String effect : upgradeConfig.getStringList("blacklisted-effects")) {
 			PotionEffectType type = PotionEffectType.getByName(effect.toUpperCase());
 
 			if (type != null) {
 				this.effects.remove(type);
 			}
 		}
-
-		addEventHandler(EntityPotionEffectEvent.class, this::onEffect);
 	}
 
 	private void onEffect(EntityPotionEffectEvent event, ChallengePlayer challengePlayer) {

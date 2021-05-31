@@ -1,0 +1,7 @@
+enabled: true
+forced: false
+category: 'movement'
+name: '&f&lNo Jumping'
+description: '&3You take no fall damage, but you are unable to jump.'
+difficulty: '&bDifficulty: &6&lMedium'
+material: 'POTION,34,255,76'

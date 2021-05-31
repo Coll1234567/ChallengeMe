@@ -1,8 +1,10 @@
 package me.jishuna.challengeme.api.challenge;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.BiConsumer;
 
 import org.bukkit.Material;
@@ -19,6 +21,7 @@ import com.google.common.collect.Multimap;
 import me.jishuna.challengeme.api.event.EventWrapper;
 import me.jishuna.challengeme.api.packets.PacketWrapper;
 import me.jishuna.challengeme.api.player.ChallengePlayer;
+import me.jishuna.commonlib.FileUtils;
 import me.jishuna.commonlib.ItemParser;
 import me.jishuna.commonlib.StringUtils;
 import net.md_5.bungee.api.ChatColor;
@@ -28,21 +31,52 @@ public abstract class Challenge {
 	private final Plugin owningPlugin;
 
 	private final String key;
-	private final String name;
-	private final String message;
-	private final String difficulty;
+	private String name;
+	private String message;
+	private String difficulty;
 	private String category;
 	private List<String> description;
-	private final ItemStack icon;
-	private final boolean enabled;
-	private final boolean forced;
+	private ItemStack icon;
+	private boolean enabled = true;
+	private boolean forced = false;
 
 	private final Multimap<Class<? extends Event>, EventWrapper<? extends Event>> handlerMap = ArrayListMultimap
 			.create();
 	private final Multimap<PacketType, PacketWrapper> packetMap = ArrayListMultimap.create();
 
-	public Challenge(Plugin owner, String key, YamlConfiguration challengeConfig) {
-		this(owner, key, challengeConfig.getConfigurationSection(key));
+	public Challenge(Plugin owner, String key, YamlConfiguration upgradeConfig) {
+		this.key = key;
+		this.owningPlugin = owner;
+
+		if (upgradeConfig != null)
+			loadData(upgradeConfig);
+	}
+
+	protected void loadData(YamlConfiguration upgradeConfig) {
+
+		this.category = upgradeConfig.getString("category", "");
+
+		this.enabled = upgradeConfig.getBoolean("enabled", true);
+		this.forced = upgradeConfig.getBoolean("forced", false);
+
+		this.name = ChatColor.translateAlternateColorCodes('&', upgradeConfig.getString("name", ""));
+		this.message = ChatColor.translateAlternateColorCodes('&', upgradeConfig.getString("message", ""));
+		this.difficulty = ChatColor.translateAlternateColorCodes('&', upgradeConfig.getString("difficulty", ""));
+
+		this.icon = ItemParser.parseItem(upgradeConfig.getString("material", ""), Material.DIAMOND);
+
+		String description = ChatColor.translateAlternateColorCodes('&', upgradeConfig.getString("description", ""));
+
+		for (String configKey : upgradeConfig.getKeys(false)) {
+			description = description.replace("%" + configKey + "%", upgradeConfig.getString(configKey));
+		}
+
+		List<String> desc = new ArrayList<>();
+
+		for (String line : description.split("\\\\n")) {
+			desc.addAll(StringUtils.splitString(line, 30));
+		}
+		this.description = desc;
 	}
 
 	public Challenge(Plugin owner, String key, ConfigurationSection challengeSection) {
@@ -132,6 +166,15 @@ public abstract class Challenge {
 
 	public Collection<PacketWrapper> getPacketHandlers(PacketType type) {
 		return this.packetMap.get(type);
+	}
+
+	protected static YamlConfiguration loadConfig(Plugin owner, String key) {
+		Optional<File> optional = FileUtils.copyResource(owner, "challenges/" + key + ".yml");
+
+		if (optional.isPresent()) {
+			return YamlConfiguration.loadConfiguration(optional.get());
+		}
+		return null;
 	}
 
 }

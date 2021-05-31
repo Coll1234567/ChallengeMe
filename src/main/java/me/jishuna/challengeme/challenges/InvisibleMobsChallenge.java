@@ -3,7 +3,6 @@ package me.jishuna.challengeme.challenges;
 import java.lang.reflect.InvocationTargetException;
 
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -24,9 +23,10 @@ import me.jishuna.challengeme.api.player.ChallengePlayer;
 public class InvisibleMobsChallenge extends Challenge implements ToggleChallenge {
 	private final ProtocolManager manager = ProtocolLibrary.getProtocolManager();
 	private final int EFFECT_COLOR = 8356754;
+	private static final String KEY = "invisible_mobs";
 
-	public InvisibleMobsChallenge(Plugin owner, YamlConfiguration challengeConfig) {
-		super(owner, "invisible-mobs", challengeConfig);
+	public InvisibleMobsChallenge(Plugin owner) {
+		super(owner, KEY, loadConfig(owner, KEY));
 
 		PacketWrapper wrapper = new PacketWrapper(PacketType.Play.Server.SPAWN_ENTITY_LIVING);
 		wrapper.setSendHandler(this::onEntitySpawn);
