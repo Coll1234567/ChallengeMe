@@ -15,10 +15,10 @@ import com.comphenix.protocol.ProtocolManager;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 
+import me.jishuna.challengeme.ChallengeMe;
 import me.jishuna.challengeme.api.challenge.Challenge;
 import me.jishuna.challengeme.api.challenge.ToggleChallenge;
 import me.jishuna.challengeme.api.player.ChallengePlayer;
-import me.jishuna.challengeme.nms.NMSManager;
 
 public class AquaticChallenge extends Challenge implements ToggleChallenge {
 	private final ProtocolManager manager = ProtocolLibrary.getProtocolManager();
@@ -45,7 +45,7 @@ public class AquaticChallenge extends Challenge implements ToggleChallenge {
 		}
 		if (air <= -20) {
 			air = 0;
-			NMSManager.getInstance().getAdapter().damageEntity(player, DamageCause.DROWNING, 2);
+			ChallengeMe.getNMSAdapter().damageEntity(player, DamageCause.DROWNING, 2);
 			if (player.isDead()) {
 				air = player.getMaximumAir() - 1;
 			}

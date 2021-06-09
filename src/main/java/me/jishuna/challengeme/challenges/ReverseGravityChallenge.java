@@ -14,11 +14,11 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import me.jishuna.challengeme.ChallengeMe;
 import me.jishuna.challengeme.api.challenge.Challenge;
 import me.jishuna.challengeme.api.challenge.TickingChallenge;
 import me.jishuna.challengeme.api.challenge.ToggleChallenge;
 import me.jishuna.challengeme.api.player.ChallengePlayer;
-import me.jishuna.challengeme.nms.NMSManager;
 
 public class ReverseGravityChallenge extends Challenge implements ToggleChallenge, TickingChallenge {
 	private final Map<UUID, Integer> challengeData = new HashMap<>();
@@ -65,7 +65,7 @@ public class ReverseGravityChallenge extends Challenge implements ToggleChalleng
 			checks = (checks + 1) % 2;
 
 			if (checks == 0) {
-				NMSManager.getInstance().getAdapter().damageEntity(player, DamageCause.VOID, 5);
+				ChallengeMe.getNMSAdapter().damageEntity(player, DamageCause.VOID, 5);
 			}
 			this.challengeData.put(player.getUniqueId(), checks);
 		}

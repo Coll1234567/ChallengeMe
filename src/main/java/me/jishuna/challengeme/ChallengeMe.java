@@ -15,12 +15,16 @@ import me.jishuna.challengeme.commands.ChallengeCommand;
 import me.jishuna.challengeme.listeners.BlockListeners;
 import me.jishuna.challengeme.listeners.CombatListeners;
 import me.jishuna.challengeme.listeners.PlayerListeners;
+import me.jishuna.challengeme.nms.NMSAdapter;
 import me.jishuna.challengeme.packets.PacketAdapterLivingSpawn;
 import me.jishuna.challengeme.runnables.TickingChallengeRunnable;
 import me.jishuna.commonlib.utils.FileUtils;
+import me.jishuna.commonlib.utils.VersionUtils;
 import net.md_5.bungee.api.ChatColor;
 
 public class ChallengeMe extends JavaPlugin {
+
+	private static NMSAdapter adapter;
 
 	private final int DELAY = 5;
 
@@ -37,6 +41,7 @@ public class ChallengeMe extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
+		initializeNMSAdapter();
 		loadConfiguration();
 		PluginKeys.initialize(this);
 
@@ -63,6 +68,19 @@ public class ChallengeMe extends JavaPlugin {
 		getCommand("challenges").setExecutor(new ChallengeCommand(this));
 
 		registerPacketListeners();
+	}
+
+	private void initializeNMSAdapter() {
+		String version = VersionUtils.getServerVersion();
+
+		try {
+			adapter = (NMSAdapter) Class.forName("me.jishuna.challengeme.nms.NMSAdapter_" + version).newInstance();
+		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+			getLogger().severe("Server version \"" + version + "\" is unsupported! Check the plugin page for updates.");
+			getLogger().severe("Plugin will now be disabled.");
+
+			Bukkit.getPluginManager().disablePlugin(this);
+		}
 	}
 
 	@Override
@@ -114,6 +132,10 @@ public class ChallengeMe extends JavaPlugin {
 
 	public String getMessage(String key) {
 		return ChatColor.translateAlternateColorCodes('&', this.messageConfig.getString(key, ""));
+	}
+
+	public static NMSAdapter getNMSAdapter() {
+		return adapter;
 	}
 
 }
