@@ -1,8 +1,5 @@
 package me.jishuna.challengeme;
 
-import java.io.File;
-import java.util.Optional;
-
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -109,17 +106,10 @@ public class ChallengeMe extends JavaPlugin {
 		if (!this.getDataFolder().exists())
 			this.getDataFolder().mkdirs();
 
-		Optional<File> challengeOptional = FileUtils.copyResource(this, "challenges.yml");
-		challengeOptional.ifPresent(file -> this.challengeConfig = YamlConfiguration.loadConfiguration(file));
-
-		Optional<File> categoryOptional = FileUtils.copyResource(this, "categories.yml");
-		categoryOptional.ifPresent(file -> this.cateogryConfig = YamlConfiguration.loadConfiguration(file));
-
-		Optional<File> configOptional = FileUtils.copyResource(this, "config.yml");
-		configOptional.ifPresent(file -> this.config = YamlConfiguration.loadConfiguration(file));
-
-		Optional<File> messageOptional = FileUtils.copyResource(this, "messages.yml");
-		messageOptional.ifPresent(file -> this.messageConfig = YamlConfiguration.loadConfiguration(file));
+		FileUtils.loadResource(this, "config.yml").ifPresent(config -> this.config = config);
+		FileUtils.loadResource(this, "messages.yml").ifPresent(config -> this.messageConfig = config);
+		FileUtils.loadResource(this, "categories.yml").ifPresent(config -> this.cateogryConfig = config);
+		FileUtils.loadResource(this, "challenges.yml").ifPresent(config -> this.challengeConfig = config);
 	}
 
 	public String getMessage(String key) {

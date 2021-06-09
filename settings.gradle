@@ -8,4 +8,4 @@
  */
 
 rootProject.name = 'ChallengeMe'
-include('lib')
+include('v1_16_R3')

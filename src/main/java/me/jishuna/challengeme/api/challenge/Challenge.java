@@ -1,10 +1,8 @@
 package me.jishuna.challengeme.api.challenge;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.BiConsumer;
 
 import org.bukkit.Material;
@@ -169,12 +167,7 @@ public abstract class Challenge {
 	}
 
 	protected static YamlConfiguration loadConfig(Plugin owner, String key) {
-		Optional<File> optional = FileUtils.copyResource(owner, "challenges/" + key + ".yml");
-
-		if (optional.isPresent()) {
-			return YamlConfiguration.loadConfiguration(optional.get());
-		}
-		return null;
+		return FileUtils.loadResource(owner, "challenges/" + key + ".yml").get();
 	}
 
 }
