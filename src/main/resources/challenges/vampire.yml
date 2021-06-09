@@ -1,0 +1,7 @@
+enabled: true
+forced: false
+category: 'world'
+name: '&c&lVampire'
+description: '&3Being outside in sunlight causes you to burn.'
+difficulty: '&bDifficulty: &6&lMedium'
+material: 'PLAYER_HEAD,8d44756e0b4ece8d746296a3d5e297e1415f4ba17647ffe228385383d161a9'

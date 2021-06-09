@@ -28,15 +28,22 @@ public class NoDarknessChallenge extends Challenge implements TickingChallenge {
 	@Override
 	protected void loadData(YamlConfiguration upgradeConfig) {
 		super.loadData(upgradeConfig);
-		
-		this.showMessage = upgradeConfig.getBoolean("show-message");
+
+		this.showMessage = upgradeConfig.getBoolean("show-actionbar");
 	}
 
 	@Override
 	public void onTick(ChallengePlayer challengePlayer, Player player) {
 		byte light = player.getLocation().getBlock().getLightLevel();
 		if (this.showMessage) {
-			String lightLevel = light < 3 ? ChatColor.RED.toString() + light : ChatColor.GREEN.toString() + light;
+			ChatColor color = ChatColor.GREEN;
+			if (light <= 0) {
+				color = ChatColor.DARK_RED;
+			} else if (light <= 3) {
+				color = ChatColor.RED;
+			}
+
+			String lightLevel = color.toString() + light;
 			player.spigot().sendMessage(ChatMessageType.ACTION_BAR,
 					TextComponent.fromLegacyText(this.getMessage().replace("%light%", lightLevel)));
 		}

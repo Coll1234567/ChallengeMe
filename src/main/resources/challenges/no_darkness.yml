@@ -1,0 +1,9 @@
+enabled: true
+forced: false
+category: 'world'
+name: '&8&lAffraid of the Dark'
+description: '&3You will take damage if you stand in complete darkness.'
+difficulty: '&bDifficulty: &a&lEasy'
+material: 'GLOWSTONE'
+message: '&6Light: %light%'
+show-actionbar: true

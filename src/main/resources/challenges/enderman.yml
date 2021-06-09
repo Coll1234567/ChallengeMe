@@ -1,0 +1,7 @@
+enabled: true
+forced: false
+category: 'mobs'
+name: '&5&lEnderman'
+description: '&3Touching water hurts you and taking damage will teleport you to a random spot nearby.'
+difficulty: '&bDifficulty: &6&lMedium'
+material: 'PLAYER_HEAD,96c0b36d53fff69a49c7d6f3932f2b0fe948e032226d5e8045ec58408a36e951'

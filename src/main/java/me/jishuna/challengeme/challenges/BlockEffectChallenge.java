@@ -17,7 +17,7 @@ import me.jishuna.challengeme.api.player.ChallengePlayer;
 
 public class BlockEffectChallenge extends Challenge {
 
-	private final List<PotionEffectType> effects;
+	private List<PotionEffectType> effects;
 	private int maxLevel;
 	private int duration;
 	private int chance;
@@ -27,13 +27,14 @@ public class BlockEffectChallenge extends Challenge {
 	public BlockEffectChallenge(Plugin owner) {
 		super(owner, KEY, loadConfig(owner, KEY));
 
-		this.effects = Arrays.asList(PotionEffectType.values()).stream().collect(Collectors.toList());
 		addEventHandler(BlockBreakEvent.class, this::onBreakBlock);
 	}
 
 	@Override
 	protected void loadData(YamlConfiguration upgradeConfig) {
 		super.loadData(upgradeConfig);
+		
+		this.effects = Arrays.asList(PotionEffectType.values()).stream().collect(Collectors.toList());
 
 		this.maxLevel = upgradeConfig.getInt("max-level", 3);
 		this.duration = upgradeConfig.getInt("duration", 100);

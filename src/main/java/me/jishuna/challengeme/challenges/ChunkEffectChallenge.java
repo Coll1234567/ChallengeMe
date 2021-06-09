@@ -17,6 +17,8 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import com.google.common.base.Objects;
+
 import me.jishuna.challengeme.api.challenge.Challenge;
 import me.jishuna.challengeme.api.challenge.TickingChallenge;
 import me.jishuna.challengeme.api.challenge.ToggleChallenge;
@@ -86,18 +88,12 @@ public class ChunkEffectChallenge extends Challenge implements TickingChallenge,
 				if (activeEffect != null && activeEffect.getAmplifier() == oldCache.getLevel())
 					player.removePotionEffect(oldCache.getEffectType());
 			}
-			player.addPotionEffect(new PotionEffect(newType, Integer.MAX_VALUE, level, true, false));
+			player.addPotionEffect(new PotionEffect(newType, Integer.MAX_VALUE, level, true));
 		}
 	}
 
 	private long hashChunk(Chunk chunk) {
-		long hash = 3;
-
-		hash = 19 * hash + chunk.getWorld().getSeed();
-		hash = 19 * hash + chunk.getX() ^ (chunk.getX() >>> 32);
-		hash = 19 * hash + chunk.getZ() ^ (chunk.getZ() >>> 32);
-
-		return hash;
+		return Objects.hashCode(chunk.getWorld().getSeed(), chunk.getX(), chunk.getZ());
 	}
 
 	@Override

@@ -1,0 +1,8 @@
+enabled: true
+forced: false
+category: 'combat'
+name: '&c&lNo-hit Wonder'
+description: '&3Any damage you take is fatal. \n \n&7(Excluding damage from sources that don''t deal any actual damage, such as snowballs.)'
+difficulty: '&bDifficulty: &c&lHard'
+material: 'DIAMOND_SWORD'
+message: '&4&l[No-hit Wonder]: &cYou took damage.'

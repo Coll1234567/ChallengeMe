@@ -54,7 +54,7 @@ public class RandomEffectsChallenge extends Challenge implements TickingChalleng
 
 		if (time <= System.currentTimeMillis()) {
 			player.addPotionEffect(new PotionEffect(this.effects.get(random.nextInt(this.effects.size())), 60 * 20,
-					random.nextInt(this.maxLevel), true, false));
+					random.nextInt(this.maxLevel), true));
 
 			this.effectCache.put(id, System.currentTimeMillis() + 59 * 1000);
 		}

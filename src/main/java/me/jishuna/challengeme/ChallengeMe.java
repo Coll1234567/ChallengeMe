@@ -75,6 +75,7 @@ public class ChallengeMe extends JavaPlugin {
 
 		try {
 			adapter = (NMSAdapter) Class.forName("me.jishuna.challengeme.nms.NMSAdapter_" + version).newInstance();
+			getLogger().info("Version detected: " + version);
 		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
 			getLogger().severe("Server version \"" + version + "\" is unsupported! Check the plugin page for updates.");
 			getLogger().severe("Plugin will now be disabled.");

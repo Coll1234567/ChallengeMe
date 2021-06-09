@@ -10,7 +10,7 @@ import me.jishuna.challengeme.api.challenge.TickingChallenge;
 import me.jishuna.challengeme.api.player.ChallengePlayer;
 
 public class AlwaysGlidingChallenge extends Challenge implements TickingChallenge {
-	private static final String KEY = "always-gliding";
+	private static final String KEY = "always_gliding";
 
 	public AlwaysGlidingChallenge(Plugin owner) {
 		super(owner, KEY, loadConfig(owner, KEY));

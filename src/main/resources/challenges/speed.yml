@@ -1,0 +1,8 @@
+enabled: true
+forced: false
+category: 'movement'
+name: '&b&lSpeed'
+description: '&3Your speed will slowly increase over time, it will reset upon death.'
+difficulty: '&bDifficulty: &6&lMedium'
+material: 'POTION,124,175,198'
+change-per-cycle: 0.00001

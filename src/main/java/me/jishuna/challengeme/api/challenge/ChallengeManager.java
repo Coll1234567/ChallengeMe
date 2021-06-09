@@ -2,6 +2,7 @@ package me.jishuna.challengeme.api.challenge;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -124,6 +125,6 @@ public class ChallengeManager {
 	}
 
 	public Collection<Challenge> getChallenges(Category category) {
-		return this.categoryChallengeMap.get(category);
+		return this.categoryChallengeMap.getOrDefault(category, Collections.emptyList());
 	}
 }

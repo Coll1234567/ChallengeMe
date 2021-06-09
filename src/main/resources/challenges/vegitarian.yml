@@ -1,0 +1,8 @@
+enabled: true
+forced: false
+category: 'misc'
+name: '&a&lVegitarian'
+description: '&3You are unable to eat any meat.'
+difficulty: '&bDifficulty: &6&lMedium'
+material: 'CARROT'
+message: '&4&l[Vegitarian]: &cYou are unable to eat meat.'

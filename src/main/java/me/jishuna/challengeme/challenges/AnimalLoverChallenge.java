@@ -10,7 +10,7 @@ import me.jishuna.challengeme.api.challenge.Challenge;
 import me.jishuna.challengeme.api.player.ChallengePlayer;
 
 public class AnimalLoverChallenge extends Challenge {
-	private static final String KEY = "animal-lover";
+	private static final String KEY = "animal_lover";
 
 	public AnimalLoverChallenge(Plugin owner) {
 		super(owner, KEY, loadConfig(owner, KEY));

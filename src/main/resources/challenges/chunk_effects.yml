@@ -1,0 +1,12 @@
+enabled: true
+forced: false
+category: 'effects'
+name: '&2&lChunk Effects'
+description: '&3Each chunk will give you a random potion effect.'
+difficulty: '&bDifficulty: &a&lEasy'
+material: 'BREWING_STAND'
+max-level: 3
+blacklisted-effects:
+  - 'HARM'
+  - 'HEAL'
+  - 'CONFUSION'
