@@ -5,8 +5,8 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityPotionEffectEvent;
 import org.bukkit.event.entity.EntityPotionEffectEvent.Action;
 import org.bukkit.event.player.PlayerRespawnEvent;
@@ -18,7 +18,7 @@ import me.jishuna.challengeme.api.challenge.Challenge;
 import me.jishuna.challengeme.api.challenge.TickingChallenge;
 import me.jishuna.challengeme.api.challenge.ToggleChallenge;
 import me.jishuna.challengeme.api.player.ChallengePlayer;
-import net.minecraft.server.v1_16_R3.DamageSource;
+import me.jishuna.challengeme.nms.NMSManager;
 
 public class ReverseGravityChallenge extends Challenge implements ToggleChallenge, TickingChallenge {
 	private final Map<UUID, Integer> challengeData = new HashMap<>();
@@ -65,7 +65,7 @@ public class ReverseGravityChallenge extends Challenge implements ToggleChalleng
 			checks = (checks + 1) % 2;
 
 			if (checks == 0) {
-				((CraftPlayer) player).getHandle().damageEntity(DamageSource.OUT_OF_WORLD, 5);
+				NMSManager.getInstance().getAdapter().damageEntity(player, DamageCause.VOID, 5);
 			}
 			this.challengeData.put(player.getUniqueId(), checks);
 		}

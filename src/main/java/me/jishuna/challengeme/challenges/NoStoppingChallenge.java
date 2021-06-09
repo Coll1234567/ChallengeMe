@@ -8,6 +8,7 @@ import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.util.Vector;
 
 import me.jishuna.challengeme.api.challenge.Challenge;
 import me.jishuna.challengeme.api.challenge.TickingChallenge;
@@ -22,6 +23,7 @@ public class NoStoppingChallenge extends Challenge implements TickingChallenge {
 	public NoStoppingChallenge(Plugin owner) {
 		super(owner, KEY, loadConfig(owner, KEY));
 	}
+
 	@Override
 	protected void loadData(YamlConfiguration upgradeConfig) {
 		super.loadData(upgradeConfig);
@@ -47,5 +49,42 @@ public class NoStoppingChallenge extends Challenge implements TickingChallenge {
 
 		if (challengeData.getTimestamp() <= System.currentTimeMillis())
 			player.setFireTicks(20);
+	}
+
+	public static class NoStoppingChallengeData {
+		private long timestamp;
+		private Vector lastLocation;
+
+		public NoStoppingChallengeData(Location location, long timestamp) {
+			this.lastLocation = location.toVector();
+			this.timestamp = timestamp;
+		}
+
+		public long getTimestamp() {
+			return timestamp;
+		}
+
+		public void setTimestamp(long timestamp) {
+			this.timestamp = timestamp;
+		}
+
+		public void setLastLocation(Location lastLocation) {
+			this.lastLocation = lastLocation.toVector();
+		}
+
+		public boolean compareLocations(Location location) {
+			if (Double.doubleToLongBits(this.lastLocation.getX()) != Double.doubleToLongBits(location.getX())) {
+				return false;
+			}
+			if (Double.doubleToLongBits(this.lastLocation.getY()) != Double.doubleToLongBits(location.getY())) {
+				return false;
+			}
+			if (Double.doubleToLongBits(this.lastLocation.getZ()) != Double.doubleToLongBits(location.getZ())) {
+				return false;
+			}
+
+			return true;
+		}
+
 	}
 }

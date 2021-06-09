@@ -17,7 +17,7 @@ import me.jishuna.challengeme.listeners.CombatListeners;
 import me.jishuna.challengeme.listeners.PlayerListeners;
 import me.jishuna.challengeme.packets.PacketAdapterLivingSpawn;
 import me.jishuna.challengeme.runnables.TickingChallengeRunnable;
-import me.jishuna.commonlib.FileUtils;
+import me.jishuna.commonlib.utils.FileUtils;
 import net.md_5.bungee.api.ChatColor;
 
 public class ChallengeMe extends JavaPlugin {

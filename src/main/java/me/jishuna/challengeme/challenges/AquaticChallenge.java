@@ -2,9 +2,9 @@ package me.jishuna.challengeme.challenges;
 
 import java.lang.reflect.InvocationTargetException;
 
-import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityAirChangeEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -18,7 +18,7 @@ import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 import me.jishuna.challengeme.api.challenge.Challenge;
 import me.jishuna.challengeme.api.challenge.ToggleChallenge;
 import me.jishuna.challengeme.api.player.ChallengePlayer;
-import net.minecraft.server.v1_16_R3.DamageSource;
+import me.jishuna.challengeme.nms.NMSManager;
 
 public class AquaticChallenge extends Challenge implements ToggleChallenge {
 	private final ProtocolManager manager = ProtocolLibrary.getProtocolManager();
@@ -45,11 +45,12 @@ public class AquaticChallenge extends Challenge implements ToggleChallenge {
 		}
 		if (air <= -20) {
 			air = 0;
-			((CraftPlayer) player).getHandle().damageEntity(DamageSource.DROWN, 2);
+			NMSManager.getInstance().getAdapter().damageEntity(player, DamageCause.DROWNING, 2);
 			if (player.isDead()) {
 				air = player.getMaximumAir() - 1;
 			}
 		}
+
 		event.setAmount(air);
 
 		if (player.isInWater() && player.getEyeLocation().getBlock().isLiquid()) {

@@ -19,9 +19,9 @@ import com.google.common.collect.Multimap;
 import me.jishuna.challengeme.api.event.EventWrapper;
 import me.jishuna.challengeme.api.packets.PacketWrapper;
 import me.jishuna.challengeme.api.player.ChallengePlayer;
-import me.jishuna.commonlib.FileUtils;
-import me.jishuna.commonlib.ItemParser;
-import me.jishuna.commonlib.StringUtils;
+import me.jishuna.commonlib.items.ItemParser;
+import me.jishuna.commonlib.utils.FileUtils;
+import me.jishuna.commonlib.utils.StringUtils;
 import net.md_5.bungee.api.ChatColor;
 
 public abstract class Challenge {

@@ -29,8 +29,8 @@ import me.jishuna.challengeme.PluginKeys;
 import me.jishuna.challengeme.api.challenge.Category;
 import me.jishuna.challengeme.api.challenge.Challenge;
 import me.jishuna.challengeme.api.player.ChallengePlayer;
-import me.jishuna.commonlib.CustomInventory;
-import me.jishuna.commonlib.ItemBuilder;
+import me.jishuna.commonlib.inventory.CustomInventory;
+import me.jishuna.commonlib.items.ItemBuilder;
 import net.md_5.bungee.api.ChatColor;
 
 public class CustomInventoryManager implements Listener {

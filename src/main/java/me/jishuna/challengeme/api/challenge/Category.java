@@ -7,8 +7,8 @@ import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 
-import me.jishuna.commonlib.ItemParser;
-import me.jishuna.commonlib.StringUtils;
+import me.jishuna.commonlib.items.ItemParser;
+import me.jishuna.commonlib.utils.StringUtils;
 import net.md_5.bungee.api.ChatColor;
 
 public class Category {
