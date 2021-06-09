@@ -2,7 +2,6 @@ package me.jishuna.challengeme.gson;
 
 import java.lang.reflect.Type;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 import com.google.gson.JsonElement;
@@ -12,6 +11,7 @@ import com.google.gson.JsonSerializer;
 
 import me.jishuna.challengeme.api.challenge.Challenge;
 import me.jishuna.challengeme.api.player.PersistantPlayerData;
+import me.jishuna.challengeme.api.player.PersistantPlayerData.PersistantChallengeData;
 
 public class PlayerDataSeralizer implements JsonSerializer<PersistantPlayerData> {
 
@@ -20,15 +20,17 @@ public class PlayerDataSeralizer implements JsonSerializer<PersistantPlayerData>
 
 		JsonObject json = new JsonObject();
 
-		Map<String, Long> cooldowns = data.getCooldowns();
-		cooldowns.entrySet().removeIf((Entry<String, Long> entry) -> entry.getValue() == null
-				|| entry.getValue() <= System.currentTimeMillis());
+		Map<String, PersistantChallengeData> challengeData = data.getChallengeData();
+		challengeData.values().forEach(persistantData -> {
+			if (persistantData.getCooldown() <= System.currentTimeMillis()) {
+				persistantData.removeCooldown();
+			}
+		});
 
 		json.add("challenges", context
 				.serialize(data.getActiveChallenges().stream().map(Challenge::getKey).collect(Collectors.toList())));
 
-		json.add("data", context.serialize(data.getChallengeData()));
-		json.add("cooldowns", context.serialize(cooldowns));
+		json.add("data", context.serialize(challengeData));
 
 		return json;
 	}

@@ -1,7 +1,8 @@
 package me.jishuna.challengeme.nms;
 
-import org.bukkit.Bukkit;
+import me.jishuna.commonlib.utils.VersionUtils;
 
+//TODO static
 public class NMSManager {
 	private static NMSManager instance;
 
@@ -16,8 +17,14 @@ public class NMSManager {
 	}
 
 	public static NMSManager getInstance() {
-		if (instance == null) {
-			Bukkit.broadcastMessage(Bukkit.getServer().getClass().getPackage().getName());
+		String version = VersionUtils.getServerVersion();
+
+		try {
+			NMSAdapter versionAdapter = (NMSAdapter) Class.forName("me.jishuna.challengeme.nms.NMSAdapter_" + version)
+					.newInstance();
+			instance = new NMSManager(versionAdapter);
+		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+			// TODO log error
 		}
 		return instance;
 	}

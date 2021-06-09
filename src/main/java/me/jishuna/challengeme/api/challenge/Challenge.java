@@ -3,6 +3,7 @@ package me.jishuna.challengeme.api.challenge;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.BiConsumer;
 
 import org.bukkit.Material;
@@ -167,7 +168,8 @@ public abstract class Challenge {
 	}
 
 	protected static YamlConfiguration loadConfig(Plugin owner, String key) {
-		return FileUtils.loadResource(owner, "challenges/" + key + ".yml").get();
-	}
+		Optional<YamlConfiguration> optional = FileUtils.loadResource(owner, "challenges/" + key + ".yml");
 
+		return optional.isPresent() ? optional.get() : null;
+	}
 }

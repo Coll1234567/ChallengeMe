@@ -16,13 +16,12 @@ import com.google.gson.reflect.TypeToken;
 import me.jishuna.challengeme.ChallengeMe;
 import me.jishuna.challengeme.api.challenge.Challenge;
 import me.jishuna.challengeme.api.player.PersistantPlayerData;
+import me.jishuna.challengeme.api.player.PersistantPlayerData.PersistantChallengeData;
 
 public class PlayerDataDeserializer implements JsonDeserializer<PersistantPlayerData> {
 	private final Type listType = new TypeToken<List<String>>() {
 	}.getType();
-	private final Type cooldownType = new TypeToken<Map<String, Long>>() {
-	}.getType();
-	private final Type dataType = new TypeToken<Map<String, Object>>() {
+	private final Type dataType = new TypeToken<Map<String, PersistantChallengeData>>() {
 	}.getType();
 
 	private final ChallengeMe plugin;
@@ -46,9 +45,8 @@ public class PlayerDataDeserializer implements JsonDeserializer<PersistantPlayer
 			});
 		}
 		
-		Map<String, Object> challengeData = context.deserialize(json.get("data"), dataType);
-		Map<String, Long> cooldowns = context.deserialize(json.get("cooldowns"), cooldownType);
+		Map<String, PersistantChallengeData> challengeData = context.deserialize(json.get("data"), dataType);
 
-		return new PersistantPlayerData(activeChallenges, challengeData, cooldowns);
+		return new PersistantPlayerData(activeChallenges, challengeData);
 	}
 }
