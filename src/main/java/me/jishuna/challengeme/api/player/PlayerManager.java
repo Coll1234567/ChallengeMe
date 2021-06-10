@@ -21,8 +21,8 @@ import com.google.gson.JsonSyntaxException;
 import me.jishuna.challengeme.ChallengeMe;
 import me.jishuna.challengeme.api.challenge.Challenge;
 import me.jishuna.challengeme.api.challenge.ToggleChallenge;
-import me.jishuna.challengeme.api.event.EventConsumer;
 import me.jishuna.challengeme.gson.PlayerDataDeserializer;
+import me.jishuna.commonlib.events.EventConsumer;
 import net.md_5.bungee.api.ChatColor;
 
 public class PlayerManager {

@@ -10,11 +10,9 @@ import com.comphenix.protocol.events.ListenerPriority;
 
 import me.jishuna.challengeme.api.challenge.ChallengeManager;
 import me.jishuna.challengeme.api.inventory.CustomInventoryManager;
+import me.jishuna.challengeme.api.listener.EventManager;
 import me.jishuna.challengeme.api.player.PlayerManager;
 import me.jishuna.challengeme.commands.ChallengeCommand;
-import me.jishuna.challengeme.listeners.BlockListeners;
-import me.jishuna.challengeme.listeners.CombatListeners;
-import me.jishuna.challengeme.listeners.PlayerListeners;
 import me.jishuna.challengeme.nms.NMSAdapter;
 import me.jishuna.challengeme.packets.PacketAdapterLivingSpawn;
 import me.jishuna.challengeme.runnables.TickingChallengeRunnable;
@@ -31,6 +29,7 @@ public class ChallengeMe extends JavaPlugin {
 	private ChallengeManager challengeManager;
 	private PlayerManager playerManager;
 	private CustomInventoryManager inventoryManager;
+	private EventManager eventManager;
 
 	private YamlConfiguration cateogryConfig;
 	private YamlConfiguration challengeConfig;
@@ -55,11 +54,9 @@ public class ChallengeMe extends JavaPlugin {
 		this.playerManager = new PlayerManager(this);
 		this.playerManager.registerListeners();
 
-		Bukkit.getPluginManager().registerEvents(this.inventoryManager, this);
+		this.eventManager = new EventManager(this);
 
-		Bukkit.getPluginManager().registerEvents(new PlayerListeners(this.playerManager), this);
-		Bukkit.getPluginManager().registerEvents(new BlockListeners(this.playerManager), this);
-		Bukkit.getPluginManager().registerEvents(new CombatListeners(this.playerManager), this);
+		Bukkit.getPluginManager().registerEvents(this.inventoryManager, this);
 
 		this.challengeRunnable = new TickingChallengeRunnable(this);
 
@@ -93,6 +90,10 @@ public class ChallengeMe extends JavaPlugin {
 
 	public PlayerManager getPlayerManager() {
 		return playerManager;
+	}
+
+	public EventManager getEventManager() {
+		return eventManager;
 	}
 
 	public CustomInventoryManager getInventoryManager() {
