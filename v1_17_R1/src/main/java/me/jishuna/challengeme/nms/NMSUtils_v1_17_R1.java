@@ -2,9 +2,9 @@ package me.jishuna.challengeme.nms;
 
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
-import net.minecraft.server.v1_16_R3.DamageSource;
+import net.minecraft.world.damagesource.DamageSource;
 
-public class NMSUtils_v1_16_R3 {
+public class NMSUtils_v1_17_R1 {
 
 	public static DamageSource getFromCause(DamageCause cause) {
 		switch (cause) {
@@ -18,45 +18,47 @@ public class NMSUtils_v1_16_R3 {
 		case SUICIDE:
 		case THORNS:
 		default:
-			return DamageSource.GENERIC;
+			return DamageSource.n;
 		case CONTACT:
-			return DamageSource.CACTUS;
+			return DamageSource.j;
 		case CRAMMING:
-			return DamageSource.CRAMMING;
+			return DamageSource.g;
 		case DRAGON_BREATH:
-			return DamageSource.DRAGON_BREATH;
+			return DamageSource.s;
 		case DROWNING:
-			return DamageSource.DROWN;
+			return DamageSource.h;
 		case DRYOUT:
-			return DamageSource.DRYOUT;
+			return DamageSource.t;
 		case FALL:
-			return DamageSource.FALL;
+			return DamageSource.k;
 		case FALLING_BLOCK:
-			return DamageSource.FALLING_BLOCK;
+			return DamageSource.r;
 		case FIRE:
-			return DamageSource.FIRE;
+			return DamageSource.a;
 		case FIRE_TICK:
 		case MELTING:
-			return DamageSource.BURN;
+			return DamageSource.c;
 		case FLY_INTO_WALL:
-			return DamageSource.FLY_INTO_WALL;
+			return DamageSource.l;
 		case HOT_FLOOR:
-			return DamageSource.HOT_FLOOR;
+			return DamageSource.e;
 		case LAVA:
-			return DamageSource.LAVA;
+			return DamageSource.d;
 		case LIGHTNING:
-			return DamageSource.LIGHTNING;
+			return DamageSource.b;
 		case MAGIC:
 		case POISON:
-			return DamageSource.MAGIC;
+			return DamageSource.o;
 		case STARVATION:
-			return DamageSource.STARVE;
+			return DamageSource.i;
 		case SUFFOCATION:
-			return DamageSource.STUCK;
+			return DamageSource.f;
 		case VOID:
-			return DamageSource.OUT_OF_WORLD;
+			return DamageSource.m;
 		case WITHER:
-			return DamageSource.WITHER;
+			return DamageSource.p;
+		case FREEZE:
+			return DamageSource.v;
 		}
 	}
 }

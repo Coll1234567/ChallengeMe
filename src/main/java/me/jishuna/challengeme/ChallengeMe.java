@@ -4,17 +4,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.comphenix.protocol.ProtocolLibrary;
-import com.comphenix.protocol.ProtocolManager;
-import com.comphenix.protocol.events.ListenerPriority;
-
 import me.jishuna.challengeme.api.challenge.ChallengeManager;
 import me.jishuna.challengeme.api.inventory.CustomInventoryManager;
 import me.jishuna.challengeme.api.listener.EventManager;
+import me.jishuna.challengeme.api.packets.PacketManager;
 import me.jishuna.challengeme.api.player.PlayerManager;
 import me.jishuna.challengeme.commands.ChallengeCommand;
 import me.jishuna.challengeme.nms.NMSAdapter;
-import me.jishuna.challengeme.packets.PacketAdapterLivingSpawn;
 import me.jishuna.challengeme.runnables.TickingChallengeRunnable;
 import me.jishuna.commonlib.utils.FileUtils;
 import me.jishuna.commonlib.utils.VersionUtils;
@@ -30,6 +26,7 @@ public class ChallengeMe extends JavaPlugin {
 	private PlayerManager playerManager;
 	private CustomInventoryManager inventoryManager;
 	private EventManager eventManager;
+	private PacketManager packetManager;
 
 	private YamlConfiguration cateogryConfig;
 	private YamlConfiguration challengeConfig;
@@ -54,6 +51,7 @@ public class ChallengeMe extends JavaPlugin {
 		this.playerManager = new PlayerManager(this);
 		this.playerManager.registerListeners();
 
+		this.packetManager = new PacketManager(this);
 		this.eventManager = new EventManager(this);
 
 		Bukkit.getPluginManager().registerEvents(this.inventoryManager, this);
@@ -63,17 +61,16 @@ public class ChallengeMe extends JavaPlugin {
 		this.challengeRunnable.runTaskTimer(this, DELAY, DELAY);
 
 		getCommand("challenges").setExecutor(new ChallengeCommand(this));
-
-		registerPacketListeners();
 	}
 
 	private void initializeNMSAdapter() {
 		String version = VersionUtils.getServerVersion();
 
 		try {
-			adapter = (NMSAdapter) Class.forName("me.jishuna.challengeme.nms.NMSAdapter_" + version).newInstance();
+			adapter = (NMSAdapter) Class.forName("me.jishuna.challengeme.nms.NMSAdapter_" + version)
+					.getDeclaredConstructor().newInstance();
 			getLogger().info("Version detected: " + version);
-		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+		} catch (ReflectiveOperationException e) {
 			getLogger().severe("Server version \"" + version + "\" is unsupported! Check the plugin page for updates.");
 			getLogger().severe("Plugin will now be disabled.");
 
@@ -96,6 +93,10 @@ public class ChallengeMe extends JavaPlugin {
 		return eventManager;
 	}
 
+	public PacketManager getPacketManager() {
+		return packetManager;
+	}
+
 	public CustomInventoryManager getInventoryManager() {
 		return inventoryManager;
 	}
@@ -114,12 +115,6 @@ public class ChallengeMe extends JavaPlugin {
 
 	public YamlConfiguration getConfiguration() {
 		return config;
-	}
-
-	private void registerPacketListeners() {
-		ProtocolManager manager = ProtocolLibrary.getProtocolManager();
-
-		manager.addPacketListener(new PacketAdapterLivingSpawn(this, ListenerPriority.NORMAL));
 	}
 
 	private void loadConfiguration() {
