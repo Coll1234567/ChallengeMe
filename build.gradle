@@ -7,7 +7,6 @@ plugins {
 
 group 'me.jishuna.challengeme'
 version '1.0.0'
-DuplicatesStrategy warn
 
 sourceCompatibility = targetCompatibility = JavaVersion.VERSION_16
 
@@ -56,6 +55,7 @@ jar {
 
 shadowJar {
   	dependsOn(jar)
+  	minimize()
   	
   	delete fileTree('./target/') {
         exclude archiveName
