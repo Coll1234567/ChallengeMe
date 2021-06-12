@@ -112,7 +112,7 @@ public class PlayerManager {
 		}
 	}
 
-	private void loadPlayerData(Player player) {
+	public void loadPlayerData(Player player) {
 		UUID uuid = player.getUniqueId();
 
 		Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () -> {

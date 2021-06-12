@@ -31,7 +31,7 @@ public class InvisibleMobsChallenge extends Challenge implements ToggleChallenge
 		PacketWrapper wrapper = new PacketWrapper(PacketType.Play.Server.SPAWN_ENTITY_LIVING);
 		wrapper.setSendHandler(this::onEntitySpawn);
 
-		addPacketHandler(wrapper);
+		getChallengePacketData().addPacketHandler(wrapper);
 	}
 
 	private void onEntitySpawn(PacketEvent event) {

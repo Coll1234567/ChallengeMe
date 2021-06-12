@@ -18,13 +18,13 @@ public class CustomPacketAdapter extends PacketAdapter {
 
 	private final PlayerManager playerManager;
 	private final PacketType type;
-	
+
 	private boolean handleSend = false;
 	private boolean handleRecieve = false;
 
 	public CustomPacketAdapter(ChallengeMe plugin, PacketType type) {
 		super(plugin, ListenerPriority.NORMAL, type);
-		
+
 		this.type = type;
 		this.playerManager = plugin.getPlayerManager();
 	}
@@ -39,7 +39,7 @@ public class CustomPacketAdapter extends PacketAdapter {
 
 		if (playerOptional.isPresent()) {
 			for (Challenge challenge : playerOptional.get().getActiveChallenges()) {
-				challenge.getPacketHandlers(this.type)
+				challenge.getChallengePacketData().getPacketHandlers(this.type)
 						.forEach(consumer -> consumer.consumeSend(event));
 			}
 		}
@@ -55,7 +55,7 @@ public class CustomPacketAdapter extends PacketAdapter {
 
 		if (playerOptional.isPresent()) {
 			for (Challenge challenge : playerOptional.get().getActiveChallenges()) {
-				challenge.getPacketHandlers(this.type)
+				challenge.getChallengePacketData().getPacketHandlers(this.type)
 						.forEach(consumer -> consumer.consumeSend(event));
 			}
 		}

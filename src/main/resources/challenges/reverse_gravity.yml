@@ -5,3 +5,4 @@ name: '&f&lReverse Gravity'
 description: '&3You will float upwards rather than fall downwards./n You will take void damage above Y 256.'
 difficulty: '&bDifficulty: &c&lHard'
 material: 'POTION,206,255,255'
+damage-height: 256

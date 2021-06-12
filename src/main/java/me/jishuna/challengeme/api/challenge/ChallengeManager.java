@@ -13,6 +13,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import me.jishuna.challengeme.ChallengeMe;
+import me.jishuna.challengeme.api.ChallengeMeAPI;
 import me.jishuna.challengeme.api.event.CategorySetupEvent;
 import me.jishuna.challengeme.api.event.ChallengeSetupEvent;
 import me.jishuna.challengeme.challenges.AlwaysGlidingChallenge;
@@ -44,11 +45,15 @@ public class ChallengeManager {
 
 	private final ChallengeMe plugin;
 
+	private boolean hasForcedChallenges;
+
 	public ChallengeManager(ChallengeMe plugin) {
 		this.plugin = plugin;
 	}
 
 	public void reloadCategories() {
+		this.catergories.clear();
+
 		CategorySetupEvent event = new CategorySetupEvent();
 
 		YamlConfiguration categoryConfig = this.plugin.getCateogryConfig();
@@ -80,6 +85,8 @@ public class ChallengeManager {
 
 		this.categoryChallengeMap.values().forEach(list -> list.sort((challengeA, challengeB) -> ChatColor
 				.stripColor(challengeA.getName()).compareTo(ChatColor.stripColor(challengeB.getName()))));
+
+		this.hasForcedChallenges = this.challenges.values().stream().anyMatch(challenge -> challenge.isForced());
 	}
 
 	private List<Challenge> getDefaultChallenges() {
@@ -95,15 +102,18 @@ public class ChallengeManager {
 		defaultChallenges.add(new ChunkEffectChallenge(plugin));
 		defaultChallenges.add(new NoStoppingChallenge(plugin));
 		defaultChallenges.add(new RandomEffectsChallenge(plugin));
-		defaultChallenges.add(new InvisibleMobsChallenge(plugin));
 		defaultChallenges.add(new EndermanChallenge(plugin));
-		defaultChallenges.add(new AquaticChallenge(plugin));
 		defaultChallenges.add(new SpeedChallenge(plugin));
 		defaultChallenges.add(new BlockEffectChallenge(plugin));
 		defaultChallenges.add(new BouncyChallenge(plugin));
 		defaultChallenges.add(new ReverseGravityChallenge(plugin));
 		defaultChallenges.add(new NoDarknessChallenge(plugin));
 		defaultChallenges.add(new NoRegenChallenge(plugin));
+
+		if (ChallengeMeAPI.hasProtcolLib()) {
+			defaultChallenges.add(new AquaticChallenge(plugin));
+			defaultChallenges.add(new InvisibleMobsChallenge(plugin));
+		}
 
 		return defaultChallenges;
 	}
@@ -126,5 +136,9 @@ public class ChallengeManager {
 
 	public Collection<Challenge> getChallenges(Category category) {
 		return this.categoryChallengeMap.getOrDefault(category, Collections.emptyList());
+	}
+
+	public boolean hasForcedChallenges() {
+		return hasForcedChallenges;
 	}
 }

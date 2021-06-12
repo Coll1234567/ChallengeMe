@@ -110,10 +110,12 @@ public class CustomInventoryManager implements Listener {
 
 	public CustomInventory getChallengeGUI(ChallengePlayer player, Category category) {
 		CustomInventory inventory = new CustomInventory(null, 54,
-				this.plugin.getMessage("challenges").replace("%name%", category.getName()));
+				this.plugin.getMessage("challenges").replace("%category%", category.getName()));
 		inventory.addClickConsumer(this::handleChallengeClick);
 
 		for (Challenge challenge : this.plugin.getChallengeManager().getChallenges(category)) {
+			if (!challenge.isEnabled())
+				continue;
 
 			ItemBuilder itemBuilder = ItemBuilder.modifyItem(challenge.getIcon().clone()).withName(challenge.getName())
 					.withLore(challenge.getDescription()).addLore("", challenge.getDifficulty())

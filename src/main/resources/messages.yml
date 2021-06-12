@@ -1,7 +1,3 @@
-on-cooldown: '&4&l[&c&l!&4&l]: &c%challenge% &7toggling on cooldown for &c%time%.'
-
-active-challenges: '&aYou currently have the following challenges active: %challenges%'
-
 enabled: '&a&lEnabled'
 disabled: '&c&lDisabled'
 forced: '&a&lForce Enabled'
@@ -9,7 +5,13 @@ challenge-enabled: '%challenge% &7challenge &aenabled.'
 challenge-disabled: '%challenge% &7challenge &cdisabled.'
 challenge-force-enabled: '%challenge% &7challenge has been &a&lforce enabled &7by server.'
 
+active-challenges: '&aYou currently have the following challenges active: %challenges%'
+
 challenge-categories: 'Challenge Categories'
-challenges: '%name% &0Challenges'
+challenges: '%category% &0Challenges'
 
 light-level: '&6Light: %light%'
+
+on-cooldown: '&4&l[&c&l!&4&l]: &c%challenge% &7toggling on cooldown for &c%time%.'
+no-permission: '&4&l[&c&l!&4&l]: &cYou do not have permission to use this command.'
+command-usage: '&4&l[&c&l!&4&l]: &cInvalid argument: &4%arg%&c. Valid arguments are: &4%args%&c.'

@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityPotionEffectEvent;
@@ -24,11 +25,20 @@ public class ReverseGravityChallenge extends Challenge implements ToggleChalleng
 	private final Map<UUID, Integer> challengeData = new HashMap<>();
 	private static final String KEY = "reverse_gravity";
 
+	private int height;
+
 	public ReverseGravityChallenge(Plugin owner) {
 		super(owner, KEY, loadConfig(owner, KEY));
 
 		addEventHandler(EntityPotionEffectEvent.class, this::onEffect);
 		addEventHandler(PlayerRespawnEvent.class, this::onRespawn);
+	}
+
+	@Override
+	protected void loadData(YamlConfiguration upgradeConfig) {
+		super.loadData(upgradeConfig);
+
+		this.height = upgradeConfig.getInt("damage-height", 256);
 	}
 
 	private void onRespawn(PlayerRespawnEvent event, ChallengePlayer challengePlayer) {
@@ -59,7 +69,7 @@ public class ReverseGravityChallenge extends Challenge implements ToggleChalleng
 
 	@Override
 	public void onTick(ChallengePlayer challengePlayer, Player player) {
-		if (player.getLocation().getBlockY() > 256) {
+		if (player.getLocation().getBlockY() > this.height) {
 			int checks = this.challengeData.getOrDefault(player.getUniqueId(), 1);
 
 			checks = (checks + 1) % 2;

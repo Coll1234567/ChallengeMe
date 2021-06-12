@@ -13,12 +13,11 @@ import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
-import com.comphenix.protocol.PacketType;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
+import me.jishuna.challengeme.api.ChallengeMeAPI;
 import me.jishuna.challengeme.api.event.EventWrapper;
-import me.jishuna.challengeme.api.packets.PacketWrapper;
 import me.jishuna.challengeme.api.player.ChallengePlayer;
 import me.jishuna.commonlib.items.ItemParser;
 import me.jishuna.commonlib.utils.FileUtils;
@@ -38,14 +37,19 @@ public abstract class Challenge {
 	private ItemStack icon;
 	private boolean enabled = true;
 	private boolean forced = false;
+	
+	private ChallengePacketData challengePacketData;
 
 	private final Multimap<Class<? extends Event>, EventWrapper<? extends Event>> handlerMap = ArrayListMultimap
 			.create();
-	private final Multimap<PacketType, PacketWrapper> packetMap = ArrayListMultimap.create();
 
 	public Challenge(Plugin owner, String key, YamlConfiguration upgradeConfig) {
 		this.key = key;
 		this.owningPlugin = owner;
+		
+		if (ChallengeMeAPI.hasProtcolLib()) {
+			this.challengePacketData = new ChallengePacketData();
+		}
 
 		if (upgradeConfig != null)
 			loadData(upgradeConfig);
@@ -150,6 +154,10 @@ public abstract class Challenge {
 	public boolean isForced() {
 		return forced;
 	}
+	
+	public ChallengePacketData getChallengePacketData() {
+		return this.challengePacketData;
+	}
 
 	public <T extends Event> void addEventHandler(Class<T> type, BiConsumer<T, ChallengePlayer> consumer) {
 		this.handlerMap.put(type, new EventWrapper<>(type, consumer));
@@ -157,14 +165,6 @@ public abstract class Challenge {
 
 	public <T extends Event> Collection<EventWrapper<? extends Event>> getEventHandlers(Class<T> type) {
 		return this.handlerMap.get(type);
-	}
-
-	public void addPacketHandler(PacketWrapper wrapper) {
-		this.packetMap.put(wrapper.getType(), wrapper);
-	}
-
-	public Collection<PacketWrapper> getPacketHandlers(PacketType type) {
-		return this.packetMap.get(type);
 	}
 
 	protected static YamlConfiguration loadConfig(Plugin owner, String key) {
