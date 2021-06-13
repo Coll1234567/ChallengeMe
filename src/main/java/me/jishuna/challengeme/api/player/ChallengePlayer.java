@@ -16,7 +16,7 @@ import com.google.gson.JsonIOException;
 import me.jishuna.challengeme.ChallengeMe;
 import me.jishuna.challengeme.api.challenge.Challenge;
 import me.jishuna.challengeme.api.challenge.ToggleChallenge;
-import me.jishuna.challengeme.gson.PlayerDataSeralizer;
+import me.jishuna.challengeme.gson.PlayerDataSerializer;
 
 public class ChallengePlayer {
 
@@ -25,7 +25,7 @@ public class ChallengePlayer {
 	private final ChallengeMe plugin;
 	private boolean isLoaded = false;
 
-	private final PlayerDataSeralizer playerDataSeralizer = new PlayerDataSeralizer();
+	private final PlayerDataSerializer playerDataSeralizer = new PlayerDataSerializer();
 
 	public ChallengePlayer(Player player, ChallengeMe plugin) {
 		this(player.getUniqueId(), plugin);

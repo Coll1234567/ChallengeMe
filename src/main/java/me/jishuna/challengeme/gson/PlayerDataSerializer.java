@@ -13,7 +13,7 @@ import me.jishuna.challengeme.api.challenge.Challenge;
 import me.jishuna.challengeme.api.player.PersistantPlayerData;
 import me.jishuna.challengeme.api.player.PersistantPlayerData.PersistantChallengeData;
 
-public class PlayerDataSeralizer implements JsonSerializer<PersistantPlayerData> {
+public class PlayerDataSerializer implements JsonSerializer<PersistantPlayerData> {
 
 	@Override
 	public JsonElement serialize(PersistantPlayerData data, Type typeOfT, JsonSerializationContext context) {
