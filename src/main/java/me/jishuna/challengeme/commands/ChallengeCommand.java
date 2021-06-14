@@ -3,14 +3,14 @@ package me.jishuna.challengeme.commands;
 import java.util.Optional;
 
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import me.jishuna.challengeme.ChallengeMe;
 import me.jishuna.challengeme.api.player.ChallengePlayer;
+import me.jishuna.commonlib.commands.SimpleCommandHandler;
 
-public class ChallengeCommand implements CommandExecutor {
+public class ChallengeCommand extends SimpleCommandHandler {
 	private final ChallengeMe plugin;
 
 	public ChallengeCommand(ChallengeMe plugin) {

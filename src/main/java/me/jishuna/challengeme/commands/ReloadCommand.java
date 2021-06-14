@@ -41,7 +41,7 @@ public class ReloadCommand extends SimpleCommandHandler {
 		playerManager.saveAllPlayers(false);
 
 		sender.sendMessage(ChatColor.GREEN + "Reloading Current Players.");
-		Bukkit.getOnlinePlayers().forEach(player -> playerManager.loadPlayerData(player));
+		Bukkit.getOnlinePlayers().forEach(playerManager::loadPlayerData);
 
 		sender.sendMessage(ChatColor.GREEN + "Reload Complete!");
 		return true;

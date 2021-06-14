@@ -22,7 +22,7 @@ import me.jishuna.challengeme.api.player.ChallengePlayer;
 
 public class InvisibleMobsChallenge extends Challenge implements ToggleChallenge {
 	private final ProtocolManager manager = ProtocolLibrary.getProtocolManager();
-	private final int EFFECT_COLOR = 8356754;
+	private static final int EFFECT_COLOR = 8356754;
 	private static final String KEY = "invisible_mobs";
 
 	public InvisibleMobsChallenge(Plugin owner) {

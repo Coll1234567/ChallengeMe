@@ -127,7 +127,6 @@ public class PlayerManager {
 					PersistantPlayerData playerData = gson.fromJson(reader, PersistantPlayerData.class);
 
 					playerData.getActiveChallenges().forEach(challenge -> {
-
 						Bukkit.getScheduler().runTask(this.plugin, () -> {
 							if (challenge instanceof ToggleChallenge) {
 								((ToggleChallenge) challenge).onEnable(challengePlayer, player);
@@ -161,9 +160,7 @@ public class PlayerManager {
 		if (challengePlayer != null) {
 			challengePlayer.disableActiveChallenges();
 
-			Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () -> {
-				savePlayer(uuid, challengePlayer, true);
-			});
+			Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () -> savePlayer(uuid, challengePlayer, true));
 		}
 	}
 

@@ -34,11 +34,13 @@ import me.jishuna.commonlib.items.ItemBuilder;
 import net.md_5.bungee.api.ChatColor;
 
 public class CustomInventoryManager implements Listener {
+	private static final String CHALLENGE_PLACEHOLDER = "%challenge%";
 
 	private final HashMap<InventoryView, CustomInventory> inventoryMap = new HashMap<>();
 	private final ChallengeMe plugin;
-	DateFormat dateFormat = new SimpleDateFormat("mm:ss");
-	DateFormat dateFormatHours = new SimpleDateFormat("HH:mm:ss");
+
+	private final DateFormat dateFormat = new SimpleDateFormat("mm:ss");
+	private final DateFormat dateFormatHours = new SimpleDateFormat("HH:mm:ss");
 
 	private CustomInventory categoryGUI;
 
@@ -65,9 +67,6 @@ public class CustomInventoryManager implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void onInventoryClose(InventoryCloseEvent event) {
-		if (event.getInventory() == null)
-			return;
-
 		CustomInventory inventory = inventoryMap.get(event.getView());
 
 		if (inventory != null) {
@@ -202,8 +201,8 @@ public class CustomInventoryManager implements Listener {
 			long cooldown = challengePlayer.getCooldown(challenge);
 
 			if (cooldown > 0 && !player.hasPermission("challengeme.nocooldown")) {
-				player.sendMessage(this.plugin.getMessage("on-cooldown").replace("%challenge%", challenge.getName())
-						.replace("%time%", getTimeLeft(cooldown)));
+				player.sendMessage(this.plugin.getMessage("on-cooldown")
+						.replace(CHALLENGE_PLACEHOLDER, challenge.getName()).replace("%time%", getTimeLeft(cooldown)));
 				return;
 			}
 
@@ -221,7 +220,8 @@ public class CustomInventoryManager implements Listener {
 		String disabled = this.plugin.getMessage("disabled");
 
 		challengePlayer.addChallenge(challenge);
-		player.sendMessage(this.plugin.getMessage("challenge-enabled").replace("%challenge%", challenge.getName()));
+		player.sendMessage(
+				this.plugin.getMessage("challenge-enabled").replace(CHALLENGE_PLACEHOLDER, challenge.getName()));
 
 		ItemMeta meta = item.getItemMeta();
 		meta.addEnchant(Enchantment.DURABILITY, 1, true);
@@ -229,7 +229,7 @@ public class CustomInventoryManager implements Listener {
 		List<String> lore = meta.hasLore() ? meta.getLore() : new ArrayList<>();
 		int pos = lore.size() - 1;
 
-		if (lore.size() > 0 && lore.get(pos).equals(disabled)) {
+		if (!lore.isEmpty() && lore.get(pos).equals(disabled)) {
 			lore.set(pos, enabled);
 		}
 
@@ -242,7 +242,8 @@ public class CustomInventoryManager implements Listener {
 		String disabled = this.plugin.getMessage("disabled");
 
 		challengePlayer.removeChallenge(challenge);
-		player.sendMessage(this.plugin.getMessage("challenge-disabled").replace("%challenge%", challenge.getName()));
+		player.sendMessage(
+				this.plugin.getMessage("challenge-disabled").replace(CHALLENGE_PLACEHOLDER, challenge.getName()));
 
 		ItemMeta meta = item.getItemMeta();
 		meta.removeEnchant(Enchantment.DURABILITY);
@@ -250,7 +251,7 @@ public class CustomInventoryManager implements Listener {
 		List<String> lore = meta.hasLore() ? meta.getLore() : new ArrayList<>();
 		int pos = lore.size() - 1;
 
-		if (lore.size() > 0 && lore.get(pos).equals(enabled)) {
+		if (!lore.isEmpty() && lore.get(pos).equals(enabled)) {
 			lore.set(pos, disabled);
 		}
 

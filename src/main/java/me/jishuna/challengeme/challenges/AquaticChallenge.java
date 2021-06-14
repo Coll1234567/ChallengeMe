@@ -86,6 +86,7 @@ public class AquaticChallenge extends Challenge implements ToggleChallenge {
 
 	@Override
 	public void onDisable(ChallengePlayer challengePlayer, Player player) {
+		// Nothing to clean up on disable
 	}
 
 }

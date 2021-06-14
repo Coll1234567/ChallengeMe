@@ -24,7 +24,7 @@ public class ChallengeMe extends JavaPlugin {
 
 	private static NMSAdapter adapter;
 
-	private final int DELAY = 5;
+	private static final int DELAY = 5;
 
 	private ChallengeManager challengeManager;
 	private PlayerManager playerManager;
@@ -82,7 +82,7 @@ public class ChallengeMe extends JavaPlugin {
 		try {
 			adapter = (NMSAdapter) Class.forName("me.jishuna.challengeme.nms.NMSAdapter_" + version)
 					.getDeclaredConstructor().newInstance();
-			getLogger().info("Version detected: " + version);
+			getLogger().info(() -> "Version detected: " + version);
 		} catch (ReflectiveOperationException e) {
 			getLogger().severe("Server version \"" + version + "\" is unsupported! Check the plugin page for updates.");
 			getLogger().severe("Plugin will now be disabled.");
@@ -134,8 +134,8 @@ public class ChallengeMe extends JavaPlugin {
 		if (!this.getDataFolder().exists())
 			this.getDataFolder().mkdirs();
 
-		FileUtils.loadResource(this, "config.yml").ifPresent(config -> this.config = config);
-		FileUtils.loadResource(this, "categories.yml").ifPresent(config -> this.cateogryConfig = config);
+		FileUtils.loadResource(this, "config.yml").ifPresent(yamlConfig -> this.config = yamlConfig);
+		FileUtils.loadResource(this, "categories.yml").ifPresent(yamlConfig -> this.cateogryConfig = yamlConfig);
 
 		FileUtils.loadResourceFile(this, "messages.yml")
 				.ifPresent(file -> this.messageConfig = new MessageConfig(file));

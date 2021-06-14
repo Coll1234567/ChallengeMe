@@ -16,7 +16,7 @@ import me.jishuna.challengeme.api.player.ChallengePlayer;
 
 public class NoStoppingChallenge extends Challenge implements TickingChallenge {
 
-	private final Map<UUID, NoStoppingChallengeData> challengeData = new HashMap<>();
+	private final Map<UUID, NoStoppingChallengeData> challengeDataMap = new HashMap<>();
 	private int msNeeded;
 	private static final String KEY = "no_stopping";
 
@@ -34,13 +34,9 @@ public class NoStoppingChallenge extends Challenge implements TickingChallenge {
 	@Override
 	public void onTick(ChallengePlayer challengePlayer, Player player) {
 		UUID id = player.getUniqueId();
-		NoStoppingChallengeData challengeData = this.challengeData.get(id);
+		NoStoppingChallengeData challengeData = this.challengeDataMap.computeIfAbsent(id,
+				key -> new NoStoppingChallengeData(player.getLocation(), System.currentTimeMillis() + msNeeded));
 		Location location = player.getLocation();
-
-		if (challengeData == null) {
-			challengeData = new NoStoppingChallengeData(player.getLocation(), System.currentTimeMillis() + msNeeded);
-			this.challengeData.put(id, challengeData);
-		}
 
 		if (!challengeData.compareLocations(location)) {
 			challengeData.setLastLocation(location);
@@ -79,11 +75,8 @@ public class NoStoppingChallenge extends Challenge implements TickingChallenge {
 			if (Double.doubleToLongBits(this.lastLocation.getY()) != Double.doubleToLongBits(location.getY())) {
 				return false;
 			}
-			if (Double.doubleToLongBits(this.lastLocation.getZ()) != Double.doubleToLongBits(location.getZ())) {
-				return false;
-			}
 
-			return true;
+			return Double.doubleToLongBits(this.lastLocation.getZ()) == Double.doubleToLongBits(location.getZ());
 		}
 
 	}

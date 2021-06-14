@@ -23,14 +23,14 @@ public class Category {
 		this.name = ChatColor.translateAlternateColorCodes('&', categorySection.getString("name", ""));
 		this.icon = ItemParser.parseItem(categorySection.getString("material", ""), Material.DIAMOND);
 		
-		String description = ChatColor.translateAlternateColorCodes('&', categorySection.getString("description", ""));
+		String desc = ChatColor.translateAlternateColorCodes('&', categorySection.getString("description", ""));
 
-		List<String> desc = new ArrayList<>();
+		List<String> descriptionList = new ArrayList<>();
 
-		for (String line : description.split("\\\\n")) {
-			desc.addAll(StringUtils.splitString(line, 30));
+		for (String line : desc.split("\\\\n")) {
+			descriptionList.addAll(StringUtils.splitString(line, 30));
 		}
-		this.description = desc;
+		this.description = descriptionList;
 	}
 
 	public String getName() {

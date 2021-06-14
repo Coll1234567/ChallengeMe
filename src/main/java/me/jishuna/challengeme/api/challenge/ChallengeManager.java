@@ -86,7 +86,7 @@ public class ChallengeManager {
 		this.categoryChallengeMap.values().forEach(list -> list.sort((challengeA, challengeB) -> ChatColor
 				.stripColor(challengeA.getName()).compareTo(ChatColor.stripColor(challengeB.getName()))));
 
-		this.hasForcedChallenges = this.challenges.values().stream().anyMatch(challenge -> challenge.isForced());
+		this.hasForcedChallenges = this.challenges.values().stream().anyMatch(Challenge::isForced);
 	}
 
 	private List<Challenge> getDefaultChallenges() {

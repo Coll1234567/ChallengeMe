@@ -43,7 +43,7 @@ public abstract class Challenge {
 	private final Multimap<Class<? extends Event>, EventWrapper<? extends Event>> handlerMap = ArrayListMultimap
 			.create();
 
-	public Challenge(Plugin owner, String key, YamlConfiguration upgradeConfig) {
+	protected Challenge(Plugin owner, String key, YamlConfiguration upgradeConfig) {
 		this.key = key;
 		this.owningPlugin = owner;
 		
@@ -55,60 +55,31 @@ public abstract class Challenge {
 			loadData(upgradeConfig);
 	}
 
-	protected void loadData(YamlConfiguration upgradeConfig) {
+	protected void loadData(YamlConfiguration challengeConfig) {
 
-		this.category = upgradeConfig.getString("category", "");
+		this.category = challengeConfig.getString("category", "");
 
-		this.enabled = upgradeConfig.getBoolean("enabled", true);
-		this.forced = upgradeConfig.getBoolean("forced", false);
+		this.enabled = challengeConfig.getBoolean("enabled", true);
+		this.forced = challengeConfig.getBoolean("forced", false);
 
-		this.name = ChatColor.translateAlternateColorCodes('&', upgradeConfig.getString("name", ""));
-		this.message = ChatColor.translateAlternateColorCodes('&', upgradeConfig.getString("message", ""));
-		this.difficulty = ChatColor.translateAlternateColorCodes('&', upgradeConfig.getString("difficulty", ""));
+		this.name = ChatColor.translateAlternateColorCodes('&', challengeConfig.getString("name", ""));
+		this.message = ChatColor.translateAlternateColorCodes('&', challengeConfig.getString("message", ""));
+		this.difficulty = ChatColor.translateAlternateColorCodes('&', challengeConfig.getString("difficulty", ""));
 
-		this.icon = ItemParser.parseItem(upgradeConfig.getString("material", ""), Material.DIAMOND);
+		this.icon = ItemParser.parseItem(challengeConfig.getString("material", ""), Material.DIAMOND);
 
-		String description = ChatColor.translateAlternateColorCodes('&', upgradeConfig.getString("description", ""));
+		String desc = ChatColor.translateAlternateColorCodes('&', challengeConfig.getString("description", ""));
 
-		for (String configKey : upgradeConfig.getKeys(false)) {
-			description = description.replace("%" + configKey + "%", upgradeConfig.getString(configKey));
+		for (String configKey : challengeConfig.getKeys(false)) {
+			desc = desc.replace("%" + configKey + "%", challengeConfig.getString(configKey));
 		}
 
-		List<String> desc = new ArrayList<>();
+		List<String> descriptionList = new ArrayList<>();
 
-		for (String line : description.split("\\\\n")) {
-			desc.addAll(StringUtils.splitString(line, 30));
+		for (String line : desc.split("\\\\n")) {
+			descriptionList.addAll(StringUtils.splitString(line, 30));
 		}
-		this.description = desc;
-	}
-
-	public Challenge(Plugin owner, String key, ConfigurationSection challengeSection) {
-		this.owningPlugin = owner;
-		this.key = key;
-
-		this.category = challengeSection.getString("category", "");
-
-		this.enabled = challengeSection.getBoolean("enabled", true);
-		this.forced = challengeSection.getBoolean("forced", false);
-
-		this.name = ChatColor.translateAlternateColorCodes('&', challengeSection.getString("name", ""));
-		this.message = ChatColor.translateAlternateColorCodes('&', challengeSection.getString("message", ""));
-		this.difficulty = ChatColor.translateAlternateColorCodes('&', challengeSection.getString("difficulty", ""));
-
-		this.icon = ItemParser.parseItem(challengeSection.getString("material", ""), Material.DIAMOND);
-
-		String description = ChatColor.translateAlternateColorCodes('&', challengeSection.getString("description", ""));
-
-		for (String configKey : challengeSection.getKeys(false)) {
-			description = description.replace("%" + configKey + "%", challengeSection.getString(configKey));
-		}
-
-		List<String> desc = new ArrayList<>();
-
-		for (String line : description.split("\\\\n")) {
-			desc.addAll(StringUtils.splitString(line, 30));
-		}
-		this.description = desc;
+		this.description = descriptionList;
 	}
 
 	public Plugin getOwningPlugin() {

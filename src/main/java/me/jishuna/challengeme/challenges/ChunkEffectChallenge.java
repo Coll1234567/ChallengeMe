@@ -98,6 +98,7 @@ public class ChunkEffectChallenge extends Challenge implements TickingChallenge,
 
 	@Override
 	public void onEnable(ChallengePlayer challengePlayer, Player player) {
+		// Nothing to set up on enable
 	}
 
 	@Override
@@ -148,6 +149,11 @@ public class ChunkEffectChallenge extends Challenge implements TickingChallenge,
 			final ChunkEffectCache other = (ChunkEffectCache) obj;
 
 			return other.getX() == getX() && other.getZ() == getZ();
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hashCode(x, z, level, effectType);
 		}
 
 		public int getLevel() {
