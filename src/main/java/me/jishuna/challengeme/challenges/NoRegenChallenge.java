@@ -13,7 +13,7 @@ public class NoRegenChallenge extends Challenge implements ToggleChallenge {
 	private static final String KEY = "no_regen";
 
 	public NoRegenChallenge(Plugin owner) {
-		super(owner, KEY, loadConfig(owner, KEY));
+		super(owner, KEY);
 
 		addEventHandler(EntityRegainHealthEvent.class, this::onRegen);
 	}

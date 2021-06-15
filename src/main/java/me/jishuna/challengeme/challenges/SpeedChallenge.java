@@ -22,7 +22,7 @@ public class SpeedChallenge extends Challenge implements ToggleChallenge, Tickin
 	private static final String KEY = "speed";
 
 	public SpeedChallenge(Plugin owner) {
-		super(owner, KEY, loadConfig(owner, KEY));
+		super(owner, KEY);
 		
 		addEventHandler(PlayerDeathEvent.class, this::onDeath);
 	}

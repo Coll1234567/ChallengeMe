@@ -118,6 +118,8 @@ public class ChallengePlayer {
 					player.sendMessage(this.plugin.getMessage("challenge-force-enabled").replace("%challenge%",
 							challenge.getName()));
 				}
+			} else if (!challenge.isEnabled() && hasChallenge(challenge)) {
+				removeChallenge(challenge);
 			}
 
 		}

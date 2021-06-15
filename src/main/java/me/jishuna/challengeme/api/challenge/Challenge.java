@@ -7,7 +7,6 @@ import java.util.Optional;
 import java.util.function.BiConsumer;
 
 import org.bukkit.Material;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
@@ -37,26 +36,32 @@ public abstract class Challenge {
 	private ItemStack icon;
 	private boolean enabled = true;
 	private boolean forced = false;
-	
+
 	private ChallengePacketData challengePacketData;
 
 	private final Multimap<Class<? extends Event>, EventWrapper<? extends Event>> handlerMap = ArrayListMultimap
 			.create();
 
-	protected Challenge(Plugin owner, String key, YamlConfiguration upgradeConfig) {
+	protected Challenge(Plugin owner, String key) {
 		this.key = key;
 		this.owningPlugin = owner;
-		
+
 		if (ChallengeMeAPI.hasProtcolLib()) {
 			this.challengePacketData = new ChallengePacketData();
 		}
 
-		if (upgradeConfig != null)
-			loadData(upgradeConfig);
+		this.reload();
+	}
+
+	public void reload() {
+		YamlConfiguration challengeConfig = loadConfig(this.owningPlugin, this.key);
+
+		if (challengeConfig != null) {
+			this.loadData(challengeConfig);
+		}
 	}
 
 	protected void loadData(YamlConfiguration challengeConfig) {
-
 		this.category = challengeConfig.getString("category", "");
 
 		this.enabled = challengeConfig.getBoolean("enabled", true);
@@ -125,7 +130,7 @@ public abstract class Challenge {
 	public boolean isForced() {
 		return forced;
 	}
-	
+
 	public ChallengePacketData getChallengePacketData() {
 		return this.challengePacketData;
 	}
@@ -138,7 +143,7 @@ public abstract class Challenge {
 		return this.handlerMap.get(type);
 	}
 
-	protected static YamlConfiguration loadConfig(Plugin owner, String key) {
+	private YamlConfiguration loadConfig(Plugin owner, String key) {
 		Optional<YamlConfiguration> optional = FileUtils.loadResource(owner, "challenges/" + key + ".yml");
 
 		return optional.isPresent() ? optional.get() : null;

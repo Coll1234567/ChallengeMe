@@ -13,7 +13,7 @@ public class AlwaysGlidingChallenge extends Challenge implements TickingChalleng
 	private static final String KEY = "always_gliding";
 
 	public AlwaysGlidingChallenge(Plugin owner) {
-		super(owner, KEY, loadConfig(owner, KEY));
+		super(owner, KEY);
 
 		addEventHandler(EntityToggleGlideEvent.class, this::onToggleGlide);
 	}

@@ -17,7 +17,7 @@ public class NoJumpingChallenge extends Challenge implements ToggleChallenge {
 	private static final String KEY = "no_jumping";
 
 	public NoJumpingChallenge(Plugin owner) {
-		super(owner, KEY, loadConfig(owner, KEY));
+		super(owner, KEY);
 
 		addEventHandler(EntityPotionEffectEvent.class, this::onEffect);
 		addEventHandler(PlayerRespawnEvent.class, this::onRespawn);

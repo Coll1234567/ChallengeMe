@@ -26,7 +26,7 @@ public class InvisibleMobsChallenge extends Challenge implements ToggleChallenge
 	private static final String KEY = "invisible_mobs";
 
 	public InvisibleMobsChallenge(Plugin owner) {
-		super(owner, KEY, loadConfig(owner, KEY));
+		super(owner, KEY);
 
 		PacketWrapper wrapper = new PacketWrapper(PacketType.Play.Server.SPAWN_ENTITY_LIVING);
 		wrapper.setSendHandler(this::onEntitySpawn);

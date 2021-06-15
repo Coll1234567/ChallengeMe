@@ -12,7 +12,7 @@ public class BouncyChallenge extends Challenge implements TickingChallenge {
 	private static final String KEY = "bouncy";
 
 	public BouncyChallenge(Plugin owner) {
-		super(owner, KEY, loadConfig(owner, KEY));
+		super(owner, KEY);
 	}
 
 	//TODO come up with new method of checking if the player is on ground

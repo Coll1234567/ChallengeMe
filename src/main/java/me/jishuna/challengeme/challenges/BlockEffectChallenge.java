@@ -25,7 +25,7 @@ public class BlockEffectChallenge extends Challenge {
 	private static final String KEY = "block_effects";
 
 	public BlockEffectChallenge(Plugin owner) {
-		super(owner, KEY, loadConfig(owner, KEY));
+		super(owner, KEY);
 
 		addEventHandler(BlockBreakEvent.class, this::onBreakBlock);
 	}
@@ -33,7 +33,7 @@ public class BlockEffectChallenge extends Challenge {
 	@Override
 	protected void loadData(YamlConfiguration upgradeConfig) {
 		super.loadData(upgradeConfig);
-		
+
 		this.effects = Arrays.asList(PotionEffectType.values()).stream().collect(Collectors.toList());
 
 		this.maxLevel = upgradeConfig.getInt("max-level", 3);

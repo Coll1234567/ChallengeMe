@@ -12,7 +12,7 @@ public class VegitarianChallenge extends Challenge {
 	private static final String KEY = "vegitarian";
 
 	public VegitarianChallenge(Plugin owner) {
-		super(owner, KEY, loadConfig(owner, KEY));
+		super(owner, KEY);
 		
 		addEventHandler(PlayerInteractEvent.class, this::onInteract);
 		addEventHandler(PlayerItemConsumeEvent.class, this::onConsume);

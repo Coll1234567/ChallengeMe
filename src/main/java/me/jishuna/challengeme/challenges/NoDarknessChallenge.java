@@ -22,7 +22,7 @@ public class NoDarknessChallenge extends Challenge implements TickingChallenge {
 	private static final String KEY = "no_darkness";
 
 	public NoDarknessChallenge(Plugin owner) {
-		super(owner, KEY, loadConfig(owner, KEY));
+		super(owner, KEY);
 	}
 
 	@Override

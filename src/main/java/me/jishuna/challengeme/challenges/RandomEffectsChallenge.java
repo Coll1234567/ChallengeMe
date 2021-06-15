@@ -27,7 +27,7 @@ public class RandomEffectsChallenge extends Challenge implements TickingChalleng
 	private static final String KEY = "random_effects";
 
 	public RandomEffectsChallenge(Plugin owner) {
-		super(owner, KEY, loadConfig(owner, KEY));
+		super(owner, KEY);
 	}
 
 	@Override

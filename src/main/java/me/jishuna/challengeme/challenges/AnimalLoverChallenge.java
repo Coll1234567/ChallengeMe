@@ -13,7 +13,7 @@ public class AnimalLoverChallenge extends Challenge {
 	private static final String KEY = "animal_lover";
 
 	public AnimalLoverChallenge(Plugin owner) {
-		super(owner, KEY, loadConfig(owner, KEY));
+		super(owner, KEY);
 
 		addEventHandler(EntityDamageByEntityEvent.class, this::onAttack);
 	}

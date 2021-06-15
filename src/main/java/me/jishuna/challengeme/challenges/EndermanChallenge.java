@@ -18,7 +18,7 @@ public class EndermanChallenge extends Challenge implements TickingChallenge {
 	private static final String KEY = "enderman";
 
 	public EndermanChallenge(Plugin owner) {
-		super(owner, KEY, loadConfig(owner, KEY));
+		super(owner, KEY);
 
 		addEventHandler(EntityDamageEvent.class, this::onDamage);
 	}

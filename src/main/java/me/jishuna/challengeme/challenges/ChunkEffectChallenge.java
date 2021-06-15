@@ -33,7 +33,7 @@ public class ChunkEffectChallenge extends Challenge implements TickingChallenge,
 	private static final String KEY = "chunk_effects";
 
 	public ChunkEffectChallenge(Plugin owner) {
-		super(owner, KEY, loadConfig(owner, KEY));
+		super(owner, KEY);
 
 		addEventHandler(EntityPotionEffectEvent.class, this::onEffect);
 	}

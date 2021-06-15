@@ -45,8 +45,7 @@ public class ChallengeMe extends JavaPlugin {
 		PluginKeys.initialize(this);
 
 		this.challengeManager = new ChallengeManager(this);
-		this.challengeManager.reloadCategories();
-		this.challengeManager.reloadChallenges();
+		this.challengeManager.loadDefaults();
 
 		this.inventoryManager = new CustomInventoryManager(this);
 		this.inventoryManager.cacheCategoryGUI();

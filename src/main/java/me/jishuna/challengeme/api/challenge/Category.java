@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 
 import me.jishuna.commonlib.items.ItemParser;
@@ -13,16 +14,23 @@ import net.md_5.bungee.api.ChatColor;
 
 public class Category {
 	private final String key;
-	private final String name;
+	private String name;
 	private List<String> description;
-	private final ItemStack icon;
+	private ItemStack icon;
 
-	public Category(String key, ConfigurationSection categorySection) {
+	public Category(String key, YamlConfiguration categoryConfig) {
 		this.key = key;
-		
+		this.reload(categoryConfig);
+	}
+
+	public void reload(YamlConfiguration categoryConfig) {
+		loadData(categoryConfig.getConfigurationSection(key));
+	}
+
+	protected void loadData(ConfigurationSection categorySection) {
 		this.name = ChatColor.translateAlternateColorCodes('&', categorySection.getString("name", ""));
 		this.icon = ItemParser.parseItem(categorySection.getString("material", ""), Material.DIAMOND);
-		
+
 		String desc = ChatColor.translateAlternateColorCodes('&', categorySection.getString("description", ""));
 
 		List<String> descriptionList = new ArrayList<>();

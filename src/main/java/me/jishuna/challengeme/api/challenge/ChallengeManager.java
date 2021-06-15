@@ -9,13 +9,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import me.jishuna.challengeme.ChallengeMe;
 import me.jishuna.challengeme.api.ChallengeMeAPI;
-import me.jishuna.challengeme.api.event.CategorySetupEvent;
-import me.jishuna.challengeme.api.event.ChallengeSetupEvent;
 import me.jishuna.challengeme.challenges.AlwaysGlidingChallenge;
 import me.jishuna.challengeme.challenges.AnimalLoverChallenge;
 import me.jishuna.challengeme.challenges.AquaticChallenge;
@@ -45,77 +42,76 @@ public class ChallengeManager {
 
 	private final ChallengeMe plugin;
 
-	private boolean hasForcedChallenges;
+	private boolean hasForcedChallenges = false;
 
 	public ChallengeManager(ChallengeMe plugin) {
 		this.plugin = plugin;
 	}
 
-	public void reloadCategories() {
-		this.catergories.clear();
+	public void reload() {
+		YamlConfiguration categoryConfig = this.plugin.getCateogryConfig();
 
-		CategorySetupEvent event = new CategorySetupEvent();
+		this.catergories.values().forEach(category -> category.reload(categoryConfig));
+		this.challenges.values().forEach(Challenge::reload);
 
+		this.categoryChallengeMap.clear();
+		this.challenges.values().forEach(this::setCategory);
+	}
+
+	public void registerChallenge(Challenge challenge) {
+		this.challenges.put(challenge.getKey(), challenge);
+
+		if (challenge.isForced()) {
+			this.hasForcedChallenges = true;
+		}
+
+		setCategory(challenge);
+	}
+
+	private void setCategory(Challenge challenge) {
+		getCategory(challenge.getCategory()).ifPresent(category -> {
+			List<Challenge> challengeList = this.categoryChallengeMap.computeIfAbsent(category,
+					key -> new ArrayList<>());
+			challengeList.add(challenge);
+
+			challengeList.sort((challengeA, challengeB) -> ChatColor.stripColor(challengeA.getName())
+					.compareTo(ChatColor.stripColor(challengeB.getName())));
+		});
+	}
+
+	public void registerCategory(Category category) {
+		this.catergories.put(category.getKey(), category);
+	}
+
+	public void loadDefaults() {
 		YamlConfiguration categoryConfig = this.plugin.getCateogryConfig();
 		for (String key : categoryConfig.getKeys(false)) {
-			event.getCategoriesToAdd().add(new Category(key, categoryConfig.getConfigurationSection(key)));
+			registerCategory(new Category(key, categoryConfig));
 		}
 
-		Bukkit.getPluginManager().callEvent(event);
-
-		event.getCategoriesToAdd().forEach(category -> this.catergories.put(category.getKey(), category));
-	}
-
-	public void reloadChallenges() {
-		this.challenges.clear();
-
-		ChallengeSetupEvent event = new ChallengeSetupEvent();
-		event.getChallengesToAdd().addAll(this.getDefaultChallenges());
-		Bukkit.getPluginManager().callEvent(event);
-
-		event.getChallengesToAdd().forEach(challenge -> {
-			this.challenges.put(challenge.getKey(), challenge);
-
-			getCategory(challenge.getCategory()).ifPresent(category -> {
-				List<Challenge> challengeList = this.categoryChallengeMap.computeIfAbsent(category,
-						key -> new ArrayList<>());
-				challengeList.add(challenge);
-			});
-		});
-
-		this.categoryChallengeMap.values().forEach(list -> list.sort((challengeA, challengeB) -> ChatColor
-				.stripColor(challengeA.getName()).compareTo(ChatColor.stripColor(challengeB.getName()))));
-
-		this.hasForcedChallenges = this.challenges.values().stream().anyMatch(Challenge::isForced);
-	}
-
-	private List<Challenge> getDefaultChallenges() {
-		List<Challenge> defaultChallenges = new ArrayList<>();
-
-		defaultChallenges.add(new NoDamageChallenge(plugin));
-		defaultChallenges.add(new VegitarianChallenge(plugin));
-		defaultChallenges.add(new AnimalLoverChallenge(plugin));
-		defaultChallenges.add(new VampireChallenge(plugin));
-		defaultChallenges.add(new NoJumpingChallenge(plugin));
-		defaultChallenges.add(new DoublePainChallenge(plugin));
-		defaultChallenges.add(new AlwaysGlidingChallenge(plugin));
-		defaultChallenges.add(new ChunkEffectChallenge(plugin));
-		defaultChallenges.add(new NoStoppingChallenge(plugin));
-		defaultChallenges.add(new RandomEffectsChallenge(plugin));
-		defaultChallenges.add(new EndermanChallenge(plugin));
-		defaultChallenges.add(new SpeedChallenge(plugin));
-		defaultChallenges.add(new BlockEffectChallenge(plugin));
-		defaultChallenges.add(new BouncyChallenge(plugin));
-		defaultChallenges.add(new ReverseGravityChallenge(plugin));
-		defaultChallenges.add(new NoDarknessChallenge(plugin));
-		defaultChallenges.add(new NoRegenChallenge(plugin));
+		registerChallenge(new NoDamageChallenge(plugin));
+		registerChallenge(new VegitarianChallenge(plugin));
+		registerChallenge(new AnimalLoverChallenge(plugin));
+		registerChallenge(new VampireChallenge(plugin));
+		registerChallenge(new NoJumpingChallenge(plugin));
+		registerChallenge(new DoublePainChallenge(plugin));
+		registerChallenge(new AlwaysGlidingChallenge(plugin));
+		registerChallenge(new ChunkEffectChallenge(plugin));
+		registerChallenge(new NoStoppingChallenge(plugin));
+		registerChallenge(new RandomEffectsChallenge(plugin));
+		registerChallenge(new EndermanChallenge(plugin));
+		registerChallenge(new SpeedChallenge(plugin));
+		registerChallenge(new BlockEffectChallenge(plugin));
+		registerChallenge(new BouncyChallenge(plugin));
+		registerChallenge(new ReverseGravityChallenge(plugin));
+		registerChallenge(new NoDarknessChallenge(plugin));
+		registerChallenge(new NoRegenChallenge(plugin));
 
 		if (ChallengeMeAPI.hasProtcolLib()) {
-			defaultChallenges.add(new AquaticChallenge(plugin));
-			defaultChallenges.add(new InvisibleMobsChallenge(plugin));
+			registerChallenge(new AquaticChallenge(plugin));
+			registerChallenge(new InvisibleMobsChallenge(plugin));
 		}
 
-		return defaultChallenges;
 	}
 
 	public Optional<Challenge> getChallenge(String key) {

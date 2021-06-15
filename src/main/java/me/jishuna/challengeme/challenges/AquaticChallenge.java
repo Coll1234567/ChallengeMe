@@ -26,7 +26,7 @@ public class AquaticChallenge extends Challenge implements ToggleChallenge {
 	private static final String KEY = "aquatic";
 
 	public AquaticChallenge(Plugin owner) {
-		super(owner, KEY, loadConfig(owner, KEY));
+		super(owner, KEY);
 
 		addEventHandler(EntityAirChangeEvent.class, this::onAirChange);
 	}

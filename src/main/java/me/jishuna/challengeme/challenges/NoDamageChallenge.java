@@ -11,7 +11,7 @@ public class NoDamageChallenge extends Challenge {
 	private static final String KEY = "no_damage";
 
 	public NoDamageChallenge(Plugin owner) {
-		super(owner, KEY, loadConfig(owner, KEY));
+		super(owner, KEY);
 
 		addEventHandler(EntityDamageEvent.class, this::onDamage);
 	}

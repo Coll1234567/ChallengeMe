@@ -21,7 +21,7 @@ public class NoStoppingChallenge extends Challenge implements TickingChallenge {
 	private static final String KEY = "no_stopping";
 
 	public NoStoppingChallenge(Plugin owner) {
-		super(owner, KEY, loadConfig(owner, KEY));
+		super(owner, KEY);
 	}
 
 	@Override

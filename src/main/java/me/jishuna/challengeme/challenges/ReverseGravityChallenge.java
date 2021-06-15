@@ -28,7 +28,7 @@ public class ReverseGravityChallenge extends Challenge implements ToggleChalleng
 	private int height;
 
 	public ReverseGravityChallenge(Plugin owner) {
-		super(owner, KEY, loadConfig(owner, KEY));
+		super(owner, KEY);
 
 		addEventHandler(EntityPotionEffectEvent.class, this::onEffect);
 		addEventHandler(PlayerRespawnEvent.class, this::onRespawn);

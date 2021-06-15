@@ -12,7 +12,7 @@ public class VampireChallenge extends Challenge implements TickingChallenge {
 	private static final String KEY = "vampire";
 
 	public VampireChallenge(Plugin owner) {
-		super(owner, KEY, loadConfig(owner, KEY));
+		super(owner, KEY);
 	}
 
 	@Override

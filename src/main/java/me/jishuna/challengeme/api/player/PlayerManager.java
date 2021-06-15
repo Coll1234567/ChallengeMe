@@ -54,6 +54,10 @@ public class PlayerManager {
 		loggoutWrapper.register(plugin);
 	}
 
+	public void reloadPlayers() {
+		this.players.values().forEach(ChallengePlayer::updateEnabledChallenges);
+	}
+
 	public Optional<ChallengePlayer> getPlayer(Player player) {
 		return getPlayer(player.getUniqueId());
 	}

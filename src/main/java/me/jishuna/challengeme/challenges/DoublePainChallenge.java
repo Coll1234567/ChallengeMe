@@ -10,7 +10,7 @@ public class DoublePainChallenge extends Challenge {
 	private static final String KEY = "double_pain";
 
 	public DoublePainChallenge(Plugin owner) {
-		super(owner, KEY, loadConfig(owner, KEY));
+		super(owner, KEY);
 
 		addEventHandler(EntityDamageEvent.class, this::onDamage);
 	}
