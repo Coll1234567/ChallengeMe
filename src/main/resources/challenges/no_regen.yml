@@ -1,7 +1,0 @@
-enabled: true
-forced: false
-category: 'misc'
-name: '&d&lUltra Hardcore'
-description: '&3You are unable to regen health naturally.'
-difficulty: '&bDifficulty: &c&lHard'
-material: 'GOLDEN_APPLE'

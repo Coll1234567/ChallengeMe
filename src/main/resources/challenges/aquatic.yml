@@ -1,7 +1,0 @@
-enabled: true
-forced: false
-category: 'world'
-name: '&9&lAquatic'
-description: '&3You can breath and see underwater but you lose air and suffocate while on land.'
-difficulty: '&bDifficulty: &6&lMedium'
-material: 'PLAYER_HEAD,17152876bc3a96dd2a2299245edb3beef647c8a56ac8853a687c3e7b5d8bb'

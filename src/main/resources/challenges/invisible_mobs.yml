@@ -1,7 +1,0 @@
-enabled: true
-forced: false
-category: 'mobs'
-name: '&7&lInvisible Mobs'
-description: '&3all mobs are invisible.'
-difficulty: '&bDifficulty: &c&lHard'
-material: 'POTION,127,131,146'

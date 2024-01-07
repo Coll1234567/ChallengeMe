@@ -1,7 +1,0 @@
-enabled: true
-forced: false
-category: 'combat'
-name: '&c&lDouble Pain'
-description: '&3Any damage you take is doubled.'
-difficulty: '&bDifficulty: &6&lMedium'
-material: 'IRON_SWORD'

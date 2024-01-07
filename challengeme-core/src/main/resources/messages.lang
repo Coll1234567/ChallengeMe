@@ -1,0 +1,7 @@
+challenge.name: <white>{0}
+challenge.active-name: <white>{0} <gray>- {1}
+
+challenge.active: <green><bold>Active
+challenge.inactive: <red><bold>Inactive
+challenge.disabled: <red><bold>Disabled By Server
+challenge.forced: <green><bold>Forced Active
